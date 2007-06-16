@@ -51,18 +51,18 @@ template <
 class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 {
 	protected:
-	    SizeType allocated_size;		
+		SizeType allocated_size;
 
 		/**
 		 *	Try resize the array
 		 */
 		bool Realloc(SizeType size)
 		{
-		    // Don't allow smaller allocation than reserve size
-      		if (size < reserve_size) size = reserve_size;
-      		
-      		// If current allocation equals new size then skip
-		    if (this->allocated_size == size) return true;
+			// Don't allow smaller allocation than reserve size
+			if (size < reserve_size) size = reserve_size;
+
+			// If current allocation equals new size then skip
+			if (this->allocated_size == size) return true;
 
 			// Try reallocate
 			DataType *newData = (DataType *) realloc(this->data, sizeof(DataType) * size);
@@ -110,11 +110,11 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 			return BaseArray<DataType, SizeType, DataType*>::Resize(size, values);
 		}
 
-	    /**
-	     *  Add item to the end of array
-	     */
-	    bool Add(const DataType &value)
-	    {
+		/**
+		 *  Add item to the end of array
+		 */
+		bool Add(const DataType &value)
+		{
 			// If new size is larger than maximum capacity then abort
 			if (this->current_size >= array_capacity) return false;
 
@@ -128,10 +128,10 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		}
 
 		/**
-	     *  Insert item to the pos
-	     */
-	    bool Insert(const DataType &value, const SizeType pos)
-	    {
+		 *  Insert item to the pos
+		 */
+		bool Insert(const DataType &value, const SizeType pos)
+		{
 			// If new size is larger than maximum then abort
 			if (this->current_size >= array_capacity) return false;
 
@@ -157,7 +157,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 			// If current size is one block size smaller than allocated size then decrease memory size
 			if (this->current_size <= this->allocated_size - block_size)
 			{
-			    // No matter the realloc succeeds or not, fictios size will still be smaller
+				// No matter the realloc succeeds or not, fictios size will still be smaller
 				this->Realloc(this->allocated_size - block_size);
 			}
 
@@ -182,7 +182,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		 */
 		inline SizeType GetCapacity(void)
 		{
-		    return array_capacity;
+			return array_capacity;
 		}
 
 		/**

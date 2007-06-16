@@ -41,7 +41,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 {
 	protected:
 		ListType data;
-	    SizeType current_size;
+		SizeType current_size;
 
 		/**
 		 *	Resize array to certain length
@@ -59,11 +59,11 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 			return true;
 		}
 
-	    /**
-	     *  Add item to the end of array
-	     */
-	    inline bool Add(const DataType &value)
-	    {
+		/**
+		 *  Add item to the end of array
+		 */
+		inline bool Add(const DataType &value)
+		{
 			// Increase size and add item
 			this->data[this->current_size++] = value;
 
@@ -71,10 +71,10 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 		}
 
 		/**
-	     *  Insert item to the pos
-	     */
-	    inline bool Insert(const DataType &value, const SizeType pos)
-	    {
+		 *  Insert item to the pos
+		 */
+		inline bool Insert(const DataType &value, const SizeType pos)
+		{
 			// Shift data to right when adding to middle
 			if (pos < this->current_size)
 			{

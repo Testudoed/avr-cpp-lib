@@ -49,9 +49,9 @@ template <
 class DynamicQueue : public BaseQueue<DataType, SizeType, DataType*>
 {
 
-    public:
-    
-    	/**
+	public:
+
+		/**
 		 *	Constructor
 		 */
 		DynamicQueue()

@@ -78,28 +78,28 @@ class BaseBitQueue : protected BaseQueue
 		 */
 		inline void Clear()
 		{
-		    BaseQueue::Clear();
+			BaseQueue::Clear();
 			this->bit_write_mask	= 0;
 			this->bit_read_mask 	= 0;
 		}
 
 		/**
-	     *  Push bit item to the queue
-	     */
+		 *  Push bit item to the queue
+		 */
 		bool Push(const uint8_t &value)
 		{
-		    // Circle complete ?
-		    if (this->bit_write_mask == 0)
-		    {
-			    // Queue full ?
-			    if (BaseQueue::IsFull()) return false;
-		    
-		        // Make new byte in queue
-		        if (!BaseQueue::Push(0)) return false;
-		        
-		        // Do rotational shifting
-		        this->bit_write_mask = 0x80;
-		    }
+			// Circle complete ?
+			if (this->bit_write_mask == 0)
+			{
+				// Queue full ?
+				if (BaseQueue::IsFull()) return false;
+
+				// Make new byte in queue
+				if (!BaseQueue::Push(0)) return false;
+
+				// Do rotational shifting
+				this->bit_write_mask = 0x80;
+			}
 
 			// Put bit the the byte queue
 			if (value)
@@ -118,13 +118,13 @@ class BaseBitQueue : protected BaseQueue
 		 */
 		bool Pop(uint8_t &value)
 		{
-		    // Queue empty ?
-		    if (BaseQueue::IsEmpty()) return false;
-		    
-		    // Writing and reading with same byte ?
-		    if ((BaseQueue::Size() == 1) && (this->bit_read_mask <= this->bit_write_mask)) return false;
-		    
-		    // Circle complete ?
+			// Queue empty ?
+			if (BaseQueue::IsEmpty()) return false;
+
+			// Writing and reading with same byte ?
+			if ((BaseQueue::Size() == 1) && (this->bit_read_mask <= this->bit_write_mask)) return false;
+
+			// Circle complete ?
 			if (this->bit_read_mask == 0)
 			{
 				// Do rotational shifting

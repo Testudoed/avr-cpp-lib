@@ -62,11 +62,11 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Resize(size, values);
 		}
 
-	    /**
-	     *  Add item to the end of array
-	     */
-	    bool Add(const DataType &value)
-	    {
+		/**
+		 *  Add item to the end of array
+		 */
+		bool Add(const DataType &value)
+		{
 			// If new size is larger than maximum capacity then abort
 			if (this->current_size >= array_capacity) return false;
 
@@ -74,10 +74,10 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 		}
 
 		/**
-	     *  Insert item to the pos
-	     */
-	    bool Insert(const DataType &value, const SizeType pos)
-	    {
+		 *  Insert item to the pos
+		 */
+		bool Insert(const DataType &value, const SizeType pos)
+		{
 			// If new size is larger than maximum capacity then abort
 			if (this->current_size >= array_capacity) return false;
 
@@ -100,7 +100,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 		 */
 		SizeType GetCapacity(void)
 		{
-		    return array_capacity;
+			return array_capacity;
 		}
 		
 		/**

@@ -51,9 +51,9 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 			BaseQueue<DataType, SizeType, DataType[queue_capacity]>();
 		}
 	
-	    /**
-	     *  Push item to the queue
-	     */
+		/**
+		 *  Push item to the queue
+		 */
 		bool Push(const DataType &value)
 		{
 			// If queue full then exit
@@ -92,7 +92,7 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 		 */
 		inline SizeType GetCapacity(void)
 		{
-		    return queue_capacity;
+			return queue_capacity;
 		}
 
 		/**
@@ -100,15 +100,15 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 		 */
 		volatile SizeType GetSize(void)
 		{
-		    // If queue marked full then return total size
+			// If queue marked full then return total size
 			if (this->is_full) return queue_capacity;
 
  			// This functions relies on assumption that read pointer never passes write pointer!
-		    // Described situation cannot be evoked by user, only by software bug
+			// Described situation cannot be evoked by user, only by software bug
 			if (this->read_pointer <= this->write_pointer)
 				return (this->write_pointer - this->read_pointer);
 			else
-			    return ((queue_capacity - this->read_pointer) + this->write_pointer);
+				return ((queue_capacity - this->read_pointer) + this->write_pointer);
 		}
 
 }; // class StaticQueue

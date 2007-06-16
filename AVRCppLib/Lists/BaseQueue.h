@@ -90,7 +90,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		 */
 		inline DataType &Front()
 		{
-		    return this->data[this->read_pointer];
+			return this->data[this->read_pointer];
 		}
 		
 		/**
