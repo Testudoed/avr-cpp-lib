@@ -1,0 +1,10 @@
+Version 0.11 (2007-02-27)
+	* Reads ATmega8, ATmega88, ATmega128, ATmega1287.
+	* Declares registers and masks.
+
+Version 0.12 (2007-03-04)
+	* Reads slash delimited bit name as two bits.
+	* ATmega64 supported.
+	* Writes general port declarations.
+	* Adds register name in front of one-char bits. (All SREG bits for example).
+	
