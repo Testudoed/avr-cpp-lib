@@ -31,6 +31,18 @@
 
 /**********************************************************************************************************************\
 
+	AVRCppLib collection objects
+
+\**********************************************************************************************************************/
+
+namespace AVRCpp
+{
+	namespace Collection
+	{
+	
+
+/**********************************************************************************************************************\
+
 	Base array class
 
 	This class should never be instantized directly!
@@ -55,7 +67,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 			}
 
 			this->current_size = size;
-			
+
 			return true;
 		}
 
@@ -163,6 +175,13 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 		}
 
 }; // class BaseArray
+
+
+/**********************************************************************************************************************/
+
+	} // namespace Collection
+	
+} // namespace AVRCpp
 
 
 /**********************************************************************************************************************/

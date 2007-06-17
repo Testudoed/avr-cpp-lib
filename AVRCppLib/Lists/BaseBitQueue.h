@@ -31,6 +31,18 @@
 
 /**********************************************************************************************************************\
 
+	AVRCppLib collection objects
+
+\**********************************************************************************************************************/
+
+namespace AVRCpp
+{
+	namespace Collection
+	{
+
+
+/**********************************************************************************************************************\
+
 	Base bit queue (FIFO) class
 
 	This class should never be instantized directly!
@@ -106,13 +118,13 @@ class BaseBitQueue : protected BaseQueue
 			{
 				BaseQueue::Back() |= this->bit_write_mask;
 			}
-			
+
 			// Shift to right
 			this->bit_write_mask >>= 1;
-			
+
 			return true;
 		}
-		
+
 		/**
 		 *  Pop bit item out of the queue
 		 */
@@ -133,21 +145,28 @@ class BaseBitQueue : protected BaseQueue
 
 			// Get bit from the byte queue
 			value = ((BaseQueue::Front() & this->bit_read_mask) ? 1 : 0);
-			
+
 			// Shift to right
 			this->bit_read_mask >>= 1;
-			
+
 			// Circle complete ?
 			if (this->bit_read_mask == 0)
 			{
 				// Pop byte from the queue
 				if (!BaseQueue::Pop()) return false;
 		 	}
-			
+
 			return true;
 		}
 
 }; // class BaseBitQueue
+
+
+/**********************************************************************************************************************/
+
+	} // namespace Collection
+
+} // namespace AVRCpp
 
 
 /**********************************************************************************************************************/
