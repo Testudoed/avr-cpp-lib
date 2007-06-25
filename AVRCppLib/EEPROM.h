@@ -25,7 +25,14 @@
 
 \**********************************************************************************************************************/
 
-#if !(defined(__AVR_ATmega8__) || defined(__AVR_ATmega128__))
+#if (defined(__AVR_ATmega8__) || defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) || defined(__AVR_ATmega8515__))
+#define __EEPROM_TYPE1__
+#elif (defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__))
+#define __EEPROM_TYPE2__
+#endif
+
+
+#if !(defined(__EEPROM_TYPE1__) || defined(__EEPROM_TYPE2__))
 #error "Device is not selected or selected device is not supported."
 #define __AVR_CPP_EEPROM_H__
 #endif
@@ -34,13 +41,20 @@
 #define __AVR_CPP_EEPROM_H__
 
 #include "IO.h"
+#include "Interrupt.h"
+
+#ifndef _SPMEN
+#define _SPMEN _SELFPRGEN
+#endif
+
+#if (defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__))
+#define _SPMCSR	_SPMCR	// A hack for atmega8 and atmega8515
+#endif
 
 #define EEPROM_SIZE E2END
 
 
 #ifndef EXCLUDE_INTERRUPT_HANDLERS
-
-#include "Interrupt.h"
 
 #define EE_RDY_ns		EEPROM
 #define EE_RDY_struct	EE_RDY_ns::ReadyInterrupt
@@ -58,62 +72,15 @@ namespace AVRCpp
 {
 	namespace EEPROM
 	{
-		__DECLARE_BASIC_INTERRUPT__(Ready, Bits<_EECR, _EERIE>);
-		
-		inline bool IsWriting() {	return IsBitsSet<_EECR>(_EEWE); }
-		inline void WaitWhileWriting() { while (IsWriting() ); }
-		
-		inline void SetAddress(uint16_t address) { WaitWhileWriting(); EEAR = address; }
-		inline uint16_t GetAddress() {	return EEAR; }
-		
-		
-		inline void Write(uint8_t data)
-		{
-			WaitWhileWriting();
-			
-			EEDR = data;
-			
-			SetBits<_EECR>(_EEMWE);
-			SetBits<_EECR>(_EEWE);
-			
-		} // Write 1
-		
-		
-		inline void Write(uint16_t address, uint8_t data)
-		{
-			SetAddress(address);
-			
-			EEDR = data;
-			
-			SetBits<_EECR>(_EEMWE);
-			SetBits<_EECR>(_EEWE);
-			
-		} // Write 2
-		
-		
-		inline uint8_t Read()
-		{
-			WaitWhileWriting();
-			
-			SetBits<_EECR>(_EERE);
-			
-			return EEDR;
-			
-		} // Read 1
-		
-		
-		inline uint8_t Read(uint16_t address)
-		{
-			SetAddress(address);
-			
-			SetBits<_EECR>(_EERE);
-			
-			return EEDR;
-			
-		} // Read 2
-		
-		
 		bool MoveNext();
+		
+		namespace Internal
+		{
+			// Waits while CPU is programming Flash. Only needed if boot loader is present.
+			inline bool IsWritingFlash() {	return IsBitsSet<_SPMCSR>(_SPMEN); }
+			inline void WaitWhileWritingFlash() { while (IsWritingFlash() ); }
+			
+		} // namespace Internal
 		
 #ifndef EXCLUDE_EEPROM_LOAD_SAVE
 		
@@ -145,8 +112,10 @@ namespace AVRCpp
 		
 		template <typename T> bool Save(T data) { return Internal::LoadSaveOperation<T>(true, &data, 1);	}
 		template <typename T> bool Load(T &data) { return Internal::LoadSaveOperation<T>(false, &data, 1); }
-		
+			
+		/// Save array of data to previously set address. After this operation, the address points to the first byte after the written array
 		template <typename T> bool SaveArray(T *data, uint16_t elementsCount) { return Internal::LoadSaveOperation<T>(true, data, elementsCount); }
+		/// Load array of data from previously set address. After this operation, the address points to the first byte after the written array
 		template <typename T> bool LoadArray(T *data, uint16_t elementsCount) { return Internal::LoadSaveOperation<T>(false, data, elementsCount); }
 		
 #endif // ifndef EXCLUDE_EEPROM_LOAD_SAVE
@@ -155,7 +124,15 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-
 /**********************************************************************************************************************/
+
+
+#if defined(__EEPROM_TYPE1__)
+#include "common/EEPROM1.h"
+#elif defined(__EEPROM_TYPE2__)
+#include "common/EEPROM2.h"
+#else
+#error "Device is not selected or selected device is not supported."
+#endif
 
 #endif // ifndef __AVR_CPP_EEPROM_H__

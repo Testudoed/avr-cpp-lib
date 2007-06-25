@@ -25,7 +25,13 @@
 
 \**********************************************************************************************************************/
 
-#if !(defined(__AVR_ATmega8__) || defined(__AVR_ATmega128__))
+#if (defined(__AVR_ATmega8__) || defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) || defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__))
+#define __SLEEPING_TYPE1__
+#elif defined(__AVR_ATmega8515__)
+#define __SLEEPING_TYPE2__
+#endif
+
+#if !(defined(__SLEEPING_TYPE1__) || defined(__SLEEPING_TYPE2__))
 #error "Device is not selected or selected device is not supported."
 #define __AVR_CPP_SLEEPING_H__
 #endif
@@ -40,42 +46,41 @@ namespace AVRCpp
 {
 	namespace Sleeping
 	{
-		
 		enum EnabledFlag
 		{
 			Disabled	= 0x00,
-			Enabled		= 0x80
+			Enabled		= _SE
 			
 		}; // EnabledFlag
 		
 		enum SleepMode
 		{
-			Idle				= 0x00,
-			ADCNoiseReduction	= 0x10,
-			PowerDown			= 0x20,
-			PowerSave			= 0x30,
-			Standby				= 0x60
-			
+			Idle				= 0x00,	
+#if !(defined(__AVR_ATmega8515__))
+			ADCNoiseReduction	= _SM0,
+#endif
+			PowerDown			= _SM1,
+#if !(defined(__AVR_ATmega8515__))
+			PowerSave			= _SM1 | SM0,
+#endif
+			Standby				= _SM2 | SM1,
+#if (defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) || defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__))
+			ExtendedStandby		= _SM2 | SM1 | SM0
+#endif			
+
 		}; // SleepMode
-		
-		
-		inline void SetUp(SleepMode sleepMode, EnabledFlag enabled)
-		{
-			ChangeBits<_MCUCR>(_SM0 | _SM1 | _SM2 | _SE, sleepMode | enabled);
-			
-		} // SetUp
-		
-		inline void FallAsleep() { Assembler::SLEEP(); }
-		
-		inline void Enable() { SetBits<_MCUCR>(_SE); }
-		inline void Disable() { ClearBits<_MCUCR>(_SE); }
-		inline uint8_t IsEnabled() { return IsBitsSet<_MCUCR>(_SE); }
-		
-		inline uint8_t GetSleepMode() { return SelectBits<_MCUCR>(_SM0 | _SM1 | _SM2); }
-		inline void SetSleepMode(SleepMode sleepMode) { ChangeBits<_MCUCR>(_SM0 | _SM1 | _SM2, sleepMode); }
-		
+
 	} // namespace Sleeping
 
 } // namespace AVRCpp
+
+
+#if defined(__SLEEPING_TYPE1__)
+#include "common/Sleeping1.h"
+#elif defined(__SLEEPING_TYPE2__)
+#include "common/Sleeping2.h"
+#else
+#error "Device is not selected or selected device is not supported."
+#endif
 
 #endif // ifndef __AVR_CPP_SLEEPING_H__
