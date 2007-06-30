@@ -385,6 +385,29 @@ namespace AVRCpp
 					
 				} // Read 2
 				
+				static inline bool SimpleRead(uint8_t &data)
+				{
+					bool result;
+					
+					while (!IsReceiveCompleted() );
+					result = !WasError();
+					data = Data::Get();
+					return result;
+					
+				} // SimpleRead 1
+				
+				static inline bool SimpleRead(uint8_t &data, bool &ninth)
+				{
+					bool result;
+					
+					while (!IsReceiveCompleted() );
+					result = !WasError();
+					ninth = IsNinthBitSet();
+					data = Data::Get();
+					return result;
+					
+				} // SimpleRead 2
+				
 				static inline ReadResult DetailedRead(uint8_t &data)
 				{
 					if (WaitWhileReceiveCompletedOrCanceled() )
@@ -416,6 +439,35 @@ namespace AVRCpp
 					
 				} // DetailedRead 2
 				
+				static inline ReadResult DetailedSimpleRead(uint8_t &data)
+				{
+					while (!IsReceiveCompleted() );
+					
+					{
+						ReadResult result = DetailedErrorCheck();
+						
+						data = Data::Get();
+						
+						return result;
+					}
+					
+				} // DetailedSimpleRead 1
+				
+				static inline ReadResult DetailedSimpleRead(uint8_t &data, bool &ninth)
+				{
+					while (!IsReceiveCompleted() );
+					
+					{
+						ReadResult result = DetailedErrorCheck();
+						
+						ninth = IsNinthBitSet();
+						data = Data::Get();
+						
+						return result;
+					}
+					
+				} // DetailedSimpleRead 2
+
 				static inline bool Flush()
 				{
 					uint8_t data;
