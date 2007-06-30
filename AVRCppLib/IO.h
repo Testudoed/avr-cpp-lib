@@ -42,8 +42,8 @@
 #else
 
 // Compatibility test
-#if !(defined(__AVR__) && __GNUC__ == 4 && __GNUC_MINOR__ == 1 && __GNUC_PATCHLEVEL__ == 1)
-#warning "AVR C++ Lib is tested on avr-gcc (GCC) 4.1.1 (WinAVR 20070101). You are not using this compiler. AVR C++ Lib may not work properly."
+#if !(defined(__AVR__) && __GNUC__ == 4 && __GNUC_MINOR__ == 1 && __GNUC_PATCHLEVEL__ == 2)
+#warning "AVR C++ Lib is tested on avr-gcc (GCC) 4.1.2 (WinAVR 20070525). You are not using this compiler. AVR C++ Lib may not work properly."
 #endif
 
 namespace AVRCpp
