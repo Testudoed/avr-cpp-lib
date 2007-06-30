@@ -50,7 +50,7 @@
 #define USART_TXC_ns	USART
 #define USART_UDRE_ns	USART
 
-#define USART_RXC_struct	USART::USART0::RecieveCompleteInterrupt
+#define USART_RXC_struct	USART::USART0::ReceiveCompleteInterrupt
 #define USART_TXC_struct	USART::USART0::TransferCompleteInterrupt
 #define USART_UDRE_struct	USART::USART0::DataRegisterEmptyInterrupt
 
@@ -78,7 +78,7 @@ namespace AVRCpp
 				Internal::HasRegisterSelect,	/* registerSelect */
 				Internal::Cancel >				/* Cancel */
 		{
-			struct RecieveCompleteInterrupt : BasicInterrupt<Bits<_UCSRB, _RXCIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
+			struct ReceiveCompleteInterrupt : BasicInterrupt<Bits<_UCSRB, _RXCIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			struct TransferCompleteInterrupt : BasicInterrupt<Bits<_UCSRB, _TXCIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			struct DataRegisterEmptyInterrupt : BasicInterrupt<Bits<_UCSRB, _UDRIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			

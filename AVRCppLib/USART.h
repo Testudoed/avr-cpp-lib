@@ -49,12 +49,12 @@ namespace AVRCpp
 			
 		}; // enum ReadResult
 		
-		enum Reciever
+		enum Receiver
 		{
-			RecieverEnable	= 0x10,
-			RecieverDisable	= 0x00
+			ReceiverEnable	= 0x10,
+			ReceiverDisable	= 0x00
 			
-		}; // enum Reciever
+		}; // enum Receiver
 		
 		enum Transmitter
 		{
@@ -90,8 +90,8 @@ namespace AVRCpp
 		
 		enum SynchroEdge
 		{
-			RecieveOnFall = 0x00,
-			RecieveOnRise = 0x01
+			ReceiveOnFall = 0x00,
+			ReceiveOnRise = 0x01
 			
 		}; // enum SynchroEdge
 		
@@ -137,7 +137,7 @@ namespace AVRCpp
 			enum BitFlags
 			{
 				NinthFlag				= 0x01,
-				RecieveCompleteFlag		= 0x80,
+				ReceiveCompleteFlag		= 0x80,
 				TransferCompleteFlag	= 0x40,
 				DataRegisterEmptyFlag	= 0x20,
 				FrameErrorFlag			= 0x10,
@@ -145,7 +145,7 @@ namespace AVRCpp
 				ParityErrorFlag			= 0x04,
 				ErrorFlags				= 0x1C,
 				TransmitterEnableFlag	= 0x08,
-				RecieverEnableFlag		= 0x10
+				ReceiverEnableFlag		= 0x10
 				
 			}; // enum BitFlags
 			
@@ -165,7 +165,7 @@ namespace AVRCpp
 			private:
 				
 				typedef Bits<ControlRegisterB, NinthFlag>				NinthBit;
-				typedef Bits<ControlRegisterA, RecieveCompleteFlag>		RecieveCompleteBit;
+				typedef Bits<ControlRegisterA, ReceiveCompleteFlag>		ReceiveCompleteBit;
 				typedef Bits<ControlRegisterA, TransferCompleteFlag>	TransferCompleteBit;
 				typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>	DataRegisterEmptyBit;
 				typedef Bits<ControlRegisterA, FrameErrorFlag>			FrameErrorBit;
@@ -173,7 +173,7 @@ namespace AVRCpp
 				typedef Bits<ControlRegisterA, ParityErrorFlag>			ParityErrorBit;
 				typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
 				typedef Bits<ControlRegisterA, TransmitterEnableFlag>	TransmitterEnableBit;
-				typedef Bits<ControlRegisterB, RecieverEnableFlag>		RecieverEnableBit;
+				typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
 				
 				typedef typename TransferClockPin::Input	SlavePin;
 				typedef typename TransferClockPin::Output	MasterPin;
@@ -187,17 +187,17 @@ namespace AVRCpp
 				
 				static inline bool IsNinthBitSet() { return NinthBit::IsSet(); }
 				
-				static inline bool IsRecieveCompleted() { return RecieveCompleteBit::IsSet(); }
+				static inline bool IsReceiveCompleted() { return ReceiveCompleteBit::IsSet(); }
 				static inline bool IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
 				static inline bool IsDataRegisterEmpty() { return DataRegisterEmptyBit::IsSet(); }
-				static inline bool IsAllDone() { return IsTransferCompleted() && IsRecieveCompleted(); }
+				static inline bool IsAllDone() { return IsTransferCompleted() && IsReceiveCompleted(); }
 				static inline bool WasFrameError() { return FrameErrorBit::IsSet(); }
 				static inline bool WasDataOverRun() { return DataOverRunBit::IsSet(); }
 				static inline bool WasParityError() { return ParityErrorBit::IsSet(); }
 				static inline bool WasError() { return ErrorBits::IsAnySet(); }
 				
 				static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() ); }
-				static inline void WaitUntilRecieveCompleted() { while (!IsRecieveCompleted() ); }
+				static inline void WaitUntilReceiveCompleted() { while (!IsReceiveCompleted() ); }
 				static inline void WaitUntilDataRegisterEmpty() { while (!IsDataRegisterEmpty() ); }
 				static inline void WaitUntilAllDone() { while (!IsAllDone() ); }
 				
@@ -205,9 +205,9 @@ namespace AVRCpp
 				static inline void DisableTransmitter() { TransmitterEnableBit::Clear(); }
 				static inline bool IsTransmitterEnabled() { return TransmitterEnableBit::IsSet(); }
 				
-				static inline void EnableReciever() { RecieverEnableBit::Set(); }
-				static inline void DisableReciever() { RecieverEnableBit::Clear(); }
-				static inline bool IsRecieverEnabled() { return RecieverEnableBit::IsSet(); }
+				static inline void EnableReceiver() { ReceiverEnableBit::Set(); }
+				static inline void DisableReceiver() { ReceiverEnableBit::Clear(); }
+				static inline bool IsReceiverEnabled() { return ReceiverEnableBit::IsSet(); }
 				
 				static inline void ResetCancel() { Cancel() = false; }
 				static inline void CancelReading() { Cancel() = true; }
@@ -215,11 +215,11 @@ namespace AVRCpp
 				
 			private:
 				
-				static inline bool WaitWhileRecieveCompletedOrCanceled()
+				static inline bool WaitWhileReceiveCompletedOrCanceled()
 				{
 					ResetCancel();
 					
-					while (!IsRecieveCompleted() )
+					while (!IsReceiveCompleted() )
 					{
 						if (IsCanceled() )
 							return true;
@@ -227,7 +227,7 @@ namespace AVRCpp
 					
 					return false;
 					
-				} // WaitWhileRecieveCompletedOrCanceled
+				} // WaitWhileReceiveCompletedOrCanceled
 				
 				static inline ReadResult DetailedErrorCheck()
 				{
@@ -255,7 +255,7 @@ namespace AVRCpp
 				
 				static inline void SetupMasterSync (
 						uint16_t baudRate,
-						Reciever reciever,
+						Receiver receiver,
 						Transmitter transmitter,
 						ParityCheck parityCheck,
 						StopBit stopBit,
@@ -271,7 +271,7 @@ namespace AVRCpp
 					SetBaudRate(baudRate);
 						
 					ControlRegisterA::Set(communicationMode);
-					ControlRegisterB::Set(reciever | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
+					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
 					ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
 					
 					SREG = savedSREG;
@@ -279,7 +279,7 @@ namespace AVRCpp
 				} // SetupMasterSync
 				
 				static inline void SetupSlaveSync (
-						Reciever reciever,
+						Receiver receiver,
 						Transmitter transmitter,
 						ParityCheck parityCheck,
 						StopBit stopBit,
@@ -294,7 +294,7 @@ namespace AVRCpp
 					SlavePin::InitInput();
 						
 					ControlRegisterA::Set(communicationMode);
-					ControlRegisterB::Set(reciever | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
+					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
 					ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
 					
 					SREG = savedSREG;
@@ -304,7 +304,7 @@ namespace AVRCpp
 				
 				static inline void SetupAsynchronous (
 						uint16_t baudRate,
-						Reciever reciever,
+						Receiver receiver,
 						Transmitter transmitter,
 						ParityCheck parityCheck,
 						StopBit stopBit,
@@ -319,7 +319,7 @@ namespace AVRCpp
 					SetBaudRate(baudRate);
 					
 					ControlRegisterA::Set(speed | communicationMode);
-					ControlRegisterB::Set(reciever | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) );
+					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) );
 					ControlRegisterC::Set(registerSelect | Asynchronous | parityCheck | stopBit | (characterSize & CharacterSizeMaskC) ); 
 					
 					SREG = savedSREG;
@@ -356,7 +356,7 @@ namespace AVRCpp
 				
 				static inline bool Read(uint8_t &data)
 				{
-					if (WaitWhileRecieveCompletedOrCanceled() )
+					if (WaitWhileReceiveCompletedOrCanceled() )
 						return false;
 					
 					{
@@ -371,7 +371,7 @@ namespace AVRCpp
 				
 				static inline bool Read(uint8_t &data, bool &ninth)
 				{
-					if (WaitWhileRecieveCompletedOrCanceled() )
+					if (WaitWhileReceiveCompletedOrCanceled() )
 						return false;
 					
 					{
@@ -387,7 +387,7 @@ namespace AVRCpp
 				
 				static inline ReadResult DetailedRead(uint8_t &data)
 				{
-					if (WaitWhileRecieveCompletedOrCanceled() )
+					if (WaitWhileReceiveCompletedOrCanceled() )
 						return Canceled;
 					
 					{
@@ -402,7 +402,7 @@ namespace AVRCpp
 				
 				static inline ReadResult DetailedRead(uint8_t &data, bool &ninth)
 				{
-					if (WaitWhileRecieveCompletedOrCanceled() )
+					if (WaitWhileReceiveCompletedOrCanceled() )
 						return Canceled;
 					
 					{
@@ -435,7 +435,7 @@ namespace AVRCpp
 					
 				} // SendByteArray
 				
-				static inline bool RecieveByteArray(uint8_t *byteData, uint16_t bytesCount)
+				static inline bool ReceiveByteArray(uint8_t *byteData, uint16_t bytesCount)
 				{
 					register uint16_t i;
 					
@@ -445,9 +445,9 @@ namespace AVRCpp
 					
 					return true;
 					
-				} // RecieveByteArray
+				} // ReceiveByteArray
 				
-				static inline ReadResult DetailedRecieveByteArray(uint8_t *byteData, uint16_t bytesCount)
+				static inline ReadResult DetailedReceiveByteArray(uint8_t *byteData, uint16_t bytesCount)
 				{
 					register uint16_t i;
 					ReadResult result;
@@ -458,7 +458,7 @@ namespace AVRCpp
 					
 					return Success;
 					
-				} // DetailedRecieveByteArray
+				} // DetailedReceiveByteArray
 				
 			public:
 				
@@ -492,29 +492,29 @@ namespace AVRCpp
 					
 				} // SendArray
 				
-				template<typename Type> static bool Recieve(Type &data)
+				template<typename Type> static bool Receive(Type &data)
 				{
-					return RecieveByteArray((uint8_t *)(&data), sizeof(Type) );
+					return ReceiveByteArray((uint8_t *)(&data), sizeof(Type) );
 					
-				} // Recieve
+				} // Receive
 				
-				template<typename Type> static bool RecieveArray(Type *data, uint16_t size)
+				template<typename Type> static bool ReceiveArray(Type *data, uint16_t size)
 				{
-					return RecieveByteArray((uint8_t *)(data), size * sizeof(Type) );
+					return ReceiveByteArray((uint8_t *)(data), size * sizeof(Type) );
 					
-				} // RecieveArray
+				} // ReceiveArray
 				
-				template<typename Type> static ReadResult DetailedRecieve(Type &data)
+				template<typename Type> static ReadResult DetailedReceive(Type &data)
 				{
-					return DetailedRecieveByteArray((uint8_t *)(&data), sizeof(Type) );
+					return DetailedReceiveByteArray((uint8_t *)(&data), sizeof(Type) );
 					
-				} // DetailedRecieve
+				} // DetailedReceive
 				
-				template<typename Type> static ReadResult DetailedRecieveArray(Type *data, uint16_t size)
+				template<typename Type> static ReadResult DetailedReceiveArray(Type *data, uint16_t size)
 				{
-					return DetailedRecieveByteArray((uint8_t *)(data), size * sizeof(Type) );
+					return DetailedReceiveByteArray((uint8_t *)(data), size * sizeof(Type) );
 					
-				} // DetailedRecieveArray
+				} // DetailedReceiveArray
 				
 			}; // struct USARTBase
 			
