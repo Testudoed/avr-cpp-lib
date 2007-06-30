@@ -585,6 +585,9 @@ namespace AVRCpp
 #define _PINB1 0x2
 #define _PINB0 0x1
 
+#define _SELFPRGEN 0x1
+#define _SPMEN     0x1
+
 // General ports
 namespace AVRCpp
 {
