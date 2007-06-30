@@ -51,7 +51,7 @@
 		void interruptName ## _vect(void) { AVRCpp::interruptName ## _struct::Evoke(); } \
 		void AVRCpp::interruptName ## _struct::Evoke(void)
 
-#define EMPTY_INTERRUPT(interruptName) \
+#define EXCLUDE_INTERRUPT(interruptName) \
 		extern "C" void interruptName ## _vect(void) __attribute__ ((naked)); \
 		void interruptName ## _vect(void) {  __asm__ __volatile__ ("reti" ::); }
 
