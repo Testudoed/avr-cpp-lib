@@ -46,18 +46,18 @@
 
 #ifndef EXCLUDE_INTERRUPT_HANDLERS
 
-#define USART0_RXC_ns	USART
-#define USART0_TXC_ns	USART
+#define USART0_RX_ns	USART
+#define USART0_TX_ns	USART
 #define USART0_UDRE_ns	USART
-#define USART1_RXC_ns	USART
-#define USART1_TXC_ns	USART
+#define USART1_RX_ns	USART
+#define USART1_TX_ns	USART
 #define USART1_UDRE_ns	USART
 
-#define USART0_RXC_struct	USART::USART0::ReceiveCompleteInterrupt
-#define USART0_TXC_struct	USART::USART0::TransferCompleteInterrupt
+#define USART0_RX_struct	USART::USART0::ReceiveCompleteInterrupt
+#define USART0_TX_struct	USART::USART0::TransferCompleteInterrupt
 #define USART0_UDRE_struct	USART::USART0::DataRegisterEmptyInterrupt
-#define USART1_RXC_struct	USART::USART1::ReceiveCompleteInterrupt
-#define USART1_TXC_struct	USART::USART1::TransferCompleteInterrupt
+#define USART1_RX_struct	USART::USART1::ReceiveCompleteInterrupt
+#define USART1_TX_struct	USART::USART1::TransferCompleteInterrupt
 #define USART1_UDRE_struct	USART::USART1::DataRegisterEmptyInterrupt
 
 #endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
