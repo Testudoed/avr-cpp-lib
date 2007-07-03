@@ -1,0 +1,14 @@
+/$(MCU)/libAvrCpp.a"
+#LDFLAGS += -T linker_script.x
+
+
+
+#---------------- Programming Options (avrdude) ----------------
+
+# Programming hardware: alf avr910 avrisp bascom bsd 
+# dt006 pavr picoweb pony-stk200 sp12 stk200 stk500
+#
+# Type: avrdude -c ?
+# to get a full listing.
+#
+AVRDUDE_PROGRAMMER = 

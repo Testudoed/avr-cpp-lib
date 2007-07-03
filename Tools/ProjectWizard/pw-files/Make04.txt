@@ -1,0 +1,112 @@
+
+
+
+# C++ Precompiled header files
+GCH = Precompiled.h
+
+
+# List Assembler source files here.
+#     Make them always end in a capital .S.  Files ending in a lowercase .s
+#     will not be considered source files but generated files (assembler
+#     output from the compiler), and will be deleted upon "make clean"!
+#     Even though the DOS/Win* filesystem matches both .s and .S the same,
+#     it will preserve the spelling of the filenames, and gcc itself does
+#     care about how the name is spelled on its command-line.
+ASRC =
+
+
+# Optimization level, can be [0, 1, 2, 3, s]. 
+#     0 = turn off optimization. s = optimize for size.
+#     (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
+#     2 = the best optimization for AVR C++ Lib
+OPT = 2
+
+
+# Debugging format.
+#     Native formats for AVR-GCC's -g are dwarf-2 [default] or stabs.
+#     AVR Studio 4.10 requires dwarf-2.
+#     AVR [Extended] COFF format requires stabs, plus an avr-objcopy run.
+DEBUG = dwarf-2
+
+
+# List any extra directories to look for include files here.
+#     Each directory must be seperated by a space.
+#     Use forward slashes for directory separators.
+#     For a directory that has spaces, enclose it in quotes.
+EXTRAINCDIRS = 
+
+
+# Compiler flag to set the C Standard level.
+#     c89   = "ANSI" C
+#     gnu89 = c89 plus GCC extensions
+#     c99   = ISO C99 standard (not yet fully implemented)
+#     gnu99 = c99 plus GCC extensions
+CSTANDARD = -std=gnu99
+
+
+# Place -D or -U options here for C sources
+CDEFS = -DF_CPU=$(F_CPU)UL
+
+
+# Place -D or -U options here for ASM sources
+ADEFS = -DF_CPU=$(F_CPU)
+
+
+# Place -D or -U options here for C++ sources
+CPPDEFS = -DF_CPU=$(F_CPU)UL
+#CPPDEFS += -D__STDC_LIMIT_MACROS
+#CPPDEFS += -D__STDC_CONSTANT_MACROS
+
+
+
+#---------------- Compiler Options C ----------------
+#  -g*:          generate debugging information
+#  -O*:          optimization level
+#  -f...:        tuning, see GCC manual and avr-libc documentation
+#  -Wall...:     warning level
+#  -Wa,...:      tell GCC to pass this to the assembler.
+#    -adhlns...: create assembler listing
+CFLAGS = -g$(DEBUG)
+CFLAGS += $(CDEFS)
+CFLAGS += -O$(OPT)
+CFLAGS += -funsigned-char
+CFLAGS += -funsigned-bitfields
+CFLAGS += -fpack-struct
+CFLAGS += -fshort-enums
+CFLAGS += -Wall
+CFLAGS += -Wstrict-prototypes
+#CFLAGS += -mshort-calls
+#CFLAGS += -fno-unit-at-a-time
+#CFLAGS += -Wundef
+#CFLAGS += -Wunreachable-code
+#CFLAGS += -Wsign-compare
+CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
+CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
+CFLAGS += $(CSTANDARD)
+
+
+#---------------- General Compiler Options C++ ----------------
+#  -g*:          generate debugging information
+#  -O*:          optimization level
+#  -f...:        tuning, see GCC manual and avr-libc documentation
+#  -Wall...:     warning level
+#  -Wa,...:      tell GCC to pass this to the assembler.
+#    -adhlns...: create assembler listing
+GCPPFLAGS = -g$(DEBUG)
+GCPPFLAGS += $(CPPDEFS)
+GCPPFLAGS += -O$(OPT)
+GCPPFLAGS += -funsigned-char
+GCPPFLAGS += -funsigned-bitfields
+GCPPFLAGS += -fpack-struct
+GCPPFLAGS += -fshort-enums
+GCPPFLAGS += -fno-exceptions
+GCPPFLAGS += -Wall
+GCPPFLAGS += -Wundef
+#GCPPFLAGS += -mshort-calls
+#GCPPFLAGS += -fno-unit-at-a-time
+#GCPPFLAGS += -Wstrict-prototypes
+#GCPPFLAGS += -Wunreachable-code
+#GCPPFLAGS += -Wsign-compare
+GCPPFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
+#GCPPFLAGS += $(CSTANDARD)
+GCPPFLAGS += -I"

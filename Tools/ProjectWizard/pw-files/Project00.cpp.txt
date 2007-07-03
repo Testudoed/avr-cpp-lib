@@ -1,0 +1,21 @@
+
+/* READ ME
+
+	ProjectWizard generated 5 files: 3 header files, 1 cpp source file and a makefile.
+	There is description and some advice at the beginning of each file.
+	
+	In order to add a new *.cpp file into your project these instructions should be followed:
+	1. Select from Programmer's Notepad's menu File->New->C/C++
+	2. File->Save as... Write the desired name for the file and save it into the project's folder.
+	3. Click Makefile in Project's window and find line nr 88. Write the created file's name
+		into the end of the row separating it with a space. Note that file name cannot contain
+		space character.
+			Example: CPPSRC = First.cpp Second.cpp Third.cpp
+	4. Select "Source Files" in Project window, right click it and select from pop-up menu Add File...
+	5. Appears a file open dialog. Select the file you created.
+	Now your *.cpp file is added into your project.
+
+*/
+
+
+#include "

@@ -1,0 +1,15 @@
+
+/*
+	Here are included all files needed for most *.cpp files
+
+*/
+
+#include "Precompiled.h"
+
+#include "Config.h"
+
+/* TO DO:
+
+	Add project specific headers, macros, type definisions etc.
+
+*/

@@ -1,0 +1,29 @@
+.h"
+
+
+/*	TO DO:
+
+		Add include directives for files, which are specific for only this *.cpp file.
+*/
+
+
+using namespace AVRCpp;
+
+
+/*	TO DO:
+
+		Interrupt handlers and USING macros for delegates
+
+*/
+
+int main()
+{
+	/* TO DO:
+	
+		Some initialization or/and main loop
+	
+	*/
+
+	return 0;
+
+} // main

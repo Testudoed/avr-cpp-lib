@@ -1,0 +1,33 @@
+/*
+	This is precompiled header. Include standard headers and headers
+	that are not changed at all or changed very rarely.
+
+*/
+
+
+#include <IO.h>
+#include <DiverseIO.h>
+#include <Assembler.h>
+#include <Interrupt.h>
+#include <Sleeping.h>
+#include <ADC.h>
+#include <EEPROM.h>
+#include <Delegate.h>
+#include <StaticArray.h>
+#include <DynamicArray.h>
+#include <StaticQueue.h>
+#include <PeekableStaticQueue.h>
+
+
+/* TO DO:
+
+	Erase #include directives that provide irrelevant stuff for this project.
+	Add #include directives for files that are proper for precompiled header.
+
+*/
+
+/* NOTE:
+
+	Always make clean after modifying this file.
+
+*/

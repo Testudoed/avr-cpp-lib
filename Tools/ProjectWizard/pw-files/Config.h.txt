@@ -1,0 +1,16 @@
+/* TO DO
+
+	Add type definisions
+
+	For Example:
+
+		typedef ExternalInterrupt::Interrupt0 Button;
+		typedef Button::Pin ButtonPin;
+		typedef Timer::TimerCounter1 ServoTimer;
+		typedef ServoTimer::ChannelAPin LeftServo;
+		typedef ServoTimer::ChannelBPin RightServo;
+		typedef OutputPin1<PortC> LED1;
+		typedef OutputPin2<PortC> LED2;
+		typedef OutputPins<PortC, _PC1 | _PC2> LEDs;
+
+*/

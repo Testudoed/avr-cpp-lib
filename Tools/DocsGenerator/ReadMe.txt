@@ -1,0 +1,2 @@
+Doxygen documentation generator and ATT Graphviz is used.
+In doxygen configuration files (doxyfile.dx) absolute paths are used. They should be all modified in case you want to successfully run the generator.

@@ -1,0 +1,4 @@
+
+
+# com1 = serial port. Use lpt1 to connect to parallel port.
+AVRDUDE_PORT = 
