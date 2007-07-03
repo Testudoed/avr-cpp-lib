@@ -30,6 +30,12 @@
 #ifndef __AVR_CPP_IO_<xsl:value-of select="@id"/>_H__
 #define __AVR_CPP_IO_<xsl:value-of select="@id"/>_H__
 
+#ifdef __DOXYGEN__
+#ifndef __AVR_CPP_IO_H__
+#include <![CDATA[<avr/cpp/IO.h>]]>
+#endif
+#endif
+
 #ifndef __AVR_CPP_IO_H__
 #error "Include <![CDATA[<avr/cpp/IO.h>]]> instead of <![CDATA[<avr/cpp/]]><xsl:value-of select="@name"/><![CDATA[/IO.h>."]]>
 #else
@@ -42,9 +48,12 @@
 
 \**********************************************************************************************************************/
 
-// Registers<xsl:for-each select="registers/register">
-__DECLARE_<xsl:value-of select="@bits"/>BIT_REGISTER__(<xsl:value-of select="@name"/>);</xsl:for-each>
+// Registers
+namespace AVRCpp
+{<xsl:for-each select="registers/register">
+	__DECLARE_<xsl:value-of select="@bits"/>BIT_REGISTER__(<xsl:value-of select="@name"/>);</xsl:for-each>
 
+} // namespace AVRCpp
 <xsl:for-each select="registers/register">
 <xsl:variable name="register" select="."/>
 <xsl:if test="count($register/bits/bit) > 0">
@@ -59,8 +68,13 @@ __DECLARE_<xsl:value-of select="@bits"/>BIT_REGISTER__(<xsl:value-of select="@na
 </xsl:if>
 </xsl:for-each>
 
-// General ports<xsl:for-each select="ports/port"><xsl:variable name="port" select="."/>
-__DECLARE_PORT__(<xsl:value-of select="@char"/>);</xsl:for-each>
+
+// General ports
+namespace AVRCpp
+{<xsl:for-each select="ports/port"><xsl:variable name="port" select="."/>
+	__DECLARE_PORT__(<xsl:value-of select="@char"/>);</xsl:for-each>
+	
+} // namespace AVRCpp
 
 
 /**********************************************************************************************************************/
