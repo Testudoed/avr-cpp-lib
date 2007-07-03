@@ -356,6 +356,15 @@
 			</bits>
 		</register>
 		<register name="SPMCSR" bits="8">
+			<bits>
+				<bit name="SPMIE" address="0x80"/>
+				<bit name="RWWSB" address="0x40"/>
+				<bit name="RWWSRE" address="0x10"/>
+				<bit name="BLBSET" address="0x8"/>
+				<bit name="PGWRT" address="0x4"/>
+				<bit name="PGERS" address="0x2"/>
+				<bit name="SELFPRGEN" address="0x1"/>
+			</bits>
 		</register>
 		<register name="MCUCR" bits="8">
 			<bits>

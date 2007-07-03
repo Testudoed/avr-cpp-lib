@@ -166,7 +166,7 @@
 0x3A (0x5A) Reserved – – – – – – – –
 0x39 (0x59) Reserved – – – – – – – –
 0x38 (0x58) Reserved – – – – – – – –
-0x37 (0x57) SPMCSR SPMIE (RWWSB)5. – (RWWSRE)5. BLBSET PGWRT PGERS SELFPRGEN 283
+0x37 (0x57) SPMCSR SPMIE RWWSB – RWWSRE BLBSET PGWRT PGERS SELFPRGEN 283
 0x36 (0x56) Reserved – – – – – – – –
 0x35 (0x55) MCUCR – – – PUD – – IVSEL IVCE
 0x34 (0x54) MCUSR – – – – WDRF BORF EXTRF PORF
