@@ -44,6 +44,7 @@ namespace AVRCpp
 	
 /**
  * Extended StaticQueue to peek items without poping them out of the queue.
+ * \attention It is not tested yet. Do not trust this code.
  */
 template <typename DataType, typename SizeType, SizeType queue_capacity> class PeekableStaticQueue : public StaticQueue/*<int, uint8_t, 15>*/<DataType, SizeType, queue_capacity>
 {
@@ -101,7 +102,7 @@ public:
 		if (this->IsEmpty()) return false;
 		
 		// Read item and increase read pointer
-		value = this->data[this->peak_pointer];
+		value = this->data[this->peek_pointer];
 		
 		// Queue can't be full now
 		this->is_full = 0;
