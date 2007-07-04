@@ -1510,7 +1510,8 @@ private:	// Invoker for static functions
 };
 
 /*
-	
+	... part 4, part 5 ERASED ...
+
 	And now on only AVR-specific code with GPL license
 
 	Lauri Kirikal
