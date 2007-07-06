@@ -31,7 +31,6 @@ namespace AVRCpp
 {
 	namespace EEPROM
 	{
-
 		bool MoveNext()
 		{
 			if (EEAR < EEPROM_SIZE - 1)
@@ -45,10 +44,10 @@ namespace AVRCpp
 			return false;
 			
 		} // MoveNext
-
+		
 		namespace Internal
 		{
-
+			
 			bool SavingProcess(uint16_t lastByteAddr, uint8_t *uint8Data)
 			{
 				// Enough space ?
@@ -74,7 +73,7 @@ namespace AVRCpp
 				
 				return true;
 				
-			} // SaveingProcess
+			} // SavingProcess
 			
 			
 			bool LoadingProcess(uint16_t lastByteAddr, uint8_t *uint8Data)
@@ -103,9 +102,70 @@ namespace AVRCpp
 				return true;
 				
 			} // LoadingProcess
-
+			
+#ifdef __EEPROM_TYPE2__
+			
+			bool ErasingProcess(uint16_t lastByteAddr)
+			{
+				// Enough space ?
+				if (lastByteAddr >= EEPROM_SIZE)
+					return false;
+				
+				// Erase byte by byte
+				while (true)
+				{
+					WaitWhileWriting();
+					
+					Internal::WaitWhileWritingFlash();
+					
+					uint8_t savedSREG = SREG;
+					
+					// EEPE must be set immediately after setting EEMPE
+					GlobalInterrupts::Disable();
+					
+					SetBits<_EECR>(_EEMPE);
+					SetBits<_EECR>(_EEPE);
+					
+					// Restore the interrupt bit in Status Register
+					SREG = savedSREG;			
+					
+					// Done ?
+					if (EEAR == lastByteAddr)
+						break;
+					
+					WaitWhileWriting();
+					EEAR++;
+				}
+				
+				MoveNext();
+				
+				return true;
+				
+			} // ErasingProcess
+			
+#endif // ifdef __EEPROM_TYPE2__
+			
 		} // namespace Internal
-
+		
+#ifdef __EEPROM_TYPE2__
+		
+		bool Erase(uint16_t numberOfBytes)
+		{
+			uint8_t savedEECR = EECR;
+			
+			SetEraseMode();
+			
+			{
+				bool result = Internal::EraseOperation(numberOfBytes);
+				
+				ChangeBits<_EECR>(_EEPM1 | _EEPM0, savedEECR);
+				
+				return result;
+			}
+		}
+		
+#endif // ifdef __EEPROM_TYPE2__
+		
 	} // namespace EEPROM
 
 } // namespace AVRCpp
