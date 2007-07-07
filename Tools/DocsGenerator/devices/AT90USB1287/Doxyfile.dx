@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "AVR C++ Library for AT90USB1287"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/docs"
+OUTPUT_DIRECTORY       = "./docs"
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class" \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = YES
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source"
+STRIP_FROM_PATH        = "./source"
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
@@ -83,18 +83,18 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/sfr_defs.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/io.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/cpp" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/stdint.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/iousb1287.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/cpp/at90usb1287" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/iousbxx6_7.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/devices/AT90USB1287/pages.txt" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/cpp/Collection" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/avr/cpp/common" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source/inttypes.h" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/common/pages.txt"
+INPUT                  = "./source/avr/sfr_defs.h" \
+                         "./source/avr/io.h" \
+                         "./source/avr/cpp" \
+                         "./source/stdint.h" \
+                         "./source/avr/iousb1287.h" \
+                         "./source/avr/cpp/at90usb1287" \
+                         "./source/avr/iousbxx6_7.h" \
+                         "./devices/AT90USB1287/pages.txt" \
+                         "./source/avr/cpp/Collection" \
+                         "./source/avr/cpp/common" \
+                         "./source/inttypes.h" \
+                         "./common/pages.txt"
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -131,8 +131,8 @@ EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/common" \
-                         "C:/Documents and Settings/Lauri/My Documents/DoxyGen/devices/AT90USB1287/images"
+IMAGE_PATH             = "./common" \
+                         "./devices/AT90USB1287/images"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -161,7 +161,7 @@ HTML_OUTPUT            = at90usb1287
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
-HTML_STYLESHEET        = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/common/doxygen.css"
+HTML_STYLESHEET        = "./common/doxygen.css"
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = YES
 CHM_FILE               = at90usb1287.chm
@@ -230,7 +230,7 @@ ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
-INCLUDE_PATH           = "C:/Documents and Settings/Lauri/My Documents/DoxyGen/source"
+INCLUDE_PATH           = "./source"
 INCLUDE_FILE_PATTERNS  = 
 PREDEFINED             = __DOXYGEN__ \
                          __cplusplus \
