@@ -418,7 +418,7 @@ namespace AVRCpp
 #define _INTF5 0x20
 #define _INTF4 0x10
 #define _INTF3 0x8
-#define _INTF 0x4
+#define _INTF2 0x4
 #define _INTF1 0x2
 #define _INTF0 0x1
 
