@@ -580,6 +580,8 @@ namespace AVRCpp
 #include "atmega8/USART.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/USART.h"
+#elif defined(__AVR_ATmega64__)
+#include "atmega64/USART.h"
 #elif defined(__AVR_ATmega8515__)
 #include "atmega8515/USART.h"
 #elif defined(__AVR_AT90USB1287__)

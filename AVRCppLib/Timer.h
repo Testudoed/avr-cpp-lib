@@ -759,6 +759,8 @@ namespace AVRCpp
 #include "at90usb1287/Timer.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/Timer.h"
+#elif defined(__AVR_ATmega64__)
+#include "atmega64/Timer.h"
 #elif defined(__AVR_ATmega8__)
 #include "atmega8/Timer.h"
 #elif defined(__AVR_ATmega8515__)
