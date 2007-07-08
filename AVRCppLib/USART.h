@@ -136,7 +136,8 @@ namespace AVRCpp
 			
 			enum BitFlags
 			{
-				NinthFlag				= 0x01,
+				NinthTransmitFlag		= 0x01,
+				NinthReceiveFlag		= 0x02,
 				ReceiveCompleteFlag		= 0x80,
 				TransferCompleteFlag	= 0x40,
 				DataRegisterEmptyFlag	= 0x20,
@@ -164,7 +165,8 @@ namespace AVRCpp
 			{
 			private:
 				
-				typedef Bits<ControlRegisterB, NinthFlag>				NinthBit;
+				typedef Bits<ControlRegisterB, NinthTransmitFlag>		NinthTransmitBit;
+				typedef Bits<ControlRegisterB, NinthReceiveFlag>		NinthReceiveBit;
 				typedef Bits<ControlRegisterA, ReceiveCompleteFlag>		ReceiveCompleteBit;
 				typedef Bits<ControlRegisterA, TransferCompleteFlag>	TransferCompleteBit;
 				typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>	DataRegisterEmptyBit;
@@ -182,10 +184,9 @@ namespace AVRCpp
 				
 				typedef DataRegister	Data;
 				
-				static inline void SetNinthBit() { NinthBit::Set(); }
-				static inline void ClearNinthBit() { NinthBit::Clear(); }
-				
-				static inline bool IsNinthBitSet() { return NinthBit::IsSet(); }
+				static inline void SetNinthBit() { NinthTransmitBit::Set(); }
+				static inline void ClearNinthBit() { NinthTransmitBit::Clear(); }
+				static inline bool IsNinthBitSet() { return NinthReceiveBit::IsSet(); }
 				
 				static inline bool IsReceiveCompleted() { return ReceiveCompleteBit::IsSet(); }
 				static inline bool IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
