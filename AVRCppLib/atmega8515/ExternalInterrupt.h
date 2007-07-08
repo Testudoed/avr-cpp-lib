@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_M8_H__
+#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__
+#define __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__
 
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
@@ -34,23 +34,25 @@
 #ifdef __DOXYGEN__
 #include <avr/cpp/ExternalInterrupt.h>
 #else
-#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega8/ExternalInterrupt.h>."
+#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega8515/ExternalInterrupt.h>."
 #endif
 #endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
 
 #ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "atemga8/ExternalInterrupt.h"
+#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "atmega8515/ExternalInterrupt.h"
 #else
-#error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
+#error "Attempt to include more than one <avr/cpp/XXXX/ExternalInterrupt.h> file."
 #endif
 
 #ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 #define INT0_ns	ExternalInterrupt
 #define INT1_ns	ExternalInterrupt
+#define INT2_ns	ExternalInterrupt
 
 #define INT0_struct	INT0_ns::Interrupt0
 #define INT1_struct	INT1_ns::Interrupt1
+#define INT2_struct	INT1_ns::Interrupt2
 
 #endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
@@ -67,7 +69,7 @@ namespace AVRCpp
 				0 >								/* eventShift */
 
 		{ __INTERRUPT_HANDLER_SUPPORT__	}; // struct Interrupt0
-
+		
 		struct Interrupt1 : Internal::InterruptBase <
 				InputPin3<PortD>,				/* InputPin */
 				Event,							/* EventEnum */
@@ -77,9 +79,19 @@ namespace AVRCpp
 				2 >								/* eventShift */
 		
 		{ __INTERRUPT_HANDLER_SUPPORT__	}; // struct Interrupt1
+		
+		struct Interrupt2 : Internal::InterruptBase <
+				InputPin0<PortE>,				/* InputPin */
+				SimpleAsyncEvent,				/* EventEnum */
+				Bits<_EMCUCR, _ISC2>,			/* EventBits */
+				Bits<_GICR, _INT2>,				/* InterruptEnableBit */
+				Bits<_GIFR, _INTF2>,			/* InterruptFlagBit */
+				0 >								/* eventShift */
+		
+		{ __INTERRUPT_HANDLER_SUPPORT__	}; // struct Interrupt2
 
 	} // ExternalInterrupt
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8_H__
+#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__

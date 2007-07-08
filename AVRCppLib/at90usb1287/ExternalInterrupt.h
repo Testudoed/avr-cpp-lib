@@ -31,13 +31,17 @@
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
 #ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
-#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/ExternalInterrupt_usb1287.h>."
+#ifdef __DOXYGEN__
+#include <avr/cpp/ExternalInterrupt.h>
+#else
+#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/at90usb1287/ExternalInterrupt.h>."
+#endif
 #endif
 
 #ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "ExternalInterrupt_usb1287.h"
+#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "at90usb1287/ExternalInterrupt.h"
 #else
-#error "Attempt to include more than one <avr/cpp/ExternalInterrupt_XXX.h> file."
+#error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
 #endif
 
 #ifndef EXCLUDE_INTERRUPT_HANDLERS
@@ -68,16 +72,92 @@ namespace AVRCpp
 {
 	namespace ExternalInterrupt
 	{
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, AsyncEvent, 0, InputPin0<PortD>, 0);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, AsyncEvent, 1, InputPin1<PortD>, 2);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, AsyncEvent, 2, InputPin2<PortD>, 4);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, AsyncEvent, 3, InputPin3<PortD>, 6);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRB, _EIMSK, _EIFR, Event, 4, InputPin4<PortE>, 0);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRB, _EIMSK, _EIFR, Event, 5, InputPin5<PortE>, 2);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRB, _EIMSK, _EIFR, Event, 6, InputPin6<PortE>, 4);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRB, _EIMSK, _EIFR, Event, 7, InputPin7<PortE>, 6);
+		struct Interrupt0 : Internal::InterruptBase <
+				InputPin0<PortD>,				/* InputPin */
+				AsyncEvent,						/* EventEnum */
+				Bits<_EICRA, _ISC00 | _ISC01>,	/* EventBits */
+				Bits<_EIMSK, _INT0>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF0>,			/* InterruptFlagBit */
+				0 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt0
 		
-		__DECLARE_PIN_CHANGE_INTERRUPT__(_PCICR, _PCMSK, _PCIFR, 0);
+		struct Interrupt1 : Internal::InterruptBase <
+				InputPin1<PortD>,				/* InputPin */
+				AsyncEvent,						/* EventEnum */
+				Bits<_EICRA, _ISC10 | _ISC11>,	/* EventBits */
+				Bits<_EIMSK, _INT1>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF1>,			/* InterruptFlagBit */
+				2 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt1
+		
+		struct Interrupt2 : Internal::InterruptBase <
+				InputPin2<PortD>,				/* InputPin */
+				AsyncEvent,						/* EventEnum */
+				Bits<_EICRA, _ISC20 | _ISC21>,	/* EventBits */
+				Bits<_EIMSK, _INT2>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF2>,			/* InterruptFlagBit */
+				4 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt2
+		
+		struct Interrupt3 : Internal::InterruptBase <
+				InputPin3<PortD>,				/* InputPin */
+				AsyncEvent,						/* EventEnum */
+				Bits<_EICRA, _ISC30 | _ISC31>,	/* EventBits */
+				Bits<_EIMSK, _INT3>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF3>,			/* InterruptFlagBit */
+				6 >								/* eventShift */
+					
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt3
+		
+		struct Interrupt4 : Internal::InterruptBase <
+				InputPin4<PortE>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRB, _ISC40 | _ISC41>,	/* EventBits */
+				Bits<_EIMSK, _INT4>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF4>,			/* InterruptFlagBit */
+				0 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt4
+		
+		struct Interrupt5 : Internal::InterruptBase <
+				InputPin5<PortE>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRB, _ISC50 | _ISC51>,	/* EventBits */
+				Bits<_EIMSK, _INT5>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF5>,			/* InterruptFlagBit */
+				2 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt5
+		
+		struct Interrupt6 : Internal::InterruptBase <
+				InputPin6<PortE>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRB, _ISC60 | _ISC61>,	/* EventBits */
+				Bits<_EIMSK, _INT6>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF6>,			/* InterruptFlagBit */
+				4 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt6
+		
+		struct Interrupt7 : Internal::InterruptBase <
+				InputPin7<PortE>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRB, _ISC70 | _ISC71>,	/* EventBits */
+				Bits<_EIMSK, _INT7>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF7>,			/* InterruptFlagBit */
+				6 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt7
+		
+		struct PinChangeInterrupt0 : Internal::PinChangeInterruptBase < 
+			_PCMSK0,							/* MaskRegister */
+			Bits<_PCICR, _PCIE0>,				/* InterruptEnableBit */ 
+			Bits<_PCIFR, _PCIF0> >				/* InterruptFlagBit */
+
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // PinChangeInterrupt0
 		
 	} // namespace ExternalInterrupts
 	

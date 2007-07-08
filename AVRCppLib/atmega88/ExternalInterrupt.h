@@ -31,13 +31,17 @@
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
 #ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
-#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/ExternalInterrupt_m88.h>."
+#ifdef __DOXYGEN__
+#include <avr/cpp/ExternalInterrupt.h>
+#else
+#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega88/ExternalInterrupt.h>."
 #endif
+#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
 
 #ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "ExternalInterrupt_m88.h"
+#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "atmega88/ExternalInterrupt.h"
 #else
-#error "Attempt to include more than one <avr/cpp/ExternalInterrupt_XXX.h> file."
+#error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
 #endif
 
 #ifndef EXCLUDE_INTERRUPT_HANDLERS
@@ -60,13 +64,47 @@ namespace AVRCpp
 {
 	namespace ExternalInterrupt
 	{
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, Event, 0, InputPin2<PortD>, 0);
-		__DECLARE_EXTERNAL_INTERRUPT__(_EICRA, _EIMSK, _EIFR, Event, 1, InputPin3<PortD>, 2);
+		struct Interrupt0 : Internal::InterruptBase <
+				InputPin2<PortD>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRA, _ISC00 | _ISC01>,	/* EventBits */
+				Bits<_EIMSK, _INT0>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF0>,			/* InterruptFlagBit */
+				0 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt0
 		
-		__DECLARE_PIN_CHANGE_INTERRUPT__(_PCICR, _PCMSK, _PCIFR, 0);
-		__DECLARE_PIN_CHANGE_INTERRUPT__(_PCICR, _PCMSK, _PCIFR, 1);
-		__DECLARE_PIN_CHANGE_INTERRUPT__(_PCICR, _PCMSK, _PCIFR, 2);
+		struct Interrupt1 : Internal::InterruptBase <
+				InputPin3<PortD>,				/* InputPin */
+				Event,							/* EventEnum */
+				Bits<_EICRA, _ISC10 | _ISC11>,	/* EventBits */
+				Bits<_EIMSK, _INT1>,			/* InterruptEnableBit */
+				Bits<_EIFR, _INTF1>,			/* InterruptFlagBit */
+				2 >								/* eventShift */
+				
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // Interrupt1
 		
+		struct PinChangeInterrupt0 : Internal::PinChangeInterruptBase < 
+			_PCMSK0,							/* MaskRegister */
+			Bits<_PCICR, _PCIE0>,				/* InterruptEnableBit */ 
+			Bits<_PCIFR, _PCIF0> >				/* InterruptFlagBit */
+
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // PinChangeInterrupt0
+		
+		struct PinChangeInterrupt1 : Internal::PinChangeInterruptBase < 
+			_PCMSK1,							/* MaskRegister */
+			Bits<_PCICR, _PCIE1>,				/* InterruptEnableBit */ 
+			Bits<_PCIFR, _PCIF1> >				/* InterruptFlagBit */
+
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // PinChangeInterrupt1
+		
+		struct PinChangeInterrupt2 : Internal::PinChangeInterruptBase < 
+			_PCMSK2,							/* MaskRegister */
+			Bits<_PCICR, _PCIE2>,				/* InterruptEnableBit */ 
+			Bits<_PCIFR, _PCIF2> >				/* InterruptFlagBit */
+
+		{ __INTERRUPT_HANDLER_SUPPORT__ }; // PinChangeInterrupt2
+
 	} // namespace ExternalInterrupts
 	
 } // namespace AVRCpp

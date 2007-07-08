@@ -31,21 +31,6 @@
 #include "IO.h"
 
 
-#define __DECLARE_EXTERNAL_INTERRUPT__(controlReg, maskReg, flagReg, eventType, intNr, portPin, eventShift) \
-	struct Interrupt ## intNr : Internal::InterruptBase < \
-			portPin, \
-			eventType, \
-			Bits<controlReg, _ISC ## intNr ## 0 | _ISC ## intNr ## 1>, \
-			Bits<maskReg, _INT ## intNr>, \
-			Bits<flagReg, _INTF ## intNr>, \
-			eventShift > { __INTERRUPT_HANDLER_SUPPORT__ }
-
-#define __DECLARE_PIN_CHANGE_INTERRUPT__(controlReg, maskReg, flagReg, intNr) \
-	struct PinChangeInterrupt ## intNr : Internal::PinChangeInterruptBase < \
-			maskReg ## intNr, \
-			Bits<controlReg, _PCIE ## intNr>, \
-			Bits<flagReg, _PCIF ## intNr> > { __INTERRUPT_HANDLER_SUPPORT__ }
-
 namespace AVRCpp
 {
 	namespace ExternalInterrupt
@@ -67,6 +52,12 @@ namespace AVRCpp
 			
 		}; // enum AsyncEvent
 	
+		enum SimpleAsyncEvent
+		{
+			SAFall			= 0x00,
+			SARise			= 0x01
+			
+		}; // enum SimpleAsyncEvent
 	
 		namespace Internal
 		{
@@ -104,13 +95,13 @@ namespace AVRCpp
 			}; // struct InterruptBase
 			
 			template <
-					class MaskReg,
+					class MaskRegister,
 					class InterruptEnableBit,
 					class InterruptFlagBit >
 			
 			struct PinChangeInterruptBase : Interrupt<InterruptEnableBit, InterruptFlagBit>
 			{
-				typedef MaskReg Mask;
+				typedef MaskRegister Mask;
 				
 			}; // struct PinChangeInterruptBase
 			
@@ -125,21 +116,16 @@ namespace AVRCpp
 #include "at90usb1287/ExternalInterrupt.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/ExternalInterrupt.h"
-#elif defined(__AVR_ATmega8__)
-#include "atmega8/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega64__)
+#include "atmega64/ExternalInterrupt.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega8__)
+#include "atmega8/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega8515__)
+#include "atmega8515/ExternalInterrupt.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif
-
-
-#ifndef __DOXYGEN__
-
-#undef __DECLARE_EXTERNAL_INTERRUPT__
-#undef __DECLARE_PIN_CHANGE_INTERRUPT__
-
-#endif // ifndef __DOXYGEN__
-
 
 #endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
