@@ -37,7 +37,7 @@
 */
 
 /*!	\namespace AVRCpp::USART
-	\brief Fuctionality of Universal Synchronous and Asynchronous Serial Receiver and Transmitter interfaces.
+	\brief Functionality of Universal Synchronous and Asynchronous Serial Receiver and Transmitter interfaces.
 
 */
 
@@ -47,7 +47,7 @@
 */
 
 /*!	\namespace AVRCpp::EEPROM
-	\brief Fuctionality of EEPROM memory
+	\brief Functionality of EEPROM memory
 */
 
 
@@ -68,7 +68,7 @@
 */
 
 /*!	\namespace std
-	\brief delete and new operator support from libstdc++	
+	\brief delete and new operator support	
 
 */
 
