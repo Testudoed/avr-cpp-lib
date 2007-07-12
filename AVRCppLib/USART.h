@@ -174,7 +174,7 @@ namespace AVRCpp
 				typedef Bits<ControlRegisterA, DataOverRunFlag>			DataOverRunBit;
 				typedef Bits<ControlRegisterA, ParityErrorFlag>			ParityErrorBit;
 				typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
-				typedef Bits<ControlRegisterA, TransmitterEnableFlag>	TransmitterEnableBit;
+				typedef Bits<ControlRegisterB, TransmitterEnableFlag>	TransmitterEnableBit;
 				typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
 				
 				typedef typename TransferClockPin::Input	SlavePin;
@@ -327,14 +327,6 @@ namespace AVRCpp
 					
 				} // SetupAsynchronous
 				
-				static inline void Write(uint8_t data)
-				{
-					WaitUntilDataRegisterEmpty();
-					
-					Data::Set(data);
-					
-				} // Write
-				
 				static inline void WriteNinthSet(uint8_t data)
 				{
 					WaitUntilDataRegisterEmpty();
@@ -354,6 +346,27 @@ namespace AVRCpp
 					Data::Set(data);
 					
 				} // WriteNinthCleared
+				
+				static inline void Write(uint8_t data)
+				{
+					WaitUntilDataRegisterEmpty();
+					
+					Data::Set(data);
+					
+				} // Write 1
+				
+				static inline void Write(uint8_t data, bool ninth)
+				{
+					WaitUntilDataRegisterEmpty();
+					
+					if (ninth)
+						SetNinthBit();
+					else
+						ClearNinthBit();
+					
+					Data::Set(data);
+					
+				} // Write 2
 				
 				static inline bool Read(uint8_t &data)
 				{
