@@ -66,13 +66,16 @@ namespace AVRCpp
 			return ( SelectBits<_MCUCR>(_SM1)
 					| SelectBits<_MCUCSR>(_SM2)
 					| SelectBits<_EMCUCR>(_SM0));
-		}
+
+		} // GetSleepMode
+
 		inline void SetSleepMode(SleepMode sleepMode)
 		{
 			ChangeBits<_MCUCR>(_SM1, sleepMode);
 			ChangeBits<_MCUCSR>(_SM2, sleepMode);
 			ChangeBits<_EMCUCR>(_SM0, sleepMode);
-		}
+
+		} // SetSleepMode
 		
 	} // namespace Sleeping
 

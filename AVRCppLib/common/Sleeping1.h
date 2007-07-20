@@ -44,7 +44,9 @@
 #endif
 
 #if (defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__))
-#define _MCUCR _SMCR
+#define __SR__  _SMCR
+else
+#define __SR__ _MCUCR
 #endif
 
 namespace AVRCpp
@@ -53,21 +55,23 @@ namespace AVRCpp
 	{
 		inline void SetUp(SleepMode sleepMode, EnabledFlag enabled)
 		{
-			ChangeBits<_MCUCR>(_SM0 | _SM1 | _SM2 | _SE, sleepMode | enabled);
+			ChangeBits<__SR__>(_SM0 | _SM1 | _SM2 | _SE, sleepMode | enabled);
 			
 		} // SetUp
 		
 		inline void FallAsleep() { Assembler::SLEEP(); }
 		
-		inline void Enable() { SetBits<_MCUCR>(_SE); }
-		inline void Disable() { ClearBits<_MCUCR>(_SE); }
-		inline uint8_t IsEnabled() { return IsBitsSet<_MCUCR>(_SE); }
+		inline void Enable() { SetBits<__SR__>(_SE); }
+		inline void Disable() { ClearBits<__SR__>(_SE); }
+		inline uint8_t IsEnabled() { return IsBitsSet<__SR__>(_SE); }
 		
-		inline uint8_t GetSleepMode() { return SelectBits<_MCUCR>(_SM0 | _SM1 | _SM2); }
-		inline void SetSleepMode(SleepMode sleepMode) { ChangeBits<_MCUCR>(_SM0 | _SM1 | _SM2, sleepMode); }
+		inline uint8_t GetSleepMode() { return SelectBits<__SR__>(_SM0 | _SM1 | _SM2); }
+		inline void SetSleepMode(SleepMode sleepMode) { ChangeBits<__SR__>(_SM0 | _SM1 | _SM2, sleepMode); }
 		
 	} // namespace Sleeping
 
 } // namespace AVRCpp
+
+#undef __SR__
 
 #endif // ifndef __AVR_CPP_SLEEPING1_H__
