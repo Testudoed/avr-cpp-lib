@@ -49,28 +49,28 @@ namespace AVRCpp
 		enum OperationMode
 		{
 			SlaveMode   = 0x00,
-			MasterMode  = MSTR
+			MasterMode  = _MSTR
 
 		}; // Operation mode
 
 		enum DataOrder
 		{
 			MSBFirst	= 0x00,
-			LSBFirst	= DORD
+			LSBFirst	= _DORD
 
 		}; // DataOrder
 
 		enum ClockPolarity
 		{
 			ClockOnHigh = 0x00,
-			ClockOnLow  = CPOL
+			ClockOnLow  = _CPOL
 
 		}; // ClockPolarity
 
 		enum ClockPhase
 		{
 			SampleOnLeadingEdge	= 0x00,
-			SampleOnFallingEdge = CPHA
+			SampleOnFallingEdge = _CPHA
 
 		}; // ClockPhase
 
@@ -129,12 +129,6 @@ namespace AVRCpp
 				protected:
 					typedef DataRegister	Data;
 
-					/*  Why not this way ?
-					static inline void EnableTransferCompleteInterrupt() { SetBits<_SPCR>(_SPIE); }
-					static inline void DisableTransferCompleteInterrupt() { ClearBits<_SPCR>(_SPIE); }
-					static inline bool IsTransferCompleteInterruptEnabled() { return IsBitsSet<_SPCR>(_SPIE); }
-					*/
-
 					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
 					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
 
@@ -161,8 +155,8 @@ namespace AVRCpp
 					}
 
 					/**
-					 *  Starts transmit by setting SPI to master mode and selecting slave device
-					 *	Only possible in master-mode
+					 *  Starts transmiting by setting SPI to master mode and selecting slave device
+					 *	\attention Only possible in master-mode
 					 */
 					static inline void StartTransmission()
 					{
@@ -172,7 +166,7 @@ namespace AVRCpp
 
 					/**
 					 *  Ends transmitting by de-selecting slave device
-					 *  Only possible in master-mode
+					 *	\attention Only possible in master-mode
 					 */
 					static inline void EndTransmission()
 					{
@@ -181,9 +175,8 @@ namespace AVRCpp
 
 					/**
 					 *	Writes byte to SPI
-					 *
-					 *	@param uint8_t data
-					 *	@return bool
+					 *	@param data data byte to transmit
+					 *	@return true on success
 					 */
 					static inline bool Write(uint8_t data)
 					{
@@ -196,11 +189,9 @@ namespace AVRCpp
 
 					/**
 					 *	Reads byte from SPI
-					 *
-					 *	@param uint8_t &data
-					 *	@return bool
+					 *	@return data byte read
 					 */
-					static inline bool Read(uint8_t &data)
+					static inline uint8_t Read()
 					{
 						WaitUntilTransferCompleted();
 
