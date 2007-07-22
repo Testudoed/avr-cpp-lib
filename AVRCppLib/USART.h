@@ -146,7 +146,8 @@ namespace AVRCpp
 				ParityErrorFlag			= 0x04,
 				ErrorFlags				= 0x1C,
 				TransmitterEnableFlag	= 0x08,
-				ReceiverEnableFlag		= 0x10
+				ReceiverEnableFlag		= 0x10,
+				MultiProcessorFlag		= 0x01
 				
 			}; // enum BitFlags
 			
@@ -176,6 +177,7 @@ namespace AVRCpp
 				typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
 				typedef Bits<ControlRegisterB, TransmitterEnableFlag>	TransmitterEnableBit;
 				typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
+				typedef Bits<ControlRegisterA, MultiProcessorFlag>		MultiProcessorBit;
 				
 				typedef typename TransferClockPin::Input	SlavePin;
 				typedef typename TransferClockPin::Output	MasterPin;
@@ -187,6 +189,10 @@ namespace AVRCpp
 				static inline void SetNinthBit() { NinthTransmitBit::Set(); }
 				static inline void ClearNinthBit() { NinthTransmitBit::Clear(); }
 				static inline bool IsNinthBitSet() { return NinthReceiveBit::IsSet(); }
+				
+				static inline void EnterMultiProcessorMode() { MultiProcessorBit::Set(); }
+				static inline void EnterSingleProcessorMode() { MultiProcessorBit::Clear(); }
+				static inline bool IsEnteredMultiProcessorMode() { return MultiProcessorBit::IsSet(); }
 				
 				static inline bool IsReceiveCompleted() { return ReceiveCompleteBit::IsSet(); }
 				static inline bool IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
