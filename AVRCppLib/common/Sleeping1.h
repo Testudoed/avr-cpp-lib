@@ -45,7 +45,7 @@
 
 #if (defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__))
 #define __SR__  _SMCR
-else
+#else
 #define __SR__ _MCUCR
 #endif
 

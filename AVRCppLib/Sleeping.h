@@ -52,16 +52,16 @@ namespace AVRCpp
 			Enabled		= _SE
 			
 		}; // EnabledFlag
-
+		
 #ifdef __AVR_ATmega8515__
-
+		
 		enum SleepMode
 		{
 			Idle				= 0x00,	
 			PowerDown			= _SM1,
 			Standby				= _SM2 | _SM1,
-
-		}; // SleepMode
+			
+		}; // enum SleepMode
 		
 #elif (defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) || defined(__AVR_ATmega88__) || defined(__AVR_AT90USB1287__) )
 		
@@ -73,8 +73,8 @@ namespace AVRCpp
 			PowerSave			= _SM1 | _SM0,
 			Standby				= _SM2 | _SM1,
 			ExtendedStandby		= _SM2 | _SM1 | _SM0
-
-		}; // SleepMode
+			
+		}; // enum SleepMode
 		
 #elif __AVR_ATmega8__
 		
@@ -85,13 +85,11 @@ namespace AVRCpp
 			PowerDown			= _SM1,
 			PowerSave			= _SM1 | _SM0,
 			Standby				= _SM2 | _SM1,
-
-		}; // SleepMode
+			
+		}; // enum SleepMode
 		
 #endif
-
-		}; // SleepMode
-
+		
 	} // namespace Sleeping
 
 } // namespace AVRCpp
