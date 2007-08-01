@@ -132,12 +132,12 @@ namespace AVRCpp
 			
 		}; // enum FixedTop16
 		
-		enum TopFormInputCapture16
+		enum TopFromInputCapture16
 		{
-			ClearTimerOnCompareMatch16TopFormInputCapture		= 0x19,
-			FastPWM16TopFormInputCapture						= 0x1A,
-			PhaseCorrectPWM16TopFormInputCapture				= 0x12,
-			PhaseAndFrequencyCorrectPWM16TopFormInputCapture	= 0x10
+			ClearTimerOnCompareMatch16TopFromInputCapture		= 0x18,
+			FastPWM16TopFromInputCapture						= 0x1A,
+			PhaseCorrectPWM16TopFromInputCapture				= 0x12,
+			PhaseAndFrequencyCorrectPWM16TopFromInputCapture	= 0x10
 			
 		}; // enum TopFromInputCapture16
 		
@@ -593,12 +593,12 @@ namespace AVRCpp
 				
 				static inline void SetUp (
 						ClockEnum clock,
-						TopFormInputCapture16 topFormInputCapture16,
+						TopFromInputCapture16 topFromInputCapture16,
 						CompareOutputModeA compareOutputModeA,
 						CompareOutputModeB compareOutputModeB )
 				{
-					ControlRegisterA::Set(compareOutputModeA | compareOutputModeB | (topFormInputCapture16 & TopMaskA16) );
-					ControlRegisterB::Set(clock | (topFormInputCapture16 & TopMaskB16) );
+					ControlRegisterA::Set(compareOutputModeA | compareOutputModeB | (topFromInputCapture16 & TopMaskA16) );
+					ControlRegisterB::Set(clock | (topFromInputCapture16 & TopMaskB16) );
 					
 				} // SetUp 2
 				
@@ -723,13 +723,13 @@ namespace AVRCpp
 				
 				static inline void SetUp (
 						ClockEnum clock,
-						TopFormInputCapture16 topFormInputCapture16,
+						TopFromInputCapture16 topFromInputCapture16,
 						CompareOutputModeA compareOutputModeA,
 						CompareOutputModeB compareOutputModeB,
 						CompareOutputModeC compareOutputModeC )
 				{
-					ControlRegisterA::Set(compareOutputModeA | compareOutputModeB | compareOutputModeC | (topFormInputCapture16 & TopMaskA16) );
-					ControlRegisterB::Set(clock | (topFormInputCapture16 & TopMaskB16) );
+					ControlRegisterA::Set(compareOutputModeA | compareOutputModeB | compareOutputModeC | (topFromInputCapture16 & TopMaskA16) );
+					ControlRegisterB::Set(clock | (topFromInputCapture16 & TopMaskB16) );
 					
 				} // SetUp 2
 				
