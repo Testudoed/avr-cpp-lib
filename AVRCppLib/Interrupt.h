@@ -81,6 +81,34 @@
 
 #endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
+
+/**
+ * Temporarily disable interrupts.
+ * Use InterruptSafe to execute commands that need to run uninterrupted. Interruptsafe disables interrupts,
+ * executes your command(s) and finally enables interrupts, if they were enabled before using InterruptSafe.
+ * To disable interrupts during one command, use the following code:
+ * @code
+ * // Interrupts are disabled during MyImportantCommand()
+ * InterruptSafe
+ *     MyImportantCommand();
+ * @endcode
+ * If you need to run a block of code without any interrupts between or during the commands, enclose it
+ * with braces:
+ * @code
+ * // Interrupts are disabled during execution of the code block in braces
+ * InterruptSafe
+ * {
+ *     VariableX = new_value;
+ *     methodThatDependsOnVariableX();
+ *     methodThatHasToFollowImmediately();
+ * }
+ * @endcode
+ * \attention If GlobalInterrupts::Enable() is called within the InterruptSafe block, the interrupts will be
+ *			  enabled. InterruptSafe just disables interrupts in the beginning and restores the previous
+ *			  state in the end. Any code in between can freely enable and disable interrupts.
+ */
+#define InterruptSafe for(AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.finished; safeObject.finished = true)
+
 namespace AVRCpp
 {
 	namespace GlobalInterrupts
@@ -90,6 +118,26 @@ namespace AVRCpp
 		inline uint8_t IsEnabled() { return IsBitsSet<_SREG>(_SREG_I); }
 		inline void WaitForInterrupt() { Assembler::SLEEP(); }
 		
+		namespace Internal
+		{
+			class InterruptDisabler
+			{
+				public:
+					bool wasEnabled;
+					bool finished;
+					InterruptDisabler()
+					{
+						wasEnabled = GlobalInterrupts::IsEnabled();
+						GlobalInterrupts::Disable();
+						finished = false;
+					}
+					~InterruptDisabler()
+					{
+						if(wasEnabled)
+							GlobalInterrupts::Enable();
+					}
+			}; // class InterruptDisabler
+		} // namespace Internal
 	} // namespace GlobalInterrupts
 	
 } // namespace AVRCpp
