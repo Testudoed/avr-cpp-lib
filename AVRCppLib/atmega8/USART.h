@@ -44,8 +44,6 @@
 #error "Attempt to include more than one <avr/cpp/XXX/USART.h> file."
 #endif
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
 #define USART_RXC_ns	USART
 #define USART_TXC_ns	USART
 #define USART_UDRE_ns	USART
@@ -54,7 +52,6 @@
 #define USART_TXC_struct	USART::USART0::TransferCompleteInterrupt
 #define USART_UDRE_struct	USART::USART0::DataRegisterEmptyInterrupt
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -63,7 +60,7 @@ namespace AVRCpp
 		// Functions from this namespace should not be called by user
 		namespace Internal
 		{
-			bool &Cancel();
+			bool &Cancel0();
 			
 		} // namespace Internal
 		
@@ -76,7 +73,7 @@ namespace AVRCpp
 				_UDR,							/* DataRegister */
 				Pin4<PortD>,					/* TransferClockPin */
 				Internal::HasRegisterSelect,	/* registerSelect */
-				Internal::Cancel >				/* Cancel */
+				Internal::Cancel0 >				/* Cancel */
 		{
 			struct ReceiveCompleteInterrupt : BasicInterrupt<Bits<_UCSRB, _RXCIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			struct TransferCompleteInterrupt : BasicInterrupt<Bits<_UCSRB, _TXCIE> > { __INTERRUPT_HANDLER_SUPPORT__ };

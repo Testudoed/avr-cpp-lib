@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA128_USART_H__
-#define __AVR_CPP_ATMEGA128_USART_H__
+#ifndef __AVR_CPP_ATMEGA88_USART_H__
+#define __AVR_CPP_ATMEGA88_USART_H__
 
 /* This file should only be included from <avr/cpp/USART.h>, never directly. */
 
@@ -34,27 +34,24 @@
 #ifdef __DOXYGEN__
 #include <avr/cpp/USART.h>
 #else
-#error "Include <avr/cpp/USART.h> instead of <avr/cpp/atmega128/USART.h>."
+#error "Include <avr/cpp/USART.h> instead of <avr/cpp/atmega88/USART.h>."
 #endif
 #endif // ifndef __AVR_CPP_USART_H__
 
 #ifndef __AVR_CPP_XXX_USART_H__
-#define __AVR_CPP_XXX_USART_H__ "atmega128/USART.h"
+#define __AVR_CPP_XXX_USART_H__ "atmega88/USART.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/USART.h> file."
 #endif
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
-#define USART_RXC_ns	USART
-#define USART_TXC_ns	USART
+#define USART_RX_ns		USART
+#define USART_TX_ns		USART
 #define USART_UDRE_ns	USART
 
-#define USART_RXC_struct	USART::USART0::ReceiveCompleteInterrupt
-#define USART_TXC_struct	USART::USART0::TransferCompleteInterrupt
+#define USART_RX_struct		USART::USART0::ReceiveCompleteInterrupt
+#define USART_TX_struct		USART::USART0::TransferCompleteInterrupt
 #define USART_UDRE_struct	USART::USART0::DataRegisterEmptyInterrupt
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -83,9 +80,9 @@ namespace AVRCpp
 			struct DataRegisterEmptyInterrupt : BasicInterrupt<Bits<_UCSR0B, _UDRIE0> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			
 		}; // struct USART0
-		
+
 	} // namespace USART
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_ATMEGA128_USART_H__
+#endif // ifndef __AVR_CPP_ATMEGA88_USART_H__

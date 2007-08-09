@@ -608,6 +608,16 @@ namespace AVRCpp
 #include "at90usb1287/USART.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/USART.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/USART.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/USART.h"
+#elif defined(__AVR_ATmega164__)
+#include "atmega164/USART.h"
+#elif defined(__AVR_ATmega324__)
+#include "atmega324/USART.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/USART.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif

@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M64_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_M64_H__
+#ifndef __AVR_CPP_ATMEGA64_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_ATMEGA64_EXTERNAL_INTERRUPT_H__
 
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
@@ -38,13 +38,11 @@
 #endif
 #endif
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "atmega64/ExternalInterrupt.h"
+#ifndef __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__ "atmega64/ExternalInterrupt.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
 #endif
-
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 #define INT0_ns	ExternalInterrupt
 #define INT1_ns	ExternalInterrupt
@@ -64,7 +62,6 @@
 #define INT6_struct	ExternalInterrupt::Interrupt6
 #define INT7_struct	ExternalInterrupt::Interrupt7
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -154,4 +151,4 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M64_H__
+#endif // ifndef __AVR_CPP_ATMEGA64_EXTERNAL_INTERRUPT_H__

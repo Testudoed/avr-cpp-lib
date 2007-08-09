@@ -767,6 +767,16 @@ namespace AVRCpp
 #include "atmega8515/Timer.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/Timer.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/Timer.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/Timer.h"
+#elif defined(__AVR_ATmega164__)
+#include "atmega164/Timer.h"
+#elif defined(__AVR_ATmega324__)
+#include "atmega324/Timer.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/Timer.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif

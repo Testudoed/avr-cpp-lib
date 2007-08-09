@@ -44,8 +44,6 @@
 #error "Attempt to include more than one <avr/cpp/XXX/Timer.h> file."
 #endif
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
 #define TIMER0_OVF_ns	Timer
 #define TIMER1_OVF_ns	Timer
 #define TIMER1_COMPA_ns	Timer
@@ -62,7 +60,6 @@
 #define TIMER2_COMP_struct	Timer::TimerCounter2::CompareMatchInterrupt
 #define TIMER2_OVF_struct	Timer::TimerCounter2::OverflowInterrupt
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -71,7 +68,6 @@ namespace AVRCpp
 		inline void PrescalerReset10() { SetBits<_SFIOR>(_PSR10); }
 		inline void PrescalerReset2() { SetBits<_SFIOR>(_PSR2); }
 		
-#ifndef EXCLUDE_TIMER_COUNTER_0
 		
 		struct TimerCounter0 : Internal::SimpleTimer <
 				_TCNT0,				/* CounterRegister */
@@ -82,9 +78,6 @@ namespace AVRCpp
 			
 		}; // TimerCounter0
 		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_0
-		
-#ifndef EXCLUDE_TIMER_COUNTER_1
 		
 		struct TimerCounter1 : Internal::OldTwoChannel16BitTimer <
 				_TCNT1,				/* CounterRegister */
@@ -105,9 +98,6 @@ namespace AVRCpp
 			
 		}; // struct TimerCounter1
 		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_1
-		
-#ifndef EXCLUDE_TIMER_COUNTER_2
 		
 		struct TimerCounter2 : Internal::OneChannel8BitTimerWithAsynchronousOperation <
 				_TCNT2,							/* CounterRegister */
@@ -122,8 +112,6 @@ namespace AVRCpp
 			struct OverflowInterrupt : Interrupt<Bits<_TIMSK, _TOIE2>, Bits<_TIFR, _TOV2> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			
 		}; // struct TimerCounter2
-		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_2
 		
 	} // namespace Timer
 	

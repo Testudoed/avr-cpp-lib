@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_USB1287_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_USB1287_H__
+#ifndef __AVR_CPP_AT90USB1287_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_AT90USB1287_EXTERNAL_INTERRUPT_H__
 
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
@@ -38,13 +38,11 @@
 #endif
 #endif
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "at90usb1287/ExternalInterrupt.h"
+#ifndef __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__ "at90usb1287/ExternalInterrupt.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
 #endif
-
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 #define INT0_ns ExternalInterrupt
 #define INT1_ns	ExternalInterrupt
@@ -66,7 +64,6 @@
 #define INT7_struct	ExternalInterrupt::Interrupt7
 #define PCINT0_struct ExternalInterrupt::PinChangeInterrupt0
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -163,4 +160,4 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_USB1287_H__
+#endif // ifndef __AVR_CPP_AT90USB1287_EXTERNAL_INTERRUPT_H__

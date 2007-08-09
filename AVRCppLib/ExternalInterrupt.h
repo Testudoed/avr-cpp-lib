@@ -124,6 +124,16 @@ namespace AVRCpp
 #include "atmega8/ExternalInterrupt.h"
 #elif defined(__AVR_ATmega8515__)
 #include "atmega8515/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega164__)
+#include "atmega164/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega324__)
+#include "atmega324/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/ExternalInterrupt.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif

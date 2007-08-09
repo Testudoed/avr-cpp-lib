@@ -44,8 +44,6 @@
 #error "Attempt to include more than one <avr/cpp/XXX/Timer.h> file."
 #endif
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
 #define TIMER0_COMP_ns	Timer
 #define TIMER0_OVF_ns	Timer
 #define TIMER1_COMPA_ns	Timer
@@ -79,7 +77,6 @@
 #define TIMER3_OVF_struct	Timer::TimerCounter3::OverflowInterrupt
 #define TIMER3_CAPT_struct	Timer::TimerCounter3::InputCaptureInterrupt
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -91,7 +88,6 @@ namespace AVRCpp
 		inline void PrescalerReset0() { SetBits<_SFIOR>(_PSR0); }
 		inline void PrescalerReset321() { SetBits<_SFIOR>(_PSR321); }
 		
-#ifndef EXCLUDE_TIMER_COUNTER_0
 		
 		struct TimerCounter0 : Internal::OneChannel8BitTimerWithAsynchronousOperation <
 				_TCNT0,							/* CounterRegister */
@@ -107,9 +103,6 @@ namespace AVRCpp
 			
 		}; // struct TimerCounter0
 		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_0
-		
-#ifndef EXCLUDE_TIMER_COUNTER_1
 		
 		struct TimerCounter1 : Internal::ThreeChannel16BitTimer <
 				_TCNT1,				/* CounterRegister */
@@ -134,9 +127,6 @@ namespace AVRCpp
 			
 		}; // struct TimerCounter1
 		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_1
-		
-#ifndef EXCLUDE_TIMER_COUNTER_2
 		
 		struct TimerCounter2 : Internal::OneChannel8BitTimer <
 				_TCNT2,				/* CounterRegister */
@@ -150,9 +140,6 @@ namespace AVRCpp
 			
 		}; // struct TimerCounter2
 		
-#endif // ifndef EXCLUDE_TIMER_COUNTER_2
-		
-#ifndef EXCLUDE_TIMER_COUNTER_3
 		
 		struct TimerCounter3 : Internal::ThreeChannel16BitTimer <
 				_TCNT3,				/* CounterRegister */
@@ -176,8 +163,6 @@ namespace AVRCpp
 			struct InputCaptureInterrupt : Interrupt<Bits<_ETIMSK, _TICIE3>, Bits<_ETIFR, _ICF3> > { __INTERRUPT_HANDLER_SUPPORT__ };
 			
 		}; // struct TimerCounter3
-		
-	#endif // ifndef EXCLUDE_TIMER_COUNTER_3
 		
 	} // namespace Timer
 	

@@ -243,24 +243,16 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#ifdef EXCLUDE_INTERRUPT_HANDLERS
-
-#define __INTERRUPT_HANDLER_SUPPORT__
-
-#else
-
 #define __INTERRUPT_HANDLER_SUPPORT__ \
-static void Evoke(); \
-template <class DelegateType> static DelegateType & Me(); \
-template <class ControllerType> static ControllerType & Controller();
-
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
+		static void Evoke(); \
+		template <class DelegateType> static DelegateType & Me(); \
+		template <class ControllerType> static ControllerType & Controller();
 
 #define __DECLARE_BASIC_INTERRUPT__(interruptName, enableBitStart, enableBitEnd) \
-struct interruptName ## Interrupt : BasicInterrupt<enableBitStart, enableBitEnd> { __INTERRUPT_HANDLER_SUPPORT__ }
+		struct interruptName ## Interrupt : BasicInterrupt<enableBitStart, enableBitEnd> { __INTERRUPT_HANDLER_SUPPORT__ }
 
 #define __DECLARE_INTERRUPT__(interruptName, enableBitStart, enableBitEnd, flagBitStart, flagBitEnd) \
-struct interruptName ## Interrupt : Interrupt<enableBitStart, enableBitEnd, flagBitStart, flagBitEnd> { __INTERRUPT_HANDLER_SUPPORT__ }
+		struct interruptName ## Interrupt : Interrupt<enableBitStart, enableBitEnd, flagBitStart, flagBitEnd> { __INTERRUPT_HANDLER_SUPPORT__ }
 
 
 /* Universal PORT */
@@ -306,6 +298,16 @@ struct interruptName ## Interrupt : Interrupt<enableBitStart, enableBitEnd, flag
 #include "atmega8515/IO.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/IO.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/IO.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/IO.h"
+#elif defined(__AVR_ATmega164__)
+#include "atmega164/IO.h"
+#elif defined(__AVR_ATmega324__)
+#include "atmega324/IO.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/IO.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif

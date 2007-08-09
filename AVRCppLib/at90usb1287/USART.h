@@ -44,8 +44,6 @@
 #error "Attempt to include more than one <avr/cpp/XXX/USART.h> file."
 #endif
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
 #define USART1_RXC_ns	USART
 #define USART1_TXC_ns	USART
 #define USART1_UDRE_ns	USART
@@ -54,7 +52,6 @@
 #define USART1_TXC_struct	USART::USART1::TransferCompleteInterrupt
 #define USART1_UDRE_struct	USART::USART1::DataRegisterEmptyInterrupt
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {

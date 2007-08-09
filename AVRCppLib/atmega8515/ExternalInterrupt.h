@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__
+#ifndef __AVR_CPP_ATMEGA8515_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_ATMEGA8515_EXTERNAL_INTERRUPT_H__
 
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
@@ -38,13 +38,11 @@
 #endif
 #endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
 
-#ifndef __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__
-#define __AVR_CPP_EXTERNAL_INTERRUPT_XXX_H__ "atmega8515/ExternalInterrupt.h"
+#ifndef __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__ "atmega8515/ExternalInterrupt.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXXX/ExternalInterrupt.h> file."
 #endif
-
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 #define INT0_ns	ExternalInterrupt
 #define INT1_ns	ExternalInterrupt
@@ -54,7 +52,6 @@
 #define INT1_struct	INT1_ns::Interrupt1
 #define INT2_struct	INT1_ns::Interrupt2
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
 
 namespace AVRCpp
 {
@@ -94,4 +91,4 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_M8515_H__
+#endif // ifndef __AVR_CPP_ATMEGA8515_EXTERNAL_INTERRUPT_H__
