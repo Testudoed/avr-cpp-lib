@@ -346,7 +346,7 @@
 				<bit name="INTF5" address="0x20"/>
 				<bit name="INTF4" address="0x10"/>
 				<bit name="INTF3" address="0x8"/>
-				<bit name="INTF" address="0x4"/>
+				<bit name="INTF2" address="0x4"/>
 				<bit name="INTF1" address="0x2"/>
 				<bit name="INTF0" address="0x1"/>
 			</bits>

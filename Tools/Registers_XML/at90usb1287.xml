@@ -127,7 +127,7 @@
 				<bit name="UDRE1" address="0x20"/>
 				<bit name="FE1" address="0x10"/>
 				<bit name="DOR1" address="0x8"/>
-				<bit name="PE1" address="0x4"/>
+				<bit name="UPE1" address="0x4"/>
 				<bit name="U2X1" address="0x2"/>
 				<bit name="MPCM1" address="0x1"/>
 			</bits>

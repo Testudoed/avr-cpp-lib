@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_IO_M164_H__
-#define __AVR_CPP_IO_M164_H__
+#ifndef __AVR_CPP_IO_M168_H__
+#define __AVR_CPP_IO_M168_H__
 
 #ifdef __DOXYGEN__
 #ifndef __AVR_CPP_IO_H__
@@ -35,13 +35,13 @@
 #endif
 
 #ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega164/IO.h>."
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega168/IO.h>."
 #else
 
 
 /**********************************************************************************************************************\
 
-	atmega164 registers, bits and ports declarations.
+	atmega168 registers, bits and ports declarations.
 	This file is generated. Do not modify manually.
 
 \**********************************************************************************************************************/
@@ -49,12 +49,6 @@
 // Registers
 namespace AVRCpp
 {
-	__DECLARE_8BIT_REGISTER__(UDR1);
-	__DECLARE_8BIT_REGISTER__(UBRR1H);
-	__DECLARE_8BIT_REGISTER__(UBRR1L);
-	__DECLARE_8BIT_REGISTER__(UCSR1C);
-	__DECLARE_8BIT_REGISTER__(UCSR1B);
-	__DECLARE_8BIT_REGISTER__(UCSR1A);
 	__DECLARE_8BIT_REGISTER__(UDR0);
 	__DECLARE_8BIT_REGISTER__(UBRR0H);
 	__DECLARE_8BIT_REGISTER__(UBRR0L);
@@ -91,7 +85,6 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(ADCSRA);
 	__DECLARE_8BIT_REGISTER__(ADCH);
 	__DECLARE_8BIT_REGISTER__(ADCL);
-	__DECLARE_8BIT_REGISTER__(PCMSK3);
 	__DECLARE_8BIT_REGISTER__(TIMSK2);
 	__DECLARE_8BIT_REGISTER__(TIMSK1);
 	__DECLARE_8BIT_REGISTER__(TIMSK0);
@@ -107,12 +100,10 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(SREG);
 	__DECLARE_8BIT_REGISTER__(SPH);
 	__DECLARE_8BIT_REGISTER__(SPL);
-	__DECLARE_8BIT_REGISTER__(RAMPZ);
 	__DECLARE_8BIT_REGISTER__(SPMCSR);
 	__DECLARE_8BIT_REGISTER__(MCUCR);
 	__DECLARE_8BIT_REGISTER__(MCUSR);
 	__DECLARE_8BIT_REGISTER__(SMCR);
-	__DECLARE_8BIT_REGISTER__(OCDR);
 	__DECLARE_8BIT_REGISTER__(ACSR);
 	__DECLARE_8BIT_REGISTER__(SPDR);
 	__DECLARE_8BIT_REGISTER__(SPSR);
@@ -145,48 +136,16 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(PORTB);
 	__DECLARE_8BIT_REGISTER__(DDRB);
 	__DECLARE_8BIT_REGISTER__(PINB);
-	__DECLARE_8BIT_REGISTER__(PORTA);
-	__DECLARE_8BIT_REGISTER__(DDRA);
-	__DECLARE_8BIT_REGISTER__(PINA);
+	__DECLARE_16BIT_REGISTER__(UBRR0);
 	__DECLARE_16BIT_REGISTER__(OCR1B);
 	__DECLARE_16BIT_REGISTER__(OCR1A);
 	__DECLARE_16BIT_REGISTER__(ICR1);
 	__DECLARE_16BIT_REGISTER__(TCNT1);
 	__DECLARE_16BIT_REGISTER__(ADC);
-	__DECLARE_16BIT_REGISTER__(SP);
+	__DECLARE_16BIT_REGISTER__(EEAR);
 
 } // namespace AVRCpp
 
-
-// UCSR1C
-#define _UMSEL11 0x80
-#define _UMSEL10 0x40
-#define _UPM11 0x20
-#define _UPM10 0x10
-#define _USBS1 0x8
-#define _UCSZ11 0x4
-#define _UCSZ10 0x2
-#define _UCPOL1 0x1
-
-// UCSR1B
-#define _RXCIE1 0x80
-#define _TXCIE1 0x40
-#define _UDRIE1 0x20
-#define _RXEN1 0x10
-#define _TXEN1 0x8
-#define _UCSZ12 0x4
-#define _RXB81 0x2
-#define _TXB81 0x1
-
-// UCSR1A
-#define _RXC1 0x80
-#define _TXC1 0x40
-#define _UDRE1 0x20
-#define _FE1 0x10
-#define _DOR1 0x8
-#define _UPE1 0x4
-#define _U2X1 0x2
-#define _MPCM1 0x1
 
 // UCSR0C
 #define _UMSEL01 0x80
@@ -195,8 +154,8 @@ namespace AVRCpp
 #define _UPM00 0x10
 #define _USBS0 0x8
 #define _UCSZ01 0x4
-#define _UCSZ00 0x2
-#define _UCPOL0 0x1
+#define _UDORD0 0x2
+#define _UCSZ00 0x1
 
 // UCSR0B
 #define _RXCIE0 0x80
@@ -306,8 +265,6 @@ namespace AVRCpp
 #define _AIN0D 0x1
 
 // DIDR0
-#define _ADC7D 0x80
-#define _ADC6D 0x40
 #define _ADC5D 0x20
 #define _ADC4D 0x10
 #define _ADC3D 0x8
@@ -319,7 +276,6 @@ namespace AVRCpp
 #define _REFS1 0x80
 #define _REFS0 0x40
 #define _ADLAR 0x20
-#define _MUX4 0x10
 #define _MUX3 0x8
 #define _MUX2 0x4
 #define _MUX1 0x2
@@ -340,16 +296,6 @@ namespace AVRCpp
 #define _ADPS2 0x4
 #define _ADPS1 0x2
 #define _ADPS0 0x1
-
-// PCMSK3
-#define _PCINT31 0x80
-#define _PCINT30 0x40
-#define _PCINT29 0x20
-#define _PCINT28 0x10
-#define _PCINT27 0x8
-#define _PCINT26 0x4
-#define _PCINT25 0x2
-#define _PCINT24 0x1
 
 // TIMSK2
 #define _OCIE2B 0x4
@@ -378,7 +324,6 @@ namespace AVRCpp
 #define _PCINT16 0x1
 
 // PCMSK1
-#define _PCINT15 0x80
 #define _PCINT14 0x40
 #define _PCINT13 0x20
 #define _PCINT12 0x10
@@ -398,15 +343,12 @@ namespace AVRCpp
 #define _PCINT0 0x1
 
 // EICRA
-#define _ISC21 0x20
-#define _ISC20 0x10
 #define _ISC11 0x8
 #define _ISC10 0x4
 #define _ISC01 0x2
 #define _ISC00 0x1
 
 // PCICR
-#define _PCIE3 0x8
 #define _PCIE2 0x4
 #define _PCIE1 0x2
 #define _PCIE0 0x1
@@ -415,7 +357,6 @@ namespace AVRCpp
 #define _PRTWI 0x80
 #define _PRTIM2 0x40
 #define _PRTIM0 0x20
-#define _PRUSART1 0x10
 #define _PRTIM1 0x8
 #define _PRSPI 0x4
 #define _PRUSART0 0x2
@@ -448,16 +389,6 @@ namespace AVRCpp
 #define _SREG_Z 0x2
 #define _SREG_C 0x1
 
-// SPH
-#define _SP15 0x80
-#define _SP14 0x40
-#define _SP13 0x20
-#define _SP12 0x10
-#define _SP11 0x8
-#define _SP10 0x4
-#define _SP9 0x2
-#define _SP8 0x1
-
 // SPL
 #define _SP7 0x80
 #define _SP6 0x40
@@ -468,29 +399,12 @@ namespace AVRCpp
 #define _SP1 0x2
 #define _SP0 0x1
 
-// RAMPZ
-#define _RAMPZ0 0x1
-
-// SPMCSR
-#define _SPMIE 0x80
-#define _RWWSB 0x40
-#define _SIGRD 0x20
-#define _RWWSRE 0x10
-#define _BLBSET 0x8
-#define _PGWRT 0x4
-#define _PGERS 0x2
-#define _SPMEN 0x1
-
 // MCUCR
-#define _JTD 0x80
-#define _BODS 0x40
-#define _BODSE 0x20
 #define _PUD 0x10
 #define _IVSEL 0x2
 #define _IVCE 0x1
 
 // MCUSR
-#define _JTRF 0x10
 #define _WDRF 0x8
 #define _BORF 0x4
 #define _EXTRF 0x2
@@ -513,19 +427,19 @@ namespace AVRCpp
 #define _ACIS0 0x1
 
 // SPSR
-#define _SPIF0 0x80
-#define _WCOL0 0x40
-#define _SPI2X0 0x1
+#define _SPIF 0x80
+#define _WCOL 0x40
+#define _SPI2X 0x1
 
 // SPCR
-#define _SPIE0 0x80
-#define _SPE0 0x40
-#define _DORD0 0x20
-#define _MSTR0 0x10
-#define _CPOL0 0x8
-#define _CPHA0 0x4
-#define _SPR01 0x2
-#define _SPR00 0x1
+#define _SPIE 0x80
+#define _SPE 0x40
+#define _DORD 0x20
+#define _MSTR 0x10
+#define _CPOL 0x8
+#define _CPHA 0x4
+#define _SPR1 0x2
+#define _SPR0 0x1
 
 // TCCR0B
 #define _FOC0A 0x80
@@ -545,32 +459,34 @@ namespace AVRCpp
 
 // GTCCR
 #define _TSM 0x80
-#define _PSR2 0x2
-#define _PSR54310 0x1
+#define _PSRASY 0x2
+#define _PSRSYNC 0x1
 
 // EECR
 #define _EEPM1 0x20
 #define _EEPM0 0x10
 #define _EERIE 0x8
-#define _EEMWE 0x4
-#define _EEWE 0x2
+#define _EEMPE 0x4
+#define _EEPE 0x2
 #define _EERE 0x1
 
 // EIMSK
-#define _INT2 0x4
 #define _INT1 0x2
 #define _INT0 0x1
 
 // EIFR
-#define _INTF2 0x4
 #define _INTF1 0x2
 #define _INTF0 0x1
 
 // PCIFR
-#define _PCIF3 0x8
 #define _PCIF2 0x4
 #define _PCIF1 0x2
 #define _PCIF0 0x1
+
+// TIFR2
+#define _OCF2B 0x4
+#define _OCF2A 0x2
+#define _TOV2 0x1
 
 // TIFR1
 #define _ICF1 0x20
@@ -614,7 +530,6 @@ namespace AVRCpp
 #define _PIND0 0x1
 
 // PORTC
-#define _PC7 0x80
 #define _PC6 0x40
 #define _PC5 0x20
 #define _PC4 0x10
@@ -624,7 +539,6 @@ namespace AVRCpp
 #define _PC0 0x1
 
 // DDRC
-#define _DDC7 0x80
 #define _DDC6 0x40
 #define _DDC5 0x20
 #define _DDC4 0x10
@@ -634,7 +548,6 @@ namespace AVRCpp
 #define _DDC0 0x1
 
 // PINC
-#define _PINC7 0x80
 #define _PINC6 0x40
 #define _PINC5 0x20
 #define _PINC4 0x10
@@ -673,36 +586,6 @@ namespace AVRCpp
 #define _PINB1 0x2
 #define _PINB0 0x1
 
-// PORTA
-#define _PA7 0x80
-#define _PA6 0x40
-#define _PA5 0x20
-#define _PA4 0x10
-#define _PA3 0x8
-#define _PA2 0x4
-#define _PA1 0x2
-#define _PA0 0x1
-
-// DDRA
-#define _DDA7 0x80
-#define _DDA6 0x40
-#define _DDA5 0x20
-#define _DDA4 0x10
-#define _DDA3 0x8
-#define _DDA2 0x4
-#define _DDA1 0x2
-#define _DDA0 0x1
-
-// PINA
-#define _PINA7 0x80
-#define _PINA6 0x40
-#define _PINA5 0x20
-#define _PINA4 0x10
-#define _PINA3 0x8
-#define _PINA2 0x4
-#define _PINA1 0x2
-#define _PINA0 0x1
-
 
 // General ports
 namespace AVRCpp
@@ -710,7 +593,6 @@ namespace AVRCpp
 	__DECLARE_PORT__(D);
 	__DECLARE_PORT__(C);
 	__DECLARE_PORT__(B);
-	__DECLARE_PORT__(A);
 	
 } // namespace AVRCpp
 
@@ -718,4 +600,4 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_IO_M164_H__
+#endif // ifndef __AVR_CPP_IO_M168_H__

@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, MTU TTU Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTU TTU Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -285,7 +285,7 @@ namespace AVRCpp
 #define _UDRE1 0x20
 #define _FE1 0x10
 #define _DOR1 0x8
-// #define _PE1 0x4 In use for port E !
+#define _UPE1 0x4
 #define _U2X1 0x2
 #define _MPCM1 0x1
 
