@@ -26,11 +26,67 @@
 \**********************************************************************************************************************/
 
 #include "EEPROM.h"
+#include "Interrupt.h"
+
+/**********************************************************************************************************************\
+	
+	Universal bit and register name definitions according to device EEPROM properties.
+
+\**********************************************************************************************************************/
+#if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES
+
+#define __EEMPE__ _EEPME
+#define __EEPE__ _EEPE
+
+#else
+
+#define __EEMPE__ _EEWME
+#define __EEPE__ _EEWE
+
+#endif // if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES
+
+
+#if __EEPROM_PROPERTIES__ & __EEPROM_LONG_FLASH__
+#define __SPMEN__ _SELFPRGEN
+#else
+#define __SPEMEN__ _SPMEN
+#endif
+
+#if __EEPROM_PROPERTIES__ & __EEPROM_OLD_FLASH__
+#define __SPMCSR__	_SPMCR
+#else
+#define __SPMCSR__	_SPMCSR
+#endif
+
+/**********************************************************************************************************************/
+
 
 namespace AVRCpp
 {
 	namespace EEPROM
 	{
+
+		// Waits while CPU is programming Flash. Only needed if boot loader is present.
+		static inline bool IsWritingFlash() {	return IsBitsSet<__SPMCSR__>(__SPMEN__); }
+		static inline void WaitWhileWritingFlash() { while (IsWritingFlash() ); }
+		
+		static void WriteOperation()
+		{
+			// Save SREG_I bit.
+			uint8_t savedSREG = SREG;
+			
+			// __EEPE__ must be set immediately after setting __EEMPE__
+			GlobalInterrupts::Disable();
+			
+			SetBits<_EECR>(__EEMPE__);
+			SetBits<_EECR>(__EEPE__);
+			
+			// Restore the interrupt bit in Status Register
+			SREG = savedSREG;
+
+		} // WriteOperation
+		
+		
 		bool MoveNext()
 		{
 			if (EEAR < EEPROM_SIZE - 1)
@@ -44,6 +100,35 @@ namespace AVRCpp
 			return false;
 			
 		} // MoveNext
+		
+		
+		void Write(uint8_t data)
+		{
+			WaitWhileWriting();
+			
+			WaitWhileWritingFlash();
+			
+			EEDR = data;
+			
+			WriteOperation();
+
+		} // Write 1
+		
+		
+		void Write(uint16_t address, uint8_t data)
+		{
+			WaitWhileWriting();
+			
+			WaitWhileWritingFlash();
+			
+			SetAddressUnsafe(address);
+			
+			EEDR = data;
+			
+			WriteOperation();
+
+		} // Write 2
+
 		
 		namespace Internal
 		{
@@ -103,57 +188,62 @@ namespace AVRCpp
 				
 			} // LoadingProcess
 			
-#ifdef __EEPROM_TYPE2__
-			
-			bool ErasingProcess(uint16_t lastByteAddr)
-			{
-				// Enough space ?
-				if (lastByteAddr >= EEPROM_SIZE)
-					return false;
-				
-				// Erase byte by byte
-				while (true)
-				{
-					WaitWhileWriting();
-					
-					Internal::WaitWhileWritingFlash();
-					
-					uint8_t savedSREG = SREG;
-					
-					// EEPE must be set immediately after setting EEMPE
-					GlobalInterrupts::Disable();
-					
-					SetBits<_EECR>(_EEMPE);
-					SetBits<_EECR>(_EEPE);
-					
-					// Restore the interrupt bit in Status Register
-					SREG = savedSREG;			
-					
-					// Done ?
-					if (EEAR == lastByteAddr)
-						break;
-					
-					WaitWhileWriting();
-					EEAR++;
-				}
-				
-				MoveNext();
-				
-				return true;
-				
-			} // ErasingProcess
-			
-#endif // ifdef __EEPROM_TYPE2__
-			
 		} // namespace Internal
 		
-#ifdef __EEPROM_TYPE2__
+#if __EEPROM_PROPERTIES & __EEPROM_ERASEBLE__
 		
+		static inline bool ErasingProcess(uint16_t lastByteAddr)
+		{
+			// Enough space ?
+			if (lastByteAddr >= EEPROM_SIZE)
+				return false;
+			
+			// Erase byte by byte
+			while (true)
+			{
+				
+				WaitWhileWriting();
+				
+				WaitWhileWritingFlash();
+				
+				WriteOperation();
+				
+				// Done ?
+				if (EEAR == lastByteAddr)
+					break;
+				
+				WaitWhileWriting();
+				
+				EEAR++;
+			}
+			
+			MoveNext();
+			
+			return true;
+			
+		} // ErasingProcess
+		
+
+		static inline bool EraseOperation(uint16_t numberOfBytes)
+		{
+			// Is there anything to read or write ?
+			if (numberOfBytes == 0)
+				return true;
+			
+			{
+				uint16_t lastByteAddr = EEAR + numberOfBytes - 1;
+				
+				return ErasingProcess(lastByteAddr);
+			}
+			
+		} // EraseOperation
+		
+
 		bool Erase(uint16_t numberOfBytes)
 		{
 			uint8_t savedEECR = EECR;
 			
-			SetEraseMode();
+			SetMode(EraseOnly);
 			
 			{
 				bool result = Internal::EraseOperation(numberOfBytes);
@@ -162,9 +252,10 @@ namespace AVRCpp
 				
 				return result;
 			}
-		}
+
+		} // Erase
 		
-#endif // ifdef __EEPROM_TYPE2__
+#endif // if __EEPROM_PROPERTIES & __EEPROM_ERASEBLE__
 		
 	} // namespace EEPROM
 
