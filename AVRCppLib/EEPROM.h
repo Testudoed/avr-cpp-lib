@@ -47,7 +47,8 @@
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__
 
-#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__)
+#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) \
+		|| defined(__AVR_ATmega164__) || defined(__AVR_ATmega324__) || defined(__AVR_ATmega644__)
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__
 
@@ -66,6 +67,38 @@
 #define EE_RDY_ns		EEPROM
 #define EE_RDY_struct	EE_RDY_ns::ReadyInterrupt
 
+/**********************************************************************************************************************\
+	
+	Universal bit and register name definitions according to device EEPROM properties.
+
+\**********************************************************************************************************************/
+#if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES__
+
+#define __EEMPE__ _EEPME
+#define __EEPE__ _EEPE
+
+#else
+
+#define __EEMPE__ _EEWME
+#define __EEPE__ _EEWE
+
+#endif // if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES__
+
+
+#if __EEPROM_PROPERTIES__ & __EEPROM_LONG_FLASH__
+#define __SPMEN__ _SELFPRGEN
+#else
+#define __SPEMEN__ _SPMEN
+#endif
+
+#if __EEPROM_PROPERTIES__ & __EEPROM_OLD_FLASH__
+#define __SPMCSR__	_SPMCR
+#else
+#define __SPMCSR__	_SPMCSR
+#endif
+
+/**********************************************************************************************************************/
+
 
 /**********************************************************************************************************************\
 
@@ -77,10 +110,14 @@ namespace AVRCpp
 {
 	namespace EEPROM
 	{
+		/**
+		 * The EEPROM Ready interrupt generates a constant interrupt
+		 * when the write access time has elapsed. The interrupt will not be generated during EEPROM write or SPM.
+		 */
 		struct ReadyInterrupt : BasicInterrupt<Bits<_EECR, _EERIE> > { __INTERRUPT_HANDLER_SUPPORT__ }
 
 		/// Returns true if writing proccess is taking place.
-		inline bool IsWriting() {	return IsBitsSet<_EECR>(_EEPE); }
+		inline bool IsWriting() {	return IsBitsSet<_EECR>(__EEPE__); }
 		/// Blocks while writing proccess is present.
 		inline void WaitWhileWriting() { while (IsWriting() ); }
 		/// Tries to set address even if previous writing operation has not finished.

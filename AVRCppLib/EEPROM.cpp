@@ -28,38 +28,6 @@
 #include "EEPROM.h"
 #include "Interrupt.h"
 
-/**********************************************************************************************************************\
-	
-	Universal bit and register name definitions according to device EEPROM properties.
-
-\**********************************************************************************************************************/
-#if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES
-
-#define __EEMPE__ _EEPME
-#define __EEPE__ _EEPE
-
-#else
-
-#define __EEMPE__ _EEWME
-#define __EEPE__ _EEWE
-
-#endif // if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES
-
-
-#if __EEPROM_PROPERTIES__ & __EEPROM_LONG_FLASH__
-#define __SPMEN__ _SELFPRGEN
-#else
-#define __SPEMEN__ _SPMEN
-#endif
-
-#if __EEPROM_PROPERTIES__ & __EEPROM_OLD_FLASH__
-#define __SPMCSR__	_SPMCR
-#else
-#define __SPMCSR__	_SPMCSR
-#endif
-
-/**********************************************************************************************************************/
-
 
 namespace AVRCpp
 {
