@@ -33,7 +33,8 @@
 #define __SLEEPING_NUMBER_OF_MODES__	5
 #define __SLEEPING_REGISTER__			_SMCR
 
-#if defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega324__) || defined(_AVR_ATmega164__)
+#elif defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__) \
+		|| defined(__AVR_ATmega644p__) || defined(__AVR_ATmega324p__) || defined(_AVR_ATmega164p__)
 
 #define __SLEEPING_NUMBER_OF_MODES__	6
 #define __SLEEPING_REGISTER__			_SMCR
@@ -102,7 +103,7 @@ namespace AVRCpp
 			
 		}; // enum SleepMode
 		
-#if __SLEEPING_NUMBER_OF_MODES__ == 3
+#elif __SLEEPING_NUMBER_OF_MODES__ == 3
 		
 		enum SleepMode
 		{
@@ -116,7 +117,7 @@ namespace AVRCpp
 		
 		
 #ifdef __SLEEPING_REGISTER__
-
+		
 		inline void SetUp(SleepMode sleepMode, EnabledFlag enabled)
 		{
 			ChangeBits<__SLEEPING_REGISTER__>(_SM0 | _SM1 | _SM2 | _SE, sleepMode | enabled);

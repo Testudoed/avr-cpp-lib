@@ -39,7 +39,7 @@
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_OLD_FLASH__
 
-#elif  || defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) 
+#elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) 
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__
 
@@ -47,8 +47,8 @@
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__
 
-#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) \
-		|| defined(__AVR_ATmega164__) || defined(__AVR_ATmega324__) || defined(__AVR_ATmega644__)
+#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega644__) \
+		|| defined(__AVR_ATmega164p__) || defined(__AVR_ATmega324p__) || defined(__AVR_ATmega644p__)
 
 #define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__
 
@@ -114,7 +114,7 @@ namespace AVRCpp
 		 * The EEPROM Ready interrupt generates a constant interrupt
 		 * when the write access time has elapsed. The interrupt will not be generated during EEPROM write or SPM.
 		 */
-		struct ReadyInterrupt : BasicInterrupt<Bits<_EECR, _EERIE> > { __INTERRUPT_HANDLER_SUPPORT__ }
+		struct ReadyInterrupt : BasicInterrupt<Bits<_EECR, _EERIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 
 		/// Returns true if writing proccess is taking place.
 		inline bool IsWriting() {	return IsBitsSet<_EECR>(__EEPE__); }
@@ -155,7 +155,7 @@ namespace AVRCpp
 			
 		} // Read 2
 
-#if __EEPROM_PROPERTIES & __EEPROM_ERASEBLE__
+#if __EEPROM_PROPERTIES__ & __EEPROM_ERASEBLE__
 
 		enum Mode
 		{

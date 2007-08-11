@@ -52,7 +52,7 @@
 
 #define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_HIGH_SPEED__
 
-#elif defined(__AVR_ATmega164__) || defined(__AVR_ATmega324__) || defined(__AVR_ATmega644__)
+#elif defined(__AVR_ATmega164p__) || defined(__AVR_ATmega324p__) || defined(__AVR_ATmega644p__) || defined(__AVR_ATmega644__)
 
 #define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_INTERNAL_REF1__
 
@@ -221,7 +221,7 @@ namespace AVRCpp
 
 #endif
 		
-		struct ConversionCompleteInterrupt : Interrupt<Bits<_ADCSRA, _ADIE>, Bits<_ADCSRA, _ADIF> > { __INTERRUPT_HANDLER_SUPPORT__ }
+		struct ConversionCompleteInterrupt : Interrupt<Bits<_ADCSRA, _ADIE>, Bits<_ADCSRA, _ADIF> > { __INTERRUPT_HANDLER_SUPPORT__ };
 		
 		inline bool IsConverting() { return IsBitsSet<_ADCSRA>(_ADSC); }
 		inline void WaitWhileConverting() { while (IsConverting() ); }
