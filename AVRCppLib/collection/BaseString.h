@@ -49,7 +49,9 @@ namespace AVRCpp
 			uint16_t size;
 			
 			/**
-			 * Derived class handles memory allocation.
+			 * Makes sure that required number of bytes can be stored in buffer.
+			 * Only derived class handles memory allocation.
+			 * @return true if there is enough space, otherwise false.
 			 */
 			virtual bool EnsureCapacity(uint16_t required) = 0;
 			
@@ -61,6 +63,18 @@ namespace AVRCpp
 			uint16_t	SubFind(uint16_t index, cstr_t value, uint16_t valueLength) const;
 			uint16_t	SubIFind(uint16_t index, cstr_t value, uint16_t valueLength) const;
 			
+			template <uint8_t radix, uint8_t requiredSpace> bool SubFromInt(int16_t i)
+			{
+				if (!EnsureCapacity(requiredSpace) )
+					return false;
+				
+				ToString(i, me, radix);
+				
+				length = StrLength(me);
+				return true;
+				
+			} // SubFromInt
+			
 		public:
 			
 			/// @see BaseString::Find
@@ -70,12 +84,7 @@ namespace AVRCpp
 				
 			}; // enum FindResult
 			
-			BaseString() :								me(NULL), length(0), size(0) {}
-			BaseString(const BaseString &s) :			me(NULL), length(0), size(0) { if (s.me) Copy(s); }
-			BaseString(cstr_t source) :					me(NULL), length(0), size(0) { if (source) Copy(source); }
-			BaseString(cstr_t source, uint16_t n) :		me(NULL), length(0), size(0) { if (source) Copy(source, n); }
-			BaseString(int i)	:						me(NULL), length(0), size(0) { FromInteger(i); }
-			BaseString(double d) :						me(NULL), length(0), size(0) { FromDouble(d); }
+			BaseString() : me(NULL), length(0), size(0) {}
 			virtual ~BaseString() {}
 			
 			/**
@@ -102,12 +111,27 @@ namespace AVRCpp
 			bool SetLength(uint16_t newLength);
 			
 			/**
-			 * Gives this string new value reflecting numeric value in string representation.
+			 * Gives this string new value reflecting numeric value in decimal string representation.
 			 */
-			bool FromInteger(int i);
+			inline bool FromInt(int16_t i) { return SubFromInt<10, 7>(i); }
 			
 			/**
-			 * Gives this string new value reflecting numeric value in string representation.
+			 * Gives this string new value reflecting numeric value in binary string representation.
+			 */
+			inline bool FromIntBin(int16_t i) { return SubFromInt<2, 18>(i); }
+			
+			/**
+			 * Gives this string new value reflecting numeric value in octal string representation.
+			 */
+			inline bool FromIntOct(int16_t i) { return SubFromInt<8, 8>(i); }
+			
+			/**
+			 * Gives this string new value reflecting numeric value in hexadecimal string representation.
+			 */
+			inline bool FromIntHex(int16_t i) { return SubFromInt<16, 6>(i); }
+			
+			/**
+			 * Gives this string new value reflecting numeric value in decimal string representation.
 			 */
 			bool FromDouble(double d);
 			
@@ -236,33 +260,35 @@ namespace AVRCpp
 			inline bool IStartsWith(BaseString &value) const { return StrNICompare(Get(), value.Get(), value.GetLength() ) == 0; }
 			
 			/**
-			 * Returns true if last characters match with 'value. Comparison is case-sensetive.
+			 * Returns true if last characters match with 'value'. Comparison is case-sensetive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool EndsWith(cstr_t value) const;
 			
 			/**
-			 * Returns true if last characters match with 'value. Comparison is case-sensetive.
+			 * Returns true if last characters match with 'value'. Comparison is case-sensetive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool EndsWith(const BaseString &value) const;
 			
 			/**
-			 * Returns true if last characters match with 'value. Case is ingored during the comparison.
+			 * Returns true if last characters match with 'value'. Case is ingored during the comparison.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool IEndsWith(cstr_t value) const;
 			
 			/**
-			 * Returns true if last characters match with 'value. Case is ingored during the comparison.
+			 * Returns true if last characters match with 'value'. Case is ingored during the comparison.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool IEndsWith(const BaseString &value) const;
 			
 			/**
 			 * To set preferred capacity (in characters) of this string container.
-			 * Allocator object only takes it into consideration. Nothing is guaranteed.
-			 * @return true on success - it mens capacity is at least 'size' characters. 
+			 * Allocator object only takes it into consideration. It is not guaranteed
+			 * that buffer is taking exactly the the amount of memory specified with 'size'
+			 * after calling this function.
+			 * @return true on success - it means capacity is not less than 'size' characters. 
 			 */
 			inline bool Reserve(uint16_t size) { return EnsureCapacity(size); }
 			
@@ -327,26 +353,6 @@ namespace AVRCpp
 			 * @return '\0' if index is out of bounds.
 			 */
 			inline char_t operator [] (uint16_t index) const { return GetChar(index); }
-			
-			/**
-			 * Gives new value to this string.
-			 */
-			inline BaseString &operator = (BaseString &value) { Copy(value); return *this; }
-			
-			/**
-			 * Gives new value to this string.
-			 */
-			inline BaseString &operator = (cstr_t value) { Copy(value); return *this; }
-			
-			/**
-			 * Same as BaseString::FromInteger.
-			 */
-			inline BaseString &operator = (int value) { FromInteger(value); return *this; }
-			
-			/**
-			 * Same as BaseString::FromDouble.
-			 */
-			inline BaseString &operator = (double value) { FromDouble(value); return *this; }
 			
 			/**
 			 * Appends 's' to this string.

@@ -35,65 +35,76 @@ namespace AVRCpp
 	namespace Collection
 	{
 		
+		/**
+		 * Constant capacity memory buffer is allocated when object is created.
+		 */
 		template <uint16_t capacity> class StaticString : public BaseString
 		{
 		private:
 			
+			/**
+			 * Makes sure that required number of bytes can be stored in buffer.
+			 * @return true if there is enough space, otherwise false.
+			 */
 			bool EnsureCapacity(uint16_t required);
 			
 		protected:
 			
+			/// Buffer container
 			char content[capacity];
 			
 		public:
 			
-			StaticString<capacity>() :									BaseString() {}
-			StaticString<capacity>(const StaticString<capacity> &ms) :	BaseString(ms) {}
-			StaticString<capacity>(const BaseString &ms) :				BaseString(ms) {}
-			StaticString<capacity>(cstr_t source) :						BaseString(source) {}
-			StaticString<capacity>(cstr_t source, uint16_t n) :			BaseString(source, n) {}
-			StaticString<capacity>(int i) :								BaseString(i) {}
-			StaticString<capacity>(double d) :							BaseString(d) {}
+			/// Constructor initalizes class members.
+			StaticString<capacity>() : BaseString() {}
 			
 		}; // class StaticString
 		
 		
+		/**
+		 * Memory is allocated from heap. The smallest memory buffer change in bytes is 
+		 * specified with 'blockSize' template parameter.
+		 */
 		template <uint16_t blockSize = 1> class DynamicString : public BaseString
 		{
 		private:
 			
+			/// Calculates new buffer size.
 			uint16_t GetBlockSize(uint16_t required);
+
+			/**
+			 * Makes sure that required number of bytes can be stored in buffer.
+			 * @return true if there is enough space, otherwise false.
+			 */
 			bool EnsureCapacity(uint16_t required);
 			
 		public:
 			
-			DynamicString<blockSize>() :									BaseString() {}
-			DynamicString<blockSize>(const DynamicString<blockSize> &ms) :	BaseString(ms) {}
-			DynamicString<blockSize>(const BaseString &ms) :				BaseString(ms) {}
-			DynamicString<blockSize>(cstr_t source) :						BaseString(source) {}
-			DynamicString<blockSize>(cstr_t source, uint16_t n) :			BaseString(source, n) {}
-			DynamicString<blockSize>(int i) :								BaseString(i) {}
-			DynamicString<blockSize>(double d) :							BaseString(d) {}
+			/// Constructor initalizes class members.
+			DynamicString<blockSize>() : BaseString() {}
+			/// Destructor releases allocated memory.
 			~DynamicString<blockSize>() { if (me) free(me); }
 			
 		}; // class DynamicString
 		
-		
+		/**
+		 * DynamicString specialisation.
+		 */
 		template <> class DynamicString<1> : public BaseString
 		{
 		private:
 			
+			/**
+			 * Makes sure that required number of bytes can be stored in buffer.
+			 * @return true if there is enough space, otherwise false.
+			 */
 			bool EnsureCapacity(uint16_t required);
 			
 		public:
 			
-			DynamicString<1>() :								BaseString() {}
-			DynamicString<1>(const DynamicString<1> &ms) :		BaseString(ms) {}
-			DynamicString<1>(const BaseString &ms) :			BaseString(ms) {}
-			DynamicString<1>(cstr_t source) :					BaseString(source) {}
-			DynamicString<1>(cstr_t source, uint16_t n) :		BaseString(source, n) {}
-			DynamicString<1>(int i) :							BaseString(i) {}
-			DynamicString<1>(double d) :						BaseString(d) {}
+			/// Constructor initalizes class members.
+			DynamicString<1>() : BaseString() {}
+			/// Destructor releases allocated memory.
 			~DynamicString<1>() { if (me) free(me); }
 			
 		}; // class StaticString SPECIALISATION
@@ -113,7 +124,6 @@ namespace AVRCpp
 		
 		template <uint16_t blockSize> bool DynamicString<blockSize>::EnsureCapacity(uint16_t required)
 		{
-			
 			if (me)
 			{
 				if (size < required)

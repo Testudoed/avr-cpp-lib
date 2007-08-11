@@ -67,19 +67,6 @@ bool BaseString::SetLength(uint16_t newLength)
 } // SetLength
 
 
-bool BaseString::FromInteger(int i)
-{
-	if (!EnsureCapacity(32) )
-		return false;
-
-	ToString(i, me, 10);
-
-	length = StrLength(me);
-	return true;
-
-} // FromInteger
-
-
 bool BaseString::FromDouble(double d)
 {
 	if (!EnsureCapacity(128) )
