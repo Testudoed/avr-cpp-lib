@@ -53,41 +53,18 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 {
 	protected:
 		ListType data;
-		SizeType write_pointer;
-		SizeType read_pointer;
-		struct {
-			uint8_t	is_full : 1;
+		volatile SizeType write_pointer;
+		volatile SizeType read_pointer;
+		
+		struct
+		{
+			volatile uint8_t is_full : 1;
 		};
 
 	public:
 
 		/**
-		 *	Constructor
-		 */
-		BaseQueue()
-		{
-			this->write_pointer	= 0;
-			this->read_pointer  = 0;			
-		}
-
-		/**
-		 *	Return whether the queue is empty or not
-		 */
-		inline bool IsEmpty(void)
-		{
-			return ((this->read_pointer == this->write_pointer) && (this->is_full == 0));
-		}
-		
-		/**
-		 *	Return whether the queue is full or not
-		 */
-		inline bool IsFull(void)
-		{
-			return this->is_full;
-		}
-		
-		/**
-		 *	Clear queue
+		 *	Clears this queue.
 		 */
 		inline void Clear()
 		{
@@ -97,7 +74,31 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		}
 		
 		/**
-		 *  Returns reference of first item
+		 *	Constructor
+		 */
+		BaseQueue()
+		{
+			Clear();			
+		}
+
+		/**
+		 *	Returns whether the queue is empty or not.
+		 */
+		inline bool IsEmpty(void)
+		{
+			return ((this->read_pointer == this->write_pointer) && (this->is_full == 0));
+		}
+		
+		/**
+		 *	Returns whether the queue is full or not.
+		 */
+		inline bool IsFull(void)
+		{
+			return this->is_full;
+		}
+		
+		/**
+		 *  Returns reference of first item.
 		 *  NB! For speed purposes does not check constraints!
 		 */
 		inline DataType &Front()
@@ -106,7 +107,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		}
 		
 		/**
-		 *  Returns reference of last item
+		 *  Returns reference of last item.
 		 *  NB! For speed purposes does not check constraints!
 		 */
 		inline DataType &Back()
