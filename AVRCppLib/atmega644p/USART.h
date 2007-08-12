@@ -78,7 +78,7 @@ namespace AVRCpp
 				_UCSR0B,					/* ControlRegisterB */
 				_UCSR0C,					/* ControlRegisterC */
 				_UDR0,						/* DataRegister */
-				Pin2<PortE>,				/* TransferClockPin */
+				Pin0<PortB>,				/* TransferClockPin */
 				Internal::NoRegisterSelect,	/* registerSelect */
 				Internal::Cancel0 >			/* Cancel */
 		{
@@ -95,7 +95,7 @@ namespace AVRCpp
 				_UCSR1B,					/* ControlRegisterB */
 				_UCSR1C,					/* ControlRegisterC */
 				_UDR1,						/* DataRegister */
-				Pin5<PortD>,				/* TransferClockPin */
+				Pin4<PortD>,				/* TransferClockPin */
 				Internal::NoRegisterSelect,	/* registerSelect */
 				Internal::Cancel1 >			/* Cancel */
 		{
