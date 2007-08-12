@@ -37,20 +37,20 @@
 
 #if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__)
 
-#define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_OLD_FLASH__
+#define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_OLD_FLASH__)
 
 #elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) 
 
-#define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__
+#define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__)
 
 #elif defined(__AVR_AT90USB1287__)
 
-#define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__
+#define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__)
 
 #elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega644__) \
 		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
 
-#define __EEPROM_PROPERTIES__	__EEPROM_SIMPLE__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__
+#define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__)
 
 #else
 
@@ -115,7 +115,7 @@ namespace AVRCpp
 		 * when the write access time has elapsed. The interrupt will not be generated during EEPROM write or SPM.
 		 */
 		struct ReadyInterrupt : BasicInterrupt<Bits<_EECR, _EERIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
-
+		
 		/// Returns true if writing proccess is taking place.
 		inline bool IsWriting() {	return IsBitsSet<_EECR>(__EEPE__); }
 		/// Blocks while writing proccess is present.

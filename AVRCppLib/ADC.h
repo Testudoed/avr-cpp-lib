@@ -38,27 +38,27 @@
 
 #if defined(__AVR_ATmega8__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__)
 
 #elif defined(__AVR_ATmega128__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__)
 
 #elif defined(__AVR_ATmega64__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__)
 
 #elif defined(__AVR_AT90USB1287__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_HIGH_SPEED__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_HIGH_SPEED__)
 
 #elif defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_INTERNAL_REF1__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_INTERNAL_REF1__)
 
 #elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__)
 
-#define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__
+#define __ADC_PROPERTIES__		(__ADC_SIMPLE__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__)
 
 #else
 
@@ -66,7 +66,7 @@
 
 #endif
 
-#if defined(__ADC_PROPERTIES__)
+#ifdef __ADC_PROPERTIES__
 
 #include "IO.h"
 #include "Assembler.h"
@@ -358,6 +358,6 @@ namespace AVRCpp
 
 /**********************************************************************************************************************/
 
-#endif // if defined(__ADC_PROPERTIES__)
+#endif // ifdef __ADC_PROPERTIES__
 
 #endif // ifndef __AVR_CPP_ADC_H__

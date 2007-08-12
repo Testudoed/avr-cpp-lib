@@ -39,7 +39,7 @@
 
 /**********************************************************************************************************************\
 
-	atmega644 registers, bits and ports declarations.
+	atmega324 registers, bits and ports declarations.
 	This file is generated. Do not modify manually.
 
 \**********************************************************************************************************************/
@@ -47,6 +47,12 @@
 // Registers
 namespace AVRCpp
 {
+	__DECLARE_8BIT_REGISTER__(UDR1);
+	__DECLARE_8BIT_REGISTER__(UBRR1H);
+	__DECLARE_8BIT_REGISTER__(UBRR1L);
+	__DECLARE_8BIT_REGISTER__(UCSR1C);
+	__DECLARE_8BIT_REGISTER__(UCSR1B);
+	__DECLARE_8BIT_REGISTER__(UCSR1A);
 	__DECLARE_8BIT_REGISTER__(UDR0);
 	__DECLARE_8BIT_REGISTER__(UBRR0H);
 	__DECLARE_8BIT_REGISTER__(UBRR0L);
@@ -99,6 +105,7 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(SREG);
 	__DECLARE_8BIT_REGISTER__(SPH);
 	__DECLARE_8BIT_REGISTER__(SPL);
+	__DECLARE_8BIT_REGISTER__(RAMPZ);
 	__DECLARE_8BIT_REGISTER__(SPMCSR);
 	__DECLARE_8BIT_REGISTER__(MCUCR);
 	__DECLARE_8BIT_REGISTER__(MCUSR);
@@ -121,7 +128,6 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(EEDR);
 	__DECLARE_8BIT_REGISTER__(EECR);
 	__DECLARE_8BIT_REGISTER__(GPIOR0);
-	__DECLARE_8BIT_REGISTER__(EIMSK);
 	__DECLARE_8BIT_REGISTER__(EIFR);
 	__DECLARE_8BIT_REGISTER__(PCIFR);
 	__DECLARE_8BIT_REGISTER__(TIFR2);
@@ -147,6 +153,36 @@ namespace AVRCpp
 
 } // namespace AVRCpp
 
+
+// UCSR1C
+#define _UMSEL11 0x80
+#define _UMSEL10 0x40
+#define _UPM11 0x20
+#define _UPM10 0x10
+#define _USBS1 0x8
+#define _UCSZ11 0x4
+#define _UCSZ10 0x2
+#define _UCPOL1 0x1
+
+// UCSR1B
+#define _RXCIE1 0x80
+#define _TXCIE1 0x40
+#define _UDRIE1 0x20
+#define _RXEN1 0x10
+#define _TXEN1 0x8
+#define _UCSZ12 0x4
+#define _RXB81 0x2
+#define _TXB81 0x1
+
+// UCSR1A
+#define _RXC1 0x80
+#define _TXC1 0x40
+#define _UDRE1 0x20
+#define _FE1 0x10
+#define _DOR1 0x8
+#define _UPE1 0x4
+#define _U2X1 0x2
+#define _MPCM1 0x1
 
 // UCSR0C
 #define _UMSEL01 0x80
@@ -375,6 +411,7 @@ namespace AVRCpp
 #define _PRTWI 0x80
 #define _PRTIM2 0x40
 #define _PRTIM0 0x20
+#define _PRUSART1 0x10
 #define _PRTIM1 0x8
 #define _PRSPI 0x4
 #define _PRUSART0 0x2
@@ -427,6 +464,9 @@ namespace AVRCpp
 #define _SP1 0x2
 #define _SP0 0x1
 
+// RAMPZ
+#define _RAMPZ0 0x1
+
 // SPMCSR
 #define _SPMIE 0x80
 #define _RWWSB 0x40
@@ -439,6 +479,8 @@ namespace AVRCpp
 
 // MCUCR
 #define _JTD 0x80
+#define _BODS 0x40
+#define _BODSE 0x20
 #define _PUD 0x10
 #define _IVSEL 0x2
 #define _IVCE 0x1
@@ -467,19 +509,19 @@ namespace AVRCpp
 #define _ACIS0 0x1
 
 // SPSR
-#define _SPIF 0x80
-#define _WCOL 0x40
-#define _SPI2X 0x1
+#define _SPIF0 0x80
+#define _WCOL0 0x40
+#define _SPI2X0 0x1
 
 // SPCR
-#define _SPIE 0x80
-#define _SPE 0x40
-#define _DORD 0x20
-#define _MSTR 0x10
-#define _CPOL 0x8
-#define _CPHA 0x4
-#define _SPR1 0x2
-#define _SPR0 0x1
+#define _SPIE0 0x80
+#define _SPE0 0x40
+#define _DORD0 0x20
+#define _MSTR0 0x10
+#define _CPOL0 0x8
+#define _CPHA0 0x4
+#define _SPR01 0x2
+#define _SPR00 0x1
 
 // TCCR0B
 #define _FOC0A 0x80
@@ -499,21 +541,16 @@ namespace AVRCpp
 
 // GTCCR
 #define _TSM 0x80
-#define _PSRASY 0x2
-#define _PSRSYNC 0x1
+#define _PSR2 0x2
+#define _PSR54310 0x1
 
 // EECR
 #define _EEPM1 0x20
 #define _EEPM0 0x10
 #define _EERIE 0x8
-#define _EEMPE 0x4
-#define _EEPE 0x2
+#define _EEMWE 0x4
+#define _EEWE 0x2
 #define _EERE 0x1
-
-// EIMSK
-#define _INT2 0x4
-#define _INT1 0x2
-#define _INT0 0x1
 
 // EIFR
 #define _INTF2 0x4
