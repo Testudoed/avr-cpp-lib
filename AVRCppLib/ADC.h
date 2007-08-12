@@ -52,7 +52,7 @@
 
 #define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_HIGH_SPEED__
 
-#elif defined(__AVR_ATmega164p__) || defined(__AVR_ATmega324p__) || defined(__AVR_ATmega644p__) || defined(__AVR_ATmega644__)
+#elif defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644__)
 
 #define __ADC_PROPERTIES__		__ADC_SIMPLE__ | __ADC_DIFFERENTIAL__ | __ADC_AUTO_TRIGGER__ | __ADC_DIGITAL_INPUT__ | __ADC_INTERNAL_REF1__
 
@@ -289,10 +289,10 @@ namespace AVRCpp
 		inline bool IsHighSpeedModeEnabled() { return IsBitsSet<_ADCSRB>(_ADHSM); }
 		
 #endif // if __ADC_PROPERTIES__ & __ADC_HIGH_SPEED__
-
+		
 		
 #if __ADC_PROPERTIES__ & __ADC_DIFFERENTIAL__
-
+		
 		inline void SetDifferentialChannels(AnalogChannel positive, AnalogChannel negative, Gain gain)
 		{
 			if(gain == Gain1x)
@@ -303,14 +303,14 @@ namespace AVRCpp
 			{
 				ChangeBits<_ADMUX>(_MUX0 | _MUX1 | _MUX2 | _MUX3, gain | (negative << 1) | (positive & 0x01));
 			}
-
+			
 		} // SetDifferentialChannels
-
+		
 #endif // if __ADC_PROPERTIES__ & __ADC_DIFFERENTIAL__
-
-
+		
+		
 #if __ADC_PROPERTIES__ & __ADC_AUTO_TRIGGER__
-
+		
 		inline void EnableAutoTrigger() { SetBits<_ADCSRA>(_ADATE); }
 		inline void DisableAutoTrigger() { ClearBits<_ADCSRA>(_ADATE); }
 		inline bool IsAutoTriggerEnabled() { return IsBitsSet<_ADCSRA>(_ADATE); }
@@ -323,9 +323,9 @@ namespace AVRCpp
 		
 		inline void StartFreeRun() { EnableFreeRun(); EnableAutoTrigger(); }
 		inline void StopFreeRun() { DisableFreeRun(); }
-
+		
 #else // if __ADC_PROPERTIES__ & __ADC_AUTO_TRIGGER__
-
+		
 		inline void EnableFreeRun() { SetBits<_ADCSRA>(_ADFR); }
 		inline void DisableFreeRun() { ClearBits<_ADCSRA>(_ADFR); }
 		inline bool IsFreeRunEnabled() { return IsBitsSet<_ADCSRA>(_ADFR); }
@@ -334,10 +334,10 @@ namespace AVRCpp
 		inline void StopFreeRun() { DisableFreeRun(); }
 		
 #endif // if __ADC_PROPERTIES__ & __ADC_AUTO_TRIGGER__
-
-
+		
+		
 #if __ADC_PROPERTIES__ & __ADC_DIGITAL_INPUT__
-
+		
 		/**
 		* Disables the digital input buffers of the pins specified. It is used to reduce power consumption
 		* in the digital input buffer because you do not need digital input buffers when you use these pins
@@ -349,9 +349,9 @@ namespace AVRCpp
 		inline void DigitalInputEnable(uint8_t pins) { ClearBits<_DIDR0>(pins); }
 		/// Enables the digital input buffers for the specified pins, disables for others.
 		inline void SetDigitalInput(uint8_t pins) { DIDR0 = ~pins; }
-
+		
 #endif // if __ADC_PROPERTIES__ & __ADC_DIGITAL_INPUT__
-
+		
 	} // namespace AnalogToDigital
 	
 } // namespace AVRCpp

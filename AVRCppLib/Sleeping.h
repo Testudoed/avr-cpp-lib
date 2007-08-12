@@ -34,7 +34,7 @@
 #define __SLEEPING_REGISTER__			_SMCR
 
 #elif defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__) \
-		|| defined(__AVR_ATmega644p__) || defined(__AVR_ATmega324p__) || defined(_AVR_ATmega164p__)
+		|| defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__) || defined(_AVR_ATmega164P__)
 
 #define __SLEEPING_NUMBER_OF_MODES__	6
 #define __SLEEPING_REGISTER__			_SMCR

@@ -612,11 +612,11 @@ namespace AVRCpp
 #include "atmega48/USART.h"
 #elif defined(__AVR_ATmega168__)
 #include "atmega168/USART.h"
-#elif defined(__AVR_ATmega164p__)
+#elif defined(__AVR_ATmega164P__)
 #include "atmega164p/USART.h"
-#elif defined(__AVR_ATmega324p__)
+#elif defined(__AVR_ATmega324P__)
 #include "atmega324p/USART.h"
-#elif defined(__AVR_ATmega644p__)
+#elif defined(__AVR_ATmega644P__)
 #include "atmega644p/USART.h"
 #elif defined(__AVR_ATmega644__)
 #include "atmega644/USART.h"

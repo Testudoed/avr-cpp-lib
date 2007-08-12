@@ -43,7 +43,7 @@ namespace AVRCpp
 		} // namespace Internal
 		
 #elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) \
-		|| defined(__AVR_ATmega164p__) || defined(__AVR_ATmega324p__) || defined(__AVR_ATmega644p__)
+		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
 		
 		static bool cancel0 = false;
 		static bool cancel1 = false;

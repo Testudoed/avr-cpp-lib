@@ -302,11 +302,11 @@ namespace AVRCpp
 #include "atmega48/IO.h"
 #elif defined(__AVR_ATmega168__)
 #include "atmega168/IO.h"
-#elif defined(__AVR_ATmega164p__)
+#elif defined(__AVR_ATmega164P__)
 #include "atmega164p/IO.h"
-#elif defined(__AVR_ATmega324p__)
+#elif defined(__AVR_ATmega324P__)
 #include "atmega324p/IO.h"
-#elif defined(__AVR_ATmega644p__)
+#elif defined(__AVR_ATmega644P__)
 #include "atmega644p/IO.h"
 #elif defined(__AVR_ATmega644__)
 #include "atmega644/IO.h"
