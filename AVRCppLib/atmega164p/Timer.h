@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA164_TIMER_H__
-#define __AVR_CPP_ATMEGA164_TIMER_H__
+#ifndef __AVR_CPP_ATMEGA164P_TIMER_H__
+#define __AVR_CPP_ATMEGA164P_TIMER_H__
 
 /* This file should only be included from <avr/cpp/Timer.h>, never directly. */
 
@@ -34,12 +34,12 @@
 #ifdef __DOXYGEN__
 #include <avr/cpp/Timer.h>
 #else
-#error "Include <avr/cpp/Timer.h> instead of <avr/cpp/atmega164/Timer.h>."
+#error "Include <avr/cpp/Timer.h> instead of <avr/cpp/atmega164p/Timer.h>."
 #endif
 #endif // ifdef __AVR_CPP_TIMER_H__
 
 #ifndef __AVR_CPP_XXX_TIMER_H__
-#define __AVR_CPP_XXX_TIMER_H__ "atmega164/Timer.h"
+#define __AVR_CPP_XXX_TIMER_H__ "atmega164p/Timer.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/Timer.h> file."
 #endif
@@ -138,4 +138,4 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_ATMEGA164_TIMER_H__
+#endif // ifndef __AVR_CPP_ATMEGA164P_TIMER_H__

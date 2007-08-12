@@ -31,8 +31,8 @@ namespace AVRCpp
 {
 	namespace USART
 	{
-#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega48__) \
-			|| defined(__AVR_ATmega168__) || defined(__AVR_ATmega164__) || defined(__AVR_ATmega324__) || defined(__AVR_ATmega644)
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__) || defined(__AVR_ATmega644__) \
+		|| defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__)
 		
 		static bool cancel0 = false;
 		
@@ -42,7 +42,8 @@ namespace AVRCpp
 			
 		} // namespace Internal
 		
-#elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__)
+#elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) \
+		|| defined(__AVR_ATmega164p__) || defined(__AVR_ATmega324p__) || defined(__AVR_ATmega644p__)
 		
 		static bool cancel0 = false;
 		static bool cancel1 = false;

@@ -128,10 +128,12 @@ namespace AVRCpp
 #include "atmega48/ExternalInterrupt.h"
 #elif defined(__AVR_ATmega168__)
 #include "atmega168/ExternalInterrupt.h"
-#elif defined(__AVR_ATmega164__)
-#include "atmega164/ExternalInterrupt.h"
-#elif defined(__AVR_ATmega324__)
-#include "atmega324/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega164p__)
+#include "atmega164p/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega324p__)
+#include "atmega324p/ExternalInterrupt.h"
+#elif defined(__AVR_ATmega644p__)
+#include "atmega644p/ExternalInterrupt.h"
 #elif defined(__AVR_ATmega644__)
 #include "atmega644/ExternalInterrupt.h"
 #else

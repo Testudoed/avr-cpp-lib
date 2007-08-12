@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA164_EXTERNAL_INTERRUPT_H__
-#define __AVR_CPP_ATMEGA164_EXTERNAL_INTERRUPT_H__
+#ifndef __AVR_CPP_ATMEGA644P_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_ATMEGA644P_EXTERNAL_INTERRUPT_H__
 
 /* This file should only be included from <avr/cpp/ExternalInterrupt.h>, never directly. */
 
@@ -34,12 +34,12 @@
 #ifdef __DOXYGEN__
 #include <avr/cpp/ExternalInterrupt.h>
 #else
-#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega164/ExternalInterrupt.h>."
+#error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega644p/ExternalInterrupt.h>."
 #endif
 #endif // ifndef __AVR_CPP_EXTERNAL_INTERRUPT_H__
 
 #ifndef __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
-#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__ "atmega164/ExternalInterrupt.h"
+#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__ "atmega644p/ExternalInterrupt.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file."
 #endif
@@ -127,4 +127,4 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_ATMEGA164_EXTERNAL_INTERRUPT_H__
+#endif // ifndef __AVR_CPP_ATMEGA644P_EXTERNAL_INTERRUPT_H__
