@@ -250,7 +250,9 @@ bool BaseString::SubReplace(uint16_t begin, uint16_t end, cstr_t replaceWith, ui
 		}
 		else
 		{
-			String strEnd(me + end);
+			String strEnd;
+
+			strEnd.Copy(me + end);
 			uint16_t length1 = begin + replaceWithLength;
 			uint16_t length2 = length1 + strEnd.GetLength();
 			
