@@ -28,10 +28,8 @@
 #ifndef __AVR_CPP_IO_M644_H__
 #define __AVR_CPP_IO_M644_H__
 
-#ifdef __DOXYGEN__
-#ifndef __AVR_CPP_IO_H__
+#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
 #include <avr/cpp/IO.h>
-#endif
 #endif
 
 #ifndef __AVR_CPP_IO_H__
@@ -49,6 +47,7 @@
 // Registers
 namespace AVRCpp
 {
+    __DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_8BIT_REGISTER__(UDR0);
 	__DECLARE_8BIT_REGISTER__(UBRR0H);
 	__DECLARE_8BIT_REGISTER__(UBRR0L);
@@ -328,6 +327,11 @@ namespace AVRCpp
 #define _OCIE0B 0x4
 #define _OCIE0A 0x2
 #define _TOIE0 0x1
+
+// TIFR2
+#define _OCF2A _BV(OCF2A)
+#define _OCF2B _BV(OCF2B)
+#define _TOV2 _BV(TOV2)
 
 // PCMSK2
 #define _PCINT23 0x80
