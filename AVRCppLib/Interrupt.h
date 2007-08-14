@@ -84,30 +84,32 @@
 
 /**
  * Temporarily disable interrupts.
- * Use InterruptSafe to execute commands that need to run uninterrupted. Interruptsafe disables interrupts,
- * executes your command(s) and finally enables interrupts, if they were enabled before using InterruptSafe.
+ * Use INTERRUPT_SAFE to execute commands that need to run uninterrupted. Interruptsafe disables interrupts,
+ * executes your command(s) and finally enables interrupts, if they were enabled before using INTERRUPT_SAFE.
  * To disable interrupts during one command, use the following code:
  * @code
  * // Interrupts are disabled during MyImportantCommand()
- * InterruptSafe
+ * INTERRUPT_SAFE
  *     MyImportantCommand();
  * @endcode
  * If you need to run a block of code without any interrupts between or during the commands, enclose it
  * with braces:
  * @code
  * // Interrupts are disabled during execution of the code block in braces
- * InterruptSafe
+ * INTERRUPT_SAFE
  * {
  *     VariableX = new_value;
  *     methodThatDependsOnVariableX();
  *     methodThatHasToFollowImmediately();
  * }
  * @endcode
- * \attention If GlobalInterrupts::Enable() is called within the InterruptSafe block, the interrupts will be
- *			  enabled. InterruptSafe just disables interrupts in the beginning and restores the previous
+ * \attention If GlobalInterrupts::Enable() is called within the INTERRUPT_SAFE block, the interrupts will be
+ *			  enabled. INTERRUPT_SAFE just disables interrupts in the beginning and restores the previous
  *			  state in the end. Any code in between can freely enable and disable interrupts.
+ * \note INTERRUPT_SAFE is quite effective: it adds 5 commands to your program, while manually saving SREG, disabling
+ *		 interrupts and restoring SREG
  */
-#define InterruptSafe for(AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.finished; safeObject.finished = true)
+#define INTERRUPT_SAFE for(AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.IsFinished(); safeObject.Finished() )
 
 namespace AVRCpp
 {
@@ -122,22 +124,33 @@ namespace AVRCpp
 		{
 			class InterruptDisabler
 			{
-				public:
-					bool wasEnabled;
-					bool finished;
-					InterruptDisabler()
-					{
-						wasEnabled = GlobalInterrupts::IsEnabled();
-						GlobalInterrupts::Disable();
-						finished = false;
-					}
-					~InterruptDisabler()
-					{
-						if(wasEnabled)
-							GlobalInterrupts::Enable();
-					}
+			private:
+			
+				uint8_t sreg;
+				
+			public:
+				
+				InterruptDisabler()
+				{
+					sreg = SREG;
+					sreg &= ~_SREG_C;
+					GlobalInterrupts::Disable();
+					
+				} // InterruptDisabler CONSTRUCTOR
+				
+				inline void Finished() { sreg |= _SREG_C; }
+				inline bool IsFinished() { return sreg & _SREG_C; }
+				
+				~InterruptDisabler()
+				{
+					SREG = sreg;
+					
+				} // InterruptDisabler DESTRUCTOR
+				
 			}; // class InterruptDisabler
+			
 		} // namespace Internal
+		
 	} // namespace GlobalInterrupts
 	
 } // namespace AVRCpp
