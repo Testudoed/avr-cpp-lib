@@ -158,7 +158,7 @@ namespace AVRCpp
 			
 		} // namespace Internal
 		
-#if __EEPROM_PROPERTIES & __EEPROM_ERASEBLE__
+#if __EEPROM_PROPERTIES__ & __EEPROM_ERASEBLE__
 		
 		static inline bool ErasingProcess(uint16_t lastByteAddr)
 		{
@@ -214,7 +214,7 @@ namespace AVRCpp
 			SetMode(EraseOnly);
 			
 			{
-				bool result = Internal::EraseOperation(numberOfBytes);
+				bool result = EraseOperation(numberOfBytes);
 				
 				ChangeBits<_EECR>(_EEPM1 | _EEPM0, savedEECR);
 				
@@ -223,7 +223,7 @@ namespace AVRCpp
 
 		} // Erase
 		
-#endif // if __EEPROM_PROPERTIES & __EEPROM_ERASEBLE__
+#endif // if __EEPROM_PROPERTIES__ & __EEPROM_ERASEBLE__
 		
 	} // namespace EEPROM
 

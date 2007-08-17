@@ -43,11 +43,11 @@
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__)
 
-#elif defined(__AVR_AT90USB1287__)
+#elif defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__)
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__)
 
-#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega644__) \
+#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) \
 		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__)
@@ -74,7 +74,7 @@
 \**********************************************************************************************************************/
 #if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES__
 
-#define __EEMPE__ _EEPME
+#define __EEMPE__ _EEMPE
 #define __EEPE__ _EEPE
 
 #else
@@ -88,7 +88,7 @@
 #if __EEPROM_PROPERTIES__ & __EEPROM_LONG_FLASH__
 #define __SPMEN__ _SELFPRGEN
 #else
-#define __SPEMEN__ _SPMEN
+#define __SPMEN__ _SPMEN
 #endif
 
 #if __EEPROM_PROPERTIES__ & __EEPROM_OLD_FLASH__
