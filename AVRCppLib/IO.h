@@ -159,7 +159,11 @@ namespace AVRCpp
 		static inline void SetAsTriStateInput(uint8_t flags) { ClearBits<PORTReg>(flags), ClearBits<DDRReg>(flags); }
 		static inline void SetAsInput(uint8_t flags) { SetBits<PORTReg>(flags), ClearBits<DDRReg>(flags); }
 		static inline void SetAsOutput(uint8_t flags) { SetBits<DDRReg>(flags); }
-		
+		static inline bool IsOutput(uint8_t flags) { return IsBitsSet<DDRReg>(flags); }
+		static inline bool IsInput(uint8_t flags) { return !IsOutput(); }
+		static inline bool IsPulledUpInput(uint8_t flags) { return IsBitsSet<PORTReg>(flags) && !IsBitsSet<DDRReg>(flags); }
+		static inline bool IsTriStateInput(uint8_t flags) { return !IsBitsSet<PORTReg>(flags) && !IsBitsSet<DDRReg>(flags); }
+
 	}; // struct Port
 	
 	template <class PortClass, uint8_t flags> struct OutputPins
@@ -198,6 +202,11 @@ namespace AVRCpp
 	{
 		typedef InputPins<PortClass, flags> Input;
 		typedef OutputPins<PortClass, flags> Output;
+
+		static inline bool IsOutput() { return PortClass::IsOutput(flags); }
+		static inline bool IsInput() { return PortClass::IsInput(flags); }
+		static inline bool IsPulledUpInput() { return PortClass::IsPulledUpInput(flags); }
+		static inline bool IsTriStateInput() { return PortClass::IsTriStateInput(flags); }
 		
 	}; // struct Pins
 	
