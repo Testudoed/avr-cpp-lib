@@ -79,7 +79,7 @@
 
 #else
 
-#define __EEMPE__ _EEWME
+#define __EEMPE__ _EEMWE
 #define __EEPE__ _EEWE
 
 #endif // if __EEPROM_PROPERTIES__ & __EEPROM_NEW_NAMES__
