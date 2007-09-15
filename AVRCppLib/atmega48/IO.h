@@ -25,13 +25,11 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_IO_M48_H__
-#define __AVR_CPP_IO_M48_H__
+#ifndef __AVR_CPP_ATMEGA48_IO_H__
+#define __AVR_CPP_ATMEGA48_IO_H__
 
-#ifdef __DOXYGEN__
-#ifndef __AVR_CPP_IO_H__
+#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
 #include <avr/cpp/IO.h>
-#endif
 #endif
 
 #ifndef __AVR_CPP_IO_H__
@@ -399,6 +397,15 @@ namespace AVRCpp
 #define _SP1 0x2
 #define _SP0 0x1
 
+// SPMCSR
+#define _SPMIE 0x80
+#define _RWWSB 0x40
+#define _RWWSRE 0x10
+#define _BLBSET 0x8
+#define _PGWRT 0x4
+#define _PGERS 0x2
+#define _SELFPRGEN 0x1
+
 // MCUCR
 #define _PUD 0x10
 #define _IVSEL 0x2
@@ -600,4 +607,4 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_IO_M48_H__
+#endif // ifndef __AVR_CPP_ATMEGA48_IO_H__

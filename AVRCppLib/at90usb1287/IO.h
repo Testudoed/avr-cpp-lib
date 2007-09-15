@@ -25,13 +25,11 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_IO_USB1287_H__
-#define __AVR_CPP_IO_USB1287_H__
+#ifndef __AVR_CPP_AT90USB1287_IO_H__
+#define __AVR_CPP_AT90USB1287_IO_H__
 
-#ifdef __DOXYGEN__
-#ifndef __AVR_CPP_IO_H__
+#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
 #include <avr/cpp/IO.h>
-#endif
 #endif
 
 #ifndef __AVR_CPP_IO_H__
@@ -940,4 +938,4 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_IO_USB1287_H__
+#endif // ifndef __AVR_CPP_AT90USB1287_IO_H__

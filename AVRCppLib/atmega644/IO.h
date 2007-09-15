@@ -25,8 +25,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_IO_M644_H__
-#define __AVR_CPP_IO_M644_H__
+#ifndef __AVR_CPP_ATMEGA644_IO_H__
+#define __AVR_CPP_ATMEGA644_IO_H__
 
 #if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
 #include <avr/cpp/IO.h>
@@ -668,4 +668,4 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_IO_M644_H__
+#endif // ifndef __AVR_CPP_ATMEGA644_IO_H__

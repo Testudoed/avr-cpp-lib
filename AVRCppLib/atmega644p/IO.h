@@ -47,6 +47,7 @@
 // Registers
 namespace AVRCpp
 {
+    __DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_8BIT_REGISTER__(UDR1);
 	__DECLARE_8BIT_REGISTER__(UBRR1H);
 	__DECLARE_8BIT_REGISTER__(UBRR1L);
@@ -105,7 +106,6 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(SREG);
 	__DECLARE_8BIT_REGISTER__(SPH);
 	__DECLARE_8BIT_REGISTER__(SPL);
-	__DECLARE_8BIT_REGISTER__(RAMPZ);
 	__DECLARE_8BIT_REGISTER__(SPMCSR);
 	__DECLARE_8BIT_REGISTER__(MCUCR);
 	__DECLARE_8BIT_REGISTER__(MCUSR);
@@ -464,9 +464,6 @@ namespace AVRCpp
 #define _SP1 0x2
 #define _SP0 0x1
 
-// RAMPZ
-#define _RAMPZ0 0x1
-
 // SPMCSR
 #define _SPMIE 0x80
 #define _RWWSB 0x40
@@ -548,8 +545,8 @@ namespace AVRCpp
 #define _EEPM1 0x20
 #define _EEPM0 0x10
 #define _EERIE 0x8
-#define _EEMWE 0x4
-#define _EEWE 0x2
+#define _EEMPE 0x4
+#define _EEPE 0x2
 #define _EERE 0x1
 
 // EIFR

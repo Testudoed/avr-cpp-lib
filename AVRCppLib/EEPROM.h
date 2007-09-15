@@ -43,12 +43,12 @@
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__)
 
-#elif defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__)
+#elif defined(__AVR_AT90USB1287__) || defined(__AVR_ATmega644__) \
+		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__)
 
-#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) \
-		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+#elif defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__)
 
 #define __EEPROM_PROPERTIES__	(__EEPROM_SIMPLE__ | __EEPROM_NEW_NAMES__ | __EEPROM_ERASEBLE__ | __EEPROM_LONG_FLASH__)
 
