@@ -348,6 +348,11 @@ namespace AVRCpp
 #define _PCINT25 0x2
 #define _PCINT24 0x1
 
+// TIFR2
+#define _OCF2B 0x04
+#define _OCF2A 0x02
+#define _TOV2 0x1
+
 // TIMSK2
 #define _OCIE2B 0x4
 #define _OCIE2A 0x2
@@ -539,8 +544,8 @@ namespace AVRCpp
 
 // GTCCR
 #define _TSM 0x80
-#define _PSR2 0x2
-#define _PSR54310 0x1
+#define _PSRASY 0x2
+#define _PSRSYNC 0x1
 
 // EECR
 #define _EEPM1 0x20

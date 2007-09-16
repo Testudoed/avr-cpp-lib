@@ -128,6 +128,7 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(EEDR);
 	__DECLARE_8BIT_REGISTER__(EECR);
 	__DECLARE_8BIT_REGISTER__(GPIOR0);
+	__DECLARE_8BIT_REGISTER__(EIMSK);
 	__DECLARE_8BIT_REGISTER__(EIFR);
 	__DECLARE_8BIT_REGISTER__(PCIFR);
 	__DECLARE_8BIT_REGISTER__(TIFR2);
@@ -347,6 +348,11 @@ namespace AVRCpp
 #define _PCINT25 0x2
 #define _PCINT24 0x1
 
+// TIFR2
+#define _OCF2B 0x04
+#define _OCF2A 0x02
+#define _TOV2 0x1
+
 // TIMSK2
 #define _OCIE2B 0x4
 #define _OCIE2A 0x2
@@ -538,8 +544,8 @@ namespace AVRCpp
 
 // GTCCR
 #define _TSM 0x80
-#define _PSR2 0x2
-#define _PSR54310 0x1
+#define _PSRASY 0x2
+#define _PSRSYNC 0x1
 
 // EECR
 #define _EEPM1 0x20
@@ -548,6 +554,11 @@ namespace AVRCpp
 #define _EEMPE 0x4
 #define _EEPE 0x2
 #define _EERE 0x1
+
+// EIMSK
+#define _INT2 0x4
+#define _INT1 0x2
+#define _INT0 0x1
 
 // EIFR
 #define _INTF2 0x4

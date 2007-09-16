@@ -441,6 +441,7 @@ namespace AVRCpp
 #define _MUX0 0x1
 
 // ADCSRB
+#define _ADHSM 0x80
 #define _ACME 0x40
 #define _MUX5 0x8
 #define _ADTS2 0x4
