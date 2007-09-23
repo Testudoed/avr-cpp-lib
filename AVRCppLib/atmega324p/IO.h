@@ -39,7 +39,7 @@
 
 /**********************************************************************************************************************\
 
-	atmega324 registers, bits and ports declarations.
+	atmega324p registers, bits and ports declarations.
 	This file is generated. Do not modify manually.
 
 \**********************************************************************************************************************/
@@ -47,7 +47,6 @@
 // Registers
 namespace AVRCpp
 {
-    __DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_8BIT_REGISTER__(UDR1);
 	__DECLARE_8BIT_REGISTER__(UBRR1H);
 	__DECLARE_8BIT_REGISTER__(UBRR1L);
@@ -106,6 +105,7 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(SREG);
 	__DECLARE_8BIT_REGISTER__(SPH);
 	__DECLARE_8BIT_REGISTER__(SPL);
+	__DECLARE_8BIT_REGISTER__(RAMPZ);
 	__DECLARE_8BIT_REGISTER__(SPMCSR);
 	__DECLARE_8BIT_REGISTER__(MCUCR);
 	__DECLARE_8BIT_REGISTER__(MCUSR);
@@ -145,6 +145,7 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(PINB);
 	__DECLARE_8BIT_REGISTER__(PORTA);
 	__DECLARE_8BIT_REGISTER__(DDRA);
+	__DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_16BIT_REGISTER__(OCR1B);
 	__DECLARE_16BIT_REGISTER__(OCR1A);
 	__DECLARE_16BIT_REGISTER__(ICR1);
@@ -348,11 +349,6 @@ namespace AVRCpp
 #define _PCINT25 0x2
 #define _PCINT24 0x1
 
-// TIFR2
-#define _OCF2B 0x04
-#define _OCF2A 0x02
-#define _TOV2 0x1
-
 // TIMSK2
 #define _OCIE2B 0x4
 #define _OCIE2A 0x2
@@ -470,6 +466,9 @@ namespace AVRCpp
 #define _SP1 0x2
 #define _SP0 0x1
 
+// RAMPZ
+#define _RAMPZ0 0x1
+
 // SPMCSR
 #define _SPMIE 0x80
 #define _RWWSB 0x40
@@ -570,6 +569,11 @@ namespace AVRCpp
 #define _PCIF2 0x4
 #define _PCIF1 0x2
 #define _PCIF0 0x1
+
+// TIFR2
+#define _OCF2B 0x4
+#define _OCF2A 0x2
+#define _TOV2 0x1
 
 // TIFR1
 #define _ICF1 0x20
@@ -691,6 +695,16 @@ namespace AVRCpp
 #define _DDA2 0x4
 #define _DDA1 0x2
 #define _DDA0 0x1
+
+// PINA
+#define _PINA7 0x80
+#define _PINA6 0x40
+#define _PINA5 0x20
+#define _PINA4 0x10
+#define _PINA3 0x8
+#define _PINA2 0x4
+#define _PINA1 0x2
+#define _PINA0 0x1
 
 
 // General ports

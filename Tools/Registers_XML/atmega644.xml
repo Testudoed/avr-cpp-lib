@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega644" id="M644">
+<controller name="atmega644" id="ATMEGA644">
 	<registers>
 		<register name="UDR0" bits="8">
 		</register>
@@ -534,6 +534,11 @@
 			</bits>
 		</register>
 		<register name="TIFR2" bits="8">
+			<bits>
+				<bit name="OCF2B" address="0x4"/>
+				<bit name="OCF2A" address="0x2"/>
+				<bit name="TOV2" address="0x1"/>
+			</bits>
 		</register>
 		<register name="TIFR1" bits="8">
 			<bits>
@@ -680,6 +685,18 @@
 				<bit name="DDA2" address="0x4"/>
 				<bit name="DDA1" address="0x2"/>
 				<bit name="DDA0" address="0x1"/>
+			</bits>
+		</register>
+		<register name="PINA" bits="8">
+			<bits>
+				<bit name="PINA7" address="0x80"/>
+				<bit name="PINA6" address="0x40"/>
+				<bit name="PINA5" address="0x20"/>
+				<bit name="PINA4" address="0x10"/>
+				<bit name="PINA3" address="0x8"/>
+				<bit name="PINA2" address="0x4"/>
+				<bit name="PINA1" address="0x2"/>
+				<bit name="PINA0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="OCR1B" bits="16"/>

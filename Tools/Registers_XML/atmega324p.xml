@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega324" id="M324">
+<controller name="atmega324p" id="ATMEGA324P">
 	<registers>
 		<register name="UDR1" bits="8">
 		</register>
@@ -539,8 +539,8 @@
 		<register name="GTCCR" bits="8">
 			<bits>
 				<bit name="TSM" address="0x80"/>
-				<bit name="PSR2" address="0x2"/>
-				<bit name="PSR54310" address="0x1"/>
+				<bit name="PSRASY" address="0x2"/>
+				<bit name="PSRSYNC" address="0x1"/>
 			</bits>
 		</register>
 		<register name="EEARH" bits="8">
@@ -554,12 +554,19 @@
 				<bit name="EEPM1" address="0x20"/>
 				<bit name="EEPM0" address="0x10"/>
 				<bit name="EERIE" address="0x8"/>
-				<bit name="EEMWE" address="0x4"/>
-				<bit name="EEWE" address="0x2"/>
+				<bit name="EEMPE" address="0x4"/>
+				<bit name="EEPE" address="0x2"/>
 				<bit name="EERE" address="0x1"/>
 			</bits>
 		</register>
 		<register name="GPIOR0" bits="8">
+		</register>
+		<register name="EIMSK" bits="8">
+			<bits>
+				<bit name="INT2" address="0x4"/>
+				<bit name="INT1" address="0x2"/>
+				<bit name="INT0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="EIFR" bits="8">
 			<bits>
@@ -577,6 +584,11 @@
 			</bits>
 		</register>
 		<register name="TIFR2" bits="8">
+			<bits>
+				<bit name="OCF2B" address="0x4"/>
+				<bit name="OCF2A" address="0x2"/>
+				<bit name="TOV2" address="0x1"/>
+			</bits>
 		</register>
 		<register name="TIFR1" bits="8">
 			<bits>
@@ -723,6 +735,18 @@
 				<bit name="DDA2" address="0x4"/>
 				<bit name="DDA1" address="0x2"/>
 				<bit name="DDA0" address="0x1"/>
+			</bits>
+		</register>
+		<register name="PINA" bits="8">
+			<bits>
+				<bit name="PINA7" address="0x80"/>
+				<bit name="PINA6" address="0x40"/>
+				<bit name="PINA5" address="0x20"/>
+				<bit name="PINA4" address="0x10"/>
+				<bit name="PINA3" address="0x8"/>
+				<bit name="PINA2" address="0x4"/>
+				<bit name="PINA1" address="0x2"/>
+				<bit name="PINA0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="OCR1B" bits="16"/>

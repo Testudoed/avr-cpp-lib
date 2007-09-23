@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="at90usb1287" id="USB1287">
+<controller name="at90usb1287" id="AT90USB1287">
 	<registers>
 		<register name="OTGTCON" bits="8">
 		</register>
@@ -405,6 +405,7 @@
 		</register>
 		<register name="ADCSRB" bits="8">
 			<bits>
+				<bit name="ADHSM" address="0x80"/>
 				<bit name="ACME" address="0x40"/>
 				<bit name="MUX5" address="0x8"/>
 				<bit name="ADTS2" address="0x4"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega8" id="M8">
+<controller name="atmega8" id="ATMEGA8">
 	<registers>
 		<register name="SREG" bits="8">
 			<bits>

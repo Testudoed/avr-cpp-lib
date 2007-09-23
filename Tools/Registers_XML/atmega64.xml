@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega64" id="M64">
+<controller name="atmega64" id="ATMEGA64">
 	<registers>
 		<register name="UCSR1C" bits="8">
 			<bits>

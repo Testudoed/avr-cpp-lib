@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega164" id="M164">
+<controller name="atmega164p" id="ATMEGA164P">
 	<registers>
 		<register name="UDR1" bits="8">
 		</register>
@@ -539,8 +539,8 @@
 		<register name="GTCCR" bits="8">
 			<bits>
 				<bit name="TSM" address="0x80"/>
-				<bit name="PSR2" address="0x2"/>
-				<bit name="PSR54310" address="0x1"/>
+				<bit name="PSRASY" address="0x2"/>
+				<bit name="PSRSYNC" address="0x1"/>
 			</bits>
 		</register>
 		<register name="EEARH" bits="8">
@@ -554,8 +554,8 @@
 				<bit name="EEPM1" address="0x20"/>
 				<bit name="EEPM0" address="0x10"/>
 				<bit name="EERIE" address="0x8"/>
-				<bit name="EEMWE" address="0x4"/>
-				<bit name="EEWE" address="0x2"/>
+				<bit name="EEMPE" address="0x4"/>
+				<bit name="EEPE" address="0x2"/>
 				<bit name="EERE" address="0x1"/>
 			</bits>
 		</register>
@@ -584,6 +584,11 @@
 			</bits>
 		</register>
 		<register name="TIFR2" bits="8">
+			<bits>
+				<bit name="OCF2B" address="0x4"/>
+				<bit name="OCF2A" address="0x2"/>
+				<bit name="TOV2" address="0x1"/>
+			</bits>
 		</register>
 		<register name="TIFR1" bits="8">
 			<bits>

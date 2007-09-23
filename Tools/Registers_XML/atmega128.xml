@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<controller name="atmega128" id="M128">
+<controller name="atmega128" id="ATMEGA128">
 	<registers>
 		<register name="UCSR1C" bits="8">
 			<bits>

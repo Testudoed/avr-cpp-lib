@@ -2,3 +2,6 @@ Errors in Atmel's devices datasheets register list.
 
 ATmega64  - EIFR register INTF bit instead of INTF2
 AT90usb1287 - UCSR1A register PE1 bit instead of UPE1
+AT90usb1287 - ADHSM missing from ADCSRB
+ATmega164 - Wrong bits in GTCCR
+ATmega325 - Wrong bits in GTCCR

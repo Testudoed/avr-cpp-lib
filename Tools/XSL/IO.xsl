@@ -27,13 +27,11 @@
 ]]>
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_IO_<xsl:value-of select="@id"/>_H__
-#define __AVR_CPP_IO_<xsl:value-of select="@id"/>_H__
+#ifndef __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
+#define __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
 
-#ifdef __DOXYGEN__
-#ifndef __AVR_CPP_IO_H__
+#if defined(__DOXYGEN__) <![CDATA[&&]]> !defined(__AVR_CPP_IO_H__)
 #include <![CDATA[<avr/cpp/IO.h>]]>
-#endif
 #endif
 
 #ifndef __AVR_CPP_IO_H__
@@ -80,6 +78,6 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_IO_<xsl:value-of select="@id"/>_H__
+#endif // ifndef __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
 </xsl:template>
 </xsl:stylesheet>

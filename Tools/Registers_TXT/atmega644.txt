@@ -198,7 +198,7 @@
 0x1A (0x3A) Reserved - - - - - - - -
 0x19 (0x39) Reserved - - - - - - - -
 0x18 (0x38) Reserved - - - - - - - -
-0x17 (0x37) TIFR2 - - - - - OCF2b OCF2A TOV2 152
+0x17 (0x37) TIFR2 - - - - - OCF2B OCF2A TOV2 152
 0x16 (0x36) TIFR1 - - ICF1 - - OCF1B OCF1A TOV1 131
 0x15 (0x35) TIFR0 - - - - - OCF0B OCF0A TOV0 102
 0x14 (0x34) Reserved - - - - - - - -

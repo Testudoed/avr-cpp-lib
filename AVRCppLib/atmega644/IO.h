@@ -47,7 +47,6 @@
 // Registers
 namespace AVRCpp
 {
-    __DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_8BIT_REGISTER__(UDR0);
 	__DECLARE_8BIT_REGISTER__(UBRR0H);
 	__DECLARE_8BIT_REGISTER__(UBRR0L);
@@ -139,6 +138,7 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(PINB);
 	__DECLARE_8BIT_REGISTER__(PORTA);
 	__DECLARE_8BIT_REGISTER__(DDRA);
+	__DECLARE_8BIT_REGISTER__(PINA);
 	__DECLARE_16BIT_REGISTER__(OCR1B);
 	__DECLARE_16BIT_REGISTER__(OCR1A);
 	__DECLARE_16BIT_REGISTER__(ICR1);
@@ -327,11 +327,6 @@ namespace AVRCpp
 #define _OCIE0B 0x4
 #define _OCIE0A 0x2
 #define _TOIE0 0x1
-
-// TIFR2
-#define _OCF2A _BV(OCF2A)
-#define _OCF2B _BV(OCF2B)
-#define _TOV2 _BV(TOV2)
 
 // PCMSK2
 #define _PCINT23 0x80
@@ -532,6 +527,11 @@ namespace AVRCpp
 #define _PCIF1 0x2
 #define _PCIF0 0x1
 
+// TIFR2
+#define _OCF2B 0x4
+#define _OCF2A 0x2
+#define _TOV2 0x1
+
 // TIFR1
 #define _ICF1 0x20
 #define _OCF1B 0x4
@@ -652,6 +652,16 @@ namespace AVRCpp
 #define _DDA2 0x4
 #define _DDA1 0x2
 #define _DDA0 0x1
+
+// PINA
+#define _PINA7 0x80
+#define _PINA6 0x40
+#define _PINA5 0x20
+#define _PINA4 0x10
+#define _PINA3 0x8
+#define _PINA2 0x4
+#define _PINA1 0x2
+#define _PINA0 0x1
 
 
 // General ports
