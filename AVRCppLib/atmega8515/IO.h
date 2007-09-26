@@ -22,6 +22,7 @@
 	MTU TTU Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
+	Rasmus Raag          rasmus_raag@users.sourceforge.net
 
 \**********************************************************************************************************************/
 
@@ -466,3 +467,4 @@ namespace AVRCpp
 
 #endif // ifndef __AVR_CPP_IO_H__
 #endif // ifndef __AVR_CPP_ATMEGA8515_IO_H__
+ 

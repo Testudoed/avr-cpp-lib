@@ -24,6 +24,7 @@
 	MTU TTU Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
+  Rasmus Raag          rasmus_raag@users.sourceforge.net
 ]]>
 \**********************************************************************************************************************/
 

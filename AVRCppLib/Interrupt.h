@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 	MTÜ TTÜ Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
+	Rasmus Raag          rasmus_raag@users.sourceforge.net
 
 \**********************************************************************************************************************/
 
@@ -106,8 +107,9 @@
  * \attention If GlobalInterrupts::Enable() is called within the INTERRUPT_SAFE block, the interrupts will be
  *			  enabled. INTERRUPT_SAFE just disables interrupts in the beginning and restores the previous
  *			  state in the end. Any code in between can freely enable and disable interrupts.
- * \note INTERRUPT_SAFE is quite effective: it adds 5 commands to your program, while manually saving SREG, disabling
- *		 interrupts and restoring SREG
+ * \note INTERRUPT_SAFE is quite effective: it adds 5 assembler instructions to your program, while manually saving SREG, disabling
+ *		 interrupts and restoring SREG adds 3 instructions. At the expense of only 2 instructions, INTERRUPT_SAFE makes the code easier
+ *       to read and write.
  */
 #define INTERRUPT_SAFE for(AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.IsFinished(); safeObject.Finished() )
 

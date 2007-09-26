@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -22,7 +22,8 @@
 	MTÜ TTÜ Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
-	
+	Rasmus Raag          rasmus_raag@users.sourceforge.net
+
 \**********************************************************************************************************************/
 
 #ifndef __AVR_CPP_ASSEMBLER_H__

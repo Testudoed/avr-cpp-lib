@@ -1520,7 +1520,7 @@ private:	// Invoker for static functions
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -1541,6 +1541,7 @@ private:	// Invoker for static functions
 	MTÜ TTÜ Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
+	Rasmus Raag          rasmus_raag@users.sourceforge.net
 
 \**********************************************************************************************************************/
 
@@ -2034,3 +2035,4 @@ private:	// Invoker for static functions
 #endif // if !(defined(EXCLUDE_FAST_DELEGATE) && defined(EXCLUDE_MULTI_DELEGATE) && defined(EXLUDE_DATA_DELEGATE))
 #endif // ifndef __AVR_CPP_DELEGATE_H__
 
+ 
