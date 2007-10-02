@@ -178,7 +178,7 @@ namespace AVRCpp
 			
 			/**
 			 * Finds the first occurrence of 'value' from character position specified with 'index'.
-			 * Comparison is case-sensetive.
+			 * Comparison is case-sensitive.
 			 * @return On success returns index pointing to the starting of the substring, otherwise
 			 * 	BaseString::NotFound is returned.
 			 */
@@ -186,7 +186,7 @@ namespace AVRCpp
 			
 			/**
 			 * Finds the first occurrence of 'value' from character position specified with 'index'.
-			 * Comparison is case-sensetive.
+			 * Comparison is case-sensitive.
 			 * @return On success returns index pointing to the starting of the substring, otherwise
 			 * 	BaseString::NotFound is returned.
 			 */
@@ -237,13 +237,13 @@ namespace AVRCpp
 			inline char_t GetChar(uint16_t index) const { return (index < length) ? me[index] : '\0'; }
 			
 			/**
-			 * Returns true if first characters match with 'value'. Comparison is case-sensetive.
+			 * Returns true if first characters match with 'value'. Comparison is case-sensitive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			inline bool StartsWith(cstr_t value) const { return StrNCompare(Get(), value, StrLength(value) ) == 0; }
 			
 			/**
-			 * Returns true if first characters match with 'value'. Comparison is case-sensetive.
+			 * Returns true if first characters match with 'value'. Comparison is case-sensitive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			inline bool StartsWith(BaseString &value) const { return StrNCompare(Get(), value.Get(), value.GetLength() ) == 0; }
@@ -261,13 +261,13 @@ namespace AVRCpp
 			inline bool IStartsWith(BaseString &value) const { return StrNICompare(Get(), value.Get(), value.GetLength() ) == 0; }
 			
 			/**
-			 * Returns true if last characters match with 'value'. Comparison is case-sensetive.
+			 * Returns true if last characters match with 'value'. Comparison is case-sensitive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool EndsWith(cstr_t value) const;
 			
 			/**
-			 * Returns true if last characters match with 'value'. Comparison is case-sensetive.
+			 * Returns true if last characters match with 'value'. Comparison is case-sensitive.
 			 * @return Always false in case length of 'value' is greater than length of this string.
 			 */
 			bool EndsWith(const BaseString &value) const;
@@ -314,13 +314,13 @@ namespace AVRCpp
 			inline int GetInteger() const { return ToInteger(Get() ); }
 			
 			/**
-			 * Case-sensetive string compare.
+			 * Case-sensitive string compare.
 			 * @return zero in case equal
 			 */
 			inline int Compare(cstr_t comparable) const { return StrCompare(Get(), comparable); }
 			
 			/**
-			 * Case-sensetive string compare.
+			 * Case-sensitive string compare.
 			 * @return zero in case equal
 			 */
 			inline int Compare(BaseString &comparable) const { return StrCompare(Get(), comparable.Get() ); }
@@ -366,62 +366,62 @@ namespace AVRCpp
 			inline BaseString &operator += (cstr_t s) { Join(s); return *this; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator < (BaseString &s) const { return Compare(s) < 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator > (BaseString &s) const { return Compare(s) > 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator <= (BaseString &s) const { return Compare(s) <= 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator >= (BaseString &s) const { return Compare(s) >= 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator == (BaseString &s) const { return Compare(s) == 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator != (BaseString &s) const { return Compare(s) != 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator < (cstr_t s) const { return Compare(s) < 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator > (cstr_t s) const { return Compare(s) > 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator <= (cstr_t s) const { return Compare(s) <= 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator >= (cstr_t s) const { return Compare(s) >= 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator == (cstr_t s) const { return Compare(s) == 0; }
 			
 			/**
-			 * Case-sensetive comparison.
+			 * Case-sensitive comparison.
 			 */
 			inline bool operator != (cstr_t s) const { return Compare(s) != 0; }
 			
