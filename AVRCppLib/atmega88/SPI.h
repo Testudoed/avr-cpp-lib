@@ -26,8 +26,8 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA8_SPI_H__
-#define __AVR_CPP_ATMEGA8_SPI_H__
+#ifndef __AVR_CPP_ATMEGA88_SPI_H__
+#define __AVR_CPP_ATMEGA88_SPI_H__
 
 /* This file should only be included from <avr/cpp/SPI.h>, never directly. */
 
@@ -35,12 +35,12 @@
 #ifdef __DOXYGEN__
 #include <avr/cpp/SPI.h>
 #else
-#error "Include <avr/cpp/SPI.h> instead of <avr/cpp/atmega8/SPI.h>."
+#error "Include <avr/cpp/SPI.h> instead of <avr/cpp/atmega88/SPI.h>."
 #endif
 #endif // ifndef __AVR_CPP_SPI_H__
 
 #ifndef __AVR_CPP_XXX_SPI_H__
-#define __AVR_CPP_XXX_SPI_H__ "atmega8/SPI.h"
+#define __AVR_CPP_XXX_SPI_H__ "atmega88/SPI.h"
 #else
 #error "Attempt to include more than one <avr/cpp/XXX/SPI.h> file."
 #endif
@@ -73,4 +73,4 @@ namespace AVRCpp
 
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_ATMEGA8_SPI_H__
+#endif // ifndef __AVR_CPP_ATMEGA88_SPI_H__
