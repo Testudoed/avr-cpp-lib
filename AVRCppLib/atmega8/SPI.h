@@ -60,7 +60,10 @@ namespace AVRCpp
 				_SPCR,							/* ControlRegister */
 				_SPSR,							/* StatusRegister */
 				_SPDR,							/* DataRegister */
-				Pin2<PortB> >					/* SlaveSelectPin */
+				Pin2<PortB>,					/* SlaveSelectPin */
+				Pin5<PortB>,					/* ClockPin */
+				Pin3<PortB>,					/* MasterOutPin */
+				Pin4<PortB> >					/* MasterInPin */
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt<Bits<_SPCR, _SPIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 

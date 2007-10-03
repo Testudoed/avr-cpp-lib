@@ -111,7 +111,10 @@ namespace AVRCpp
 						class ControlRegister,
 						class StatusRegister,
 						class DataRegister,
-						class SlaveSelectPin >
+						class SlaveSelectPin,
+						class ClockPin,
+						class MasterOutPin,
+						class MasterInPin >
 
 			struct SPIbase
 			{
@@ -134,6 +137,7 @@ namespace AVRCpp
 					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
 
 					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }
+					//static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted()); }
 
 				public:
 
@@ -147,12 +151,25 @@ namespace AVRCpp
 						ClockPolarity polarity,
 						ClockPhase phase )
 					{
-						ControlRegister::Set(SPE | order | mode | polarity | phase | (rate & ClockRateFlag));
+						// Set pins
+						SlaveSelectPin::Output::InitOutput();
+						
+						if (mode == MasterMode)												
+							ClockPin::Output::InitOutput();
+						else
+							ClockPin::Input::InitInput();
+						
+						MasterOutPin::Output::InitOutput();
+						MasterInPin::Input::InitInput();						
+														
+						// Setup SPI																		
+						ControlRegister::Set(_SPE | order | mode | polarity | phase | (rate & ClockRateFlag));
 
+						// Set double rate
 						if (rate & 0x80)
 							DoubleSpeedBit::Set();
 						else
-							DoubleSpeedBit::Clear();
+							DoubleSpeedBit::Clear();							
 					}
 
 					/**
@@ -160,9 +177,8 @@ namespace AVRCpp
 					 *	\attention Only possible in master-mode
 					 */
 					static inline void StartTransmission()
-					{
-						//MasterSlaveSelectBit::Set();
-						SlaveSelectPin::Clear();
+					{						
+						SlaveSelectPin::Output::Clear();
 					}
 
 					/**
@@ -171,7 +187,7 @@ namespace AVRCpp
 					 */
 					static inline void EndTransmission()
 					{
-						SlaveSelectPin::Set();
+						SlaveSelectPin::Output::Set();
 					}
 
 					/**
@@ -180,10 +196,10 @@ namespace AVRCpp
 					 *	@return true on success
 					 */
 					static inline bool Write(uint8_t data)
-					{
-						WaitUntilTransferCompleted();
-
+					{					
 						Data::Set(data);
+						
+						WaitUntilTransferCompleted();
 						
 						return !WasWriteCollision();
 					}
