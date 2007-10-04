@@ -150,16 +150,23 @@ namespace AVRCpp
 						ClockPolarity polarity,
 						ClockPhase phase )
 					{
-						// Set pins
-						SlaveSelectPin::Output::InitOutput();
-						
-						if (mode == MasterMode)												
+					
+						// Set pins										
+						if (mode == MasterMode)				
+						{
+							SlaveSelectPin::Output::InitOutput();								
 							ClockPin::Output::InitOutput();
+							MasterOutPin::Output::InitOutput();
+							MasterInPin::Input::InitInput();						
+						}
 						else
+						{
+							SlaveSelectPin::Input::InitInput();
 							ClockPin::Input::InitInput();
-						
-						MasterOutPin::Output::InitOutput();
-						MasterInPin::Input::InitInput();						
+							MasterOutPin::Input::InitInput();
+							MasterInPin::Output::InitOutput();						
+						}
+												
 														
 						// Setup SPI																		
 						ControlRegister::Set(_SPE | order | mode | polarity | phase | (rate & ClockRateFlag));
@@ -213,6 +220,17 @@ namespace AVRCpp
 
 						return Data::Get();
 					}
+					
+					/**
+					 *	Reads byte from SPI by generating clock signal with empty output
+					 *	@return data byte read
+					 */
+					static inline uint8_t ReadByClock()
+					{
+						if (!Write(0)) return false;
+
+						return Read();
+					}
 
 	   		}; // struct SPIbase
    			
@@ -228,6 +246,8 @@ namespace AVRCpp
 /* Devices supported and not */
 #if defined(__AVR_ATmega8__)
 #include "atmega8/SPI.h"
+#elif defined(__AVR_ATmega88__)
+#include "atmega88/SPI.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/SPI.h"
 #else
