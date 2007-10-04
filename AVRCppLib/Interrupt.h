@@ -134,8 +134,7 @@ namespace AVRCpp
 				
 				InterruptDisabler()
 				{
-					sreg = SREG;
-					sreg &= ~_SREG_C;
+					sreg = SelectBits<_SREG>(~_SREG_C);
 					GlobalInterrupts::Disable();
 					
 				} // InterruptDisabler CONSTRUCTOR

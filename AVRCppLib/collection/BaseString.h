@@ -76,6 +76,23 @@ namespace AVRCpp
 				
 			} // SubFromInt
 			
+			template <uint8_t radix, uint8_t requiredSpace> bool SubJoinFromInt(int16_t i)
+			{
+				if (!EnsureCapacity(length + requiredSpace) )
+					return false;
+				
+				{
+					str_t start = me + length;
+					
+					ToString(i, start, radix);
+					
+					length += StrLength(start);
+				}
+				
+				return true;
+				
+			} // SubJoinFromInt
+			
 		public:
 			
 			/// @see BaseString::Find
@@ -162,6 +179,11 @@ namespace AVRCpp
 			inline bool Join(cstr_t value) { return SubJoin(value, StrLength(value) ); }
 			
 			/**
+			 * Appends one character to this string.
+			 */
+			bool Join(char_t c);
+
+			/**
 			 * Appends 'value' to this string.
 			 */
 			inline bool Join(const BaseString &value) { return SubJoin(value.Get(), value.GetLength() ); }
@@ -229,6 +251,47 @@ namespace AVRCpp
 			 * Inserts 'value' into this string to the character position specified with 'index'.
 			 */
 			inline bool Insert(uint16_t index, cstr_t value) { return Replace(index, index, value); }
+			
+			/**
+			 * Identical to standard 'C' snprintf.
+			 * @param[in] maxLength Maximum length with terminating null character INCLUDED.
+			 * @return Number of characters written. Terminating null character NOT included.
+			 */
+			int Print(uint16_t maxLength, cstr_t fromat, ...) __attribute__ ((format(printf, 3, 4)));
+			
+			/**
+			 * Identical to standard 'C' snprintf exept the first parameter.
+			 * @param[in] index The character's null-based index to point the first character
+			 * from which these are overwritten. if 'index' is equal to string length, then all written symbols are appended.
+			 * @param[in] maxLength Maximum length with terminating null character INCLUDED.
+			 * @return Number of characters written. Terminating null character NOT included.
+			 */
+			int Print(uint16_t index, uint16_t maxLength, cstr_t fromat, ...) __attribute__ ((format(printf, 4, 5)));
+			
+			/**
+			 * Appends integer value in human readable decimal representation to this string.
+			 */
+			inline bool JoinFromInt(int16_t i) { return SubJoinFromInt<10, 7>(i); }
+			
+			/**
+			 * Appends integer value in human readable hexadecimal representation to this string.
+			 */
+			inline bool JoinFromIntHex(int16_t i) { return SubJoinFromInt<16, 6>(i); }
+			
+			/**
+			 * Appends integer value in human readable binary representation to this string.
+			 */
+			inline bool JoinFromIntBin(int16_t i) { return SubJoinFromInt<2, 18>(i); }
+			
+			/**
+			 * Appends integer value in human readable octal representation to this string.
+			 */
+			inline bool JoinFromIntOct(int16_t i) { return SubJoinFromInt<8, 8>(i); }
+			
+			/**
+			 * Appends floating point value in human readable decimal representation to this string.
+			 */
+			bool JoinFromDouble(double d);
 			
 			/**
 			 * Returns character from specified index.
@@ -366,6 +429,46 @@ namespace AVRCpp
 			inline BaseString &operator += (cstr_t s) { Join(s); return *this; }
 			
 			/**
+			 * Appends 'c' to this string.
+			 */
+			inline BaseString &operator += (char_t c) { Join(c); return *this; }
+			
+			/**
+			 * Appends integer value in human readable decimal representation to this string.
+			 */
+			inline BaseString &operator += (int16_t i) { JoinFromInt(i); return *this; }
+			
+			/**
+			 * Appends floating point value in human readable decimal representation to this string.
+			 */
+			inline BaseString &operator += (double d) { JoinFromDouble(d); return *this; }
+			
+			/**
+			 * Appends 's' to this string.
+			 */
+			inline BaseString &operator << (BaseString &s) { Join(s.Get() ); return *this; }
+			
+			/**
+			 * Appends 's' to this string.
+			 */
+			inline BaseString &operator << (cstr_t s) { Join(s); return *this; }
+			
+			/**
+			 * Appends 'c' to this string.
+			 */
+			inline BaseString &operator << (char_t c) { Join(c); return *this; }
+			
+			/**
+			 * Appends integer value in human readable decimal representation to this string.
+			 */
+			inline BaseString &operator << (int16_t i) { JoinFromInt(i); return *this; }
+			
+			/**
+			 * Appends floating point value in human readable decimal representation to this string.
+			 */
+			inline BaseString &operator << (double d) { JoinFromDouble(d); return *this; }
+			
+			/**
 			 * Case-sensitive comparison.
 			 */
 			inline bool operator < (BaseString &s) const { return Compare(s) < 0; }
@@ -432,4 +535,4 @@ namespace AVRCpp
 } // namespace AVRCpp
 
 #endif // ifndef __AVR_CPP_BASE_STRING_H__
- 
+
