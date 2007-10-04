@@ -256,6 +256,32 @@ public:
 				&&	(flags7 ? IsBitsSet<Pins7>(flags7) : true);
 		
 	} // IsAllSet
+	
+	static inline void SetOne(uint8_t nr)
+	{
+		SetBitsTo<Pins0>(flags0, (nr == 0 ? true : false));
+		SetBitsTo<Pins1>(flags1, (nr == 1 ? true : false));
+		SetBitsTo<Pins2>(flags2, (nr == 2 ? true : false));
+		SetBitsTo<Pins3>(flags3, (nr == 3 ? true : false));
+		SetBitsTo<Pins4>(flags4, (nr == 4 ? true : false));
+		SetBitsTo<Pins5>(flags5, (nr == 5 ? true : false));
+		SetBitsTo<Pins6>(flags6, (nr == 6 ? true : false));
+		SetBitsTo<Pins7>(flags7, (nr == 7 ? true : false));
+						
+	} // SetOne
+	
+	static inline void ClearOne(uint8_t nr)
+	{
+		SetBitsTo<Pins0>(flags0, (nr == 0 ? false : true));
+		SetBitsTo<Pins1>(flags1, (nr == 1 ? false : true));
+		SetBitsTo<Pins2>(flags2, (nr == 2 ? false : true));
+		SetBitsTo<Pins3>(flags3, (nr == 3 ? false : true));
+		SetBitsTo<Pins4>(flags4, (nr == 4 ? false : true));
+		SetBitsTo<Pins5>(flags5, (nr == 5 ? false : true));
+		SetBitsTo<Pins6>(flags6, (nr == 6 ? false : true));
+		SetBitsTo<Pins7>(flags7, (nr == 7 ? false : true));
+						
+	} // ClearOne
 
 }; // class MultiPortOutputPins
 
