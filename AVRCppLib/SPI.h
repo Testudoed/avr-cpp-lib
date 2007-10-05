@@ -52,29 +52,29 @@ namespace AVRCpp
 			SlaveMode   = 0x00,
 			MasterMode  = _MSTR
 
-		}; // Operation mode
-
+		}; // enum Operation mode
+		
 		enum DataOrder
 		{
 			MSBFirst	= 0x00,
 			LSBFirst	= _DORD
 
-		}; // DataOrder
-
+		}; // enum DataOrder
+		
 		enum ClockPolarity
 		{
 			ClockOnHigh = 0x00,
 			ClockOnLow  = _CPOL
 
-		}; // ClockPolarity
-
+		}; // enum ClockPolarity
+		
 		enum ClockPhase
 		{
 			SampleOnLeadingEdge	= 0x00,
 			SampleOnFallingEdge = _CPHA
 
-		}; // ClockPhase
-
+		}; // enum ClockPhase
+		
 		enum ClockRate
 		{
 			RateDiv2	= 0x80,
@@ -85,7 +85,7 @@ namespace AVRCpp
 			RateDiv64	= 0x02,
 			RateDiv128	= 0x03,
 
-		}; // ClockRate
+		}; // enum ClockRate
 		
 		namespace Internal
 		{
@@ -103,7 +103,7 @@ namespace AVRCpp
 				DoubleSpeedFlag			= 0x01
 				
 			}; // enum BitFlags
-
+			
 			/**
 			 *  SPI base structure
 			 */
@@ -115,8 +115,8 @@ namespace AVRCpp
 						class ClockPin,
 						class MasterOutPin,
 						class MasterInPin >
-
-			struct SPIbase
+						
+			struct SPIBase
 			{
 				private:
 					typedef Bits<ControlRegister, TransferEnableFlag>		TransferEnableBit;
@@ -125,21 +125,21 @@ namespace AVRCpp
 					typedef Bits<ControlRegister, ClockPolarityFlag>		ClockPolarityBit;
 					typedef Bits<ControlRegister, ClockPhaseFlag>			ClockPhaseBit;
 					typedef Bits<ControlRegister, ClockRateFlag>			ClockRateBits;
-
+					
 					typedef Bits<StatusRegister, TransferCompleteFlag>		TransferCompleteBit;
 					typedef Bits<StatusRegister, CollisionFlag>				CollisionBit;
 					typedef Bits<StatusRegister, DoubleSpeedFlag>			DoubleSpeedBit;
-
+					
 				protected:
 					typedef DataRegister	Data;
-
+					
 					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
 					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
-
+					
 					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }					
-
+					
 				public:
-
+					
 					/**
 					 *  Setup SPI
 					 */
@@ -176,8 +176,10 @@ namespace AVRCpp
 							DoubleSpeedBit::Set();
 						else
 							DoubleSpeedBit::Clear();							
-					}
 
+					} // Setup
+					
+					
 					/**
 					 *  Starts transmiting by setting SPI to master mode and selecting slave device
 					 *	\attention Only possible in master-mode
@@ -185,8 +187,10 @@ namespace AVRCpp
 					static inline void StartTransmission()
 					{						
 						SlaveSelectPin::Output::Clear();
-					}
 
+					} // StartTransmission
+					
+					
 					/**
 					 *  Ends transmitting by de-selecting slave device
 					 *	\attention Only possible in master-mode
@@ -194,12 +198,14 @@ namespace AVRCpp
 					static inline void EndTransmission()
 					{
 						SlaveSelectPin::Output::Set();
-					}
 
+					} // EndTransmission
+					
+					
 					/**
 					 *	Writes byte to SPI
 					 *	@param data data byte to transmit
-					 *	@return true on success
+					 *	@return true on success, false on collision
 					 */
 					static inline bool Write(uint8_t data)
 					{					
@@ -208,8 +214,10 @@ namespace AVRCpp
 						WaitUntilTransferCompleted();
 						
 						return !WasWriteCollision();
-					}
 
+					} // Write
+					
+					
 					/**
 					 *	Reads byte from SPI
 					 *	@return data byte read
@@ -219,20 +227,26 @@ namespace AVRCpp
 						WaitUntilTransferCompleted();
 
 						return Data::Get();
-					}
+
+					} // Read
+					
 					
 					/**
 					 *	Reads byte from SPI by generating clock signal with empty output
-					 *	@return data byte read
+					 *	@param[out] byte read byte is stored to this variable
+					 *	@return true on success, false on collision
 					 */
-					static inline uint8_t ReadByClock()
+					static inline bool ReadByClock(uint8_t &byte)
 					{
-						if (!Write(0)) return false;
+						if (!Write(0) ) return false;
 
-						return Read();
-					}
+						byte = Read();
 
-	   		}; // struct SPIbase
+						return true;
+
+					} // ReadByClock
+
+	   		}; // template struct SPIBase
    			
 		}; // namespace Internal
 
