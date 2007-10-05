@@ -489,11 +489,16 @@ namespace AVRCpp
 					
 				} // DetailedSimpleRead 2
 
-				static inline bool Flush()
+				/// Empties the receive buffer, if it is not already empty.
+				static inline void Flush()
 				{
-					uint8_t data;
-					
-					return Read(data);
+					// If there is data to read
+					while(IsReceiveCompleted())
+					{
+						// Discard the contents of USART Data Register
+						uint8_t data;
+						data = Data::Get();
+					}
 					
 				} // Flush
 				
