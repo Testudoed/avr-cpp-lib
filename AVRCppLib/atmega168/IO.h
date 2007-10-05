@@ -40,7 +40,7 @@
 /**********************************************************************************************************************\
 
 	atmega168 registers, bits and ports declarations.
-	This file is generated. Do not modify manually.
+	This file is generated. Do not modify manually !!!
 
 \**********************************************************************************************************************/
 

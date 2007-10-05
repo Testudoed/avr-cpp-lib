@@ -5,7 +5,7 @@
 <xsl:template match="/controller">
 
 <xsl:call-template name="header">
-	<xsl:with-param name="feature" select="'IO'"/>
+	<xsl:with-param name="feature" select="'SPI'"/>
 </xsl:call-template>
 
 /**********************************************************************************************************************\

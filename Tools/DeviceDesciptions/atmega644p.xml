@@ -1,6 +1,48 @@
 <?xml version="1.0"?>
-<controller name="atmega88" id="ATMEGA88">
+<controller name="atmega324p" id="ATMEGA324P">
 	<registers>
+		<register name="UDR1" bits="8">
+		</register>
+		<register name="UBRR1H" bits="8">
+		</register>
+		<register name="UBRR1L" bits="8">
+		</register>
+		<register name="UCSR1C" bits="8">
+			<bits>
+				<bit name="UMSEL11" address="0x80"/>
+				<bit name="UMSEL10" address="0x40"/>
+				<bit name="UPM11" address="0x20"/>
+				<bit name="UPM10" address="0x10"/>
+				<bit name="USBS1" address="0x8"/>
+				<bit name="UCSZ11" address="0x4"/>
+				<bit name="UCSZ10" address="0x2"/>
+				<bit name="UCPOL1" address="0x1"/>
+			</bits>
+		</register>
+		<register name="UCSR1B" bits="8">
+			<bits>
+				<bit name="RXCIE1" address="0x80"/>
+				<bit name="TXCIE1" address="0x40"/>
+				<bit name="UDRIE1" address="0x20"/>
+				<bit name="RXEN1" address="0x10"/>
+				<bit name="TXEN1" address="0x8"/>
+				<bit name="UCSZ12" address="0x4"/>
+				<bit name="RXB81" address="0x2"/>
+				<bit name="TXB81" address="0x1"/>
+			</bits>
+		</register>
+		<register name="UCSR1A" bits="8">
+			<bits>
+				<bit name="RXC1" address="0x80"/>
+				<bit name="TXC1" address="0x40"/>
+				<bit name="UDRE1" address="0x20"/>
+				<bit name="FE1" address="0x10"/>
+				<bit name="DOR1" address="0x8"/>
+				<bit name="UPE1" address="0x4"/>
+				<bit name="U2X1" address="0x2"/>
+				<bit name="MPCM1" address="0x1"/>
+			</bits>
+		</register>
 		<register name="UDR0" bits="8">
 		</register>
 		<register name="UBRR0H" bits="8">
@@ -15,8 +57,8 @@
 				<bit name="UPM00" address="0x10"/>
 				<bit name="USBS0" address="0x8"/>
 				<bit name="UCSZ01" address="0x4"/>
-				<bit name="UDORD0" address="0x2"/>
-				<bit name="UCSZ00" address="0x1"/>
+				<bit name="UCSZ00" address="0x2"/>
+				<bit name="UCPOL0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="UCSR0B" bits="8">
@@ -180,6 +222,8 @@
 		</register>
 		<register name="DIDR0" bits="8">
 			<bits>
+				<bit name="ADC7D" address="0x80"/>
+				<bit name="ADC6D" address="0x40"/>
 				<bit name="ADC5D" address="0x20"/>
 				<bit name="ADC4D" address="0x10"/>
 				<bit name="ADC3D" address="0x8"/>
@@ -193,6 +237,7 @@
 				<bit name="REFS1" address="0x80"/>
 				<bit name="REFS0" address="0x40"/>
 				<bit name="ADLAR" address="0x20"/>
+				<bit name="MUX4" address="0x10"/>
 				<bit name="MUX3" address="0x8"/>
 				<bit name="MUX2" address="0x4"/>
 				<bit name="MUX1" address="0x2"/>
@@ -222,6 +267,18 @@
 		<register name="ADCH" bits="8">
 		</register>
 		<register name="ADCL" bits="8">
+		</register>
+		<register name="PCMSK3" bits="8">
+			<bits>
+				<bit name="PCINT31" address="0x80"/>
+				<bit name="PCINT30" address="0x40"/>
+				<bit name="PCINT29" address="0x20"/>
+				<bit name="PCINT28" address="0x10"/>
+				<bit name="PCINT27" address="0x8"/>
+				<bit name="PCINT26" address="0x4"/>
+				<bit name="PCINT25" address="0x2"/>
+				<bit name="PCINT24" address="0x1"/>
+			</bits>
 		</register>
 		<register name="TIMSK2" bits="8">
 			<bits>
@@ -259,6 +316,7 @@
 		</register>
 		<register name="PCMSK1" bits="8">
 			<bits>
+				<bit name="PCINT15" address="0x80"/>
 				<bit name="PCINT14" address="0x40"/>
 				<bit name="PCINT13" address="0x20"/>
 				<bit name="PCINT12" address="0x10"/>
@@ -282,6 +340,8 @@
 		</register>
 		<register name="EICRA" bits="8">
 			<bits>
+				<bit name="ISC21" address="0x20"/>
+				<bit name="ISC20" address="0x10"/>
 				<bit name="ISC11" address="0x8"/>
 				<bit name="ISC10" address="0x4"/>
 				<bit name="ISC01" address="0x2"/>
@@ -290,6 +350,7 @@
 		</register>
 		<register name="PCICR" bits="8">
 			<bits>
+				<bit name="PCIE3" address="0x8"/>
 				<bit name="PCIE2" address="0x4"/>
 				<bit name="PCIE1" address="0x2"/>
 				<bit name="PCIE0" address="0x1"/>
@@ -302,6 +363,7 @@
 				<bit name="PRTWI" address="0x80"/>
 				<bit name="PRTIM2" address="0x40"/>
 				<bit name="PRTIM0" address="0x20"/>
+				<bit name="PRUSART1" address="0x10"/>
 				<bit name="PRTIM1" address="0x8"/>
 				<bit name="PRSPI" address="0x4"/>
 				<bit name="PRUSART0" address="0x2"/>
@@ -342,6 +404,16 @@
 			</bits>
 		</register>
 		<register name="SPH" bits="8">
+			<bits>
+				<bit name="SP15" address="0x80"/>
+				<bit name="SP14" address="0x40"/>
+				<bit name="SP13" address="0x20"/>
+				<bit name="SP12" address="0x10"/>
+				<bit name="SP11" address="0x8"/>
+				<bit name="SP10" address="0x4"/>
+				<bit name="SP9" address="0x2"/>
+				<bit name="SP8" address="0x1"/>
+			</bits>
 		</register>
 		<register name="SPL" bits="8">
 			<bits>
@@ -355,19 +427,28 @@
 				<bit name="SP0" address="0x1"/>
 			</bits>
 		</register>
+		<register name="RAMPZ" bits="8">
+			<bits>
+				<bit name="RAMPZ0" address="0x1"/>
+			</bits>
+		</register>
 		<register name="SPMCSR" bits="8">
 			<bits>
 				<bit name="SPMIE" address="0x80"/>
 				<bit name="RWWSB" address="0x40"/>
+				<bit name="SIGRD" address="0x20"/>
 				<bit name="RWWSRE" address="0x10"/>
 				<bit name="BLBSET" address="0x8"/>
 				<bit name="PGWRT" address="0x4"/>
 				<bit name="PGERS" address="0x2"/>
-				<bit name="SELFPRGEN" address="0x1"/>
+				<bit name="SPMEN" address="0x1"/>
 			</bits>
 		</register>
 		<register name="MCUCR" bits="8">
 			<bits>
+				<bit name="JTD" address="0x80"/>
+				<bit name="BODS" address="0x40"/>
+				<bit name="BODSE" address="0x20"/>
 				<bit name="PUD" address="0x10"/>
 				<bit name="IVSEL" address="0x2"/>
 				<bit name="IVCE" address="0x1"/>
@@ -375,6 +456,7 @@
 		</register>
 		<register name="MCUSR" bits="8">
 			<bits>
+				<bit name="JTRF" address="0x10"/>
 				<bit name="WDRF" address="0x8"/>
 				<bit name="BORF" address="0x4"/>
 				<bit name="EXTRF" address="0x2"/>
@@ -388,6 +470,8 @@
 				<bit name="SM0" address="0x2"/>
 				<bit name="SE" address="0x1"/>
 			</bits>
+		</register>
+		<register name="OCDR" bits="8">
 		</register>
 		<register name="ACSR" bits="8">
 			<bits>
@@ -405,21 +489,21 @@
 		</register>
 		<register name="SPSR" bits="8">
 			<bits>
-				<bit name="SPIF" address="0x80"/>
-				<bit name="WCOL" address="0x40"/>
-				<bit name="SPI2X" address="0x1"/>
+				<bit name="SPIF0" address="0x80"/>
+				<bit name="WCOL0" address="0x40"/>
+				<bit name="SPI2X0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="SPCR" bits="8">
 			<bits>
-				<bit name="SPIE" address="0x80"/>
-				<bit name="SPE" address="0x40"/>
-				<bit name="DORD" address="0x20"/>
-				<bit name="MSTR" address="0x10"/>
-				<bit name="CPOL" address="0x8"/>
-				<bit name="CPHA" address="0x4"/>
-				<bit name="SPR1" address="0x2"/>
-				<bit name="SPR0" address="0x1"/>
+				<bit name="SPIE0" address="0x80"/>
+				<bit name="SPE0" address="0x40"/>
+				<bit name="DORD0" address="0x20"/>
+				<bit name="MSTR0" address="0x10"/>
+				<bit name="CPOL0" address="0x8"/>
+				<bit name="CPHA0" address="0x4"/>
+				<bit name="SPR01" address="0x2"/>
+				<bit name="SPR00" address="0x1"/>
 			</bits>
 		</register>
 		<register name="GPIOR2" bits="8">
@@ -479,18 +563,21 @@
 		</register>
 		<register name="EIMSK" bits="8">
 			<bits>
+				<bit name="INT2" address="0x4"/>
 				<bit name="INT1" address="0x2"/>
 				<bit name="INT0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="EIFR" bits="8">
 			<bits>
+				<bit name="INTF2" address="0x4"/>
 				<bit name="INTF1" address="0x2"/>
 				<bit name="INTF0" address="0x1"/>
 			</bits>
 		</register>
 		<register name="PCIFR" bits="8">
 			<bits>
+				<bit name="PCIF3" address="0x8"/>
 				<bit name="PCIF2" address="0x4"/>
 				<bit name="PCIF1" address="0x2"/>
 				<bit name="PCIF0" address="0x1"/>
@@ -556,6 +643,7 @@
 		</register>
 		<register name="PORTC" bits="8">
 			<bits>
+				<bit name="PORTC7" address="0x80"/>
 				<bit name="PORTC6" address="0x40"/>
 				<bit name="PORTC5" address="0x20"/>
 				<bit name="PORTC4" address="0x10"/>
@@ -567,6 +655,7 @@
 		</register>
 		<register name="DDRC" bits="8">
 			<bits>
+				<bit name="DDC7" address="0x80"/>
 				<bit name="DDC6" address="0x40"/>
 				<bit name="DDC5" address="0x20"/>
 				<bit name="DDC4" address="0x10"/>
@@ -578,6 +667,7 @@
 		</register>
 		<register name="PINC" bits="8">
 			<bits>
+				<bit name="PINC7" address="0x80"/>
 				<bit name="PINC6" address="0x40"/>
 				<bit name="PINC5" address="0x20"/>
 				<bit name="PINC4" address="0x10"/>
@@ -623,17 +713,61 @@
 				<bit name="PINB0" address="0x1"/>
 			</bits>
 		</register>
-		<register name="UBRR0" bits="16"/>
+		<register name="PORTA" bits="8">
+			<bits>
+				<bit name="PORTA7" address="0x80"/>
+				<bit name="PORTA6" address="0x40"/>
+				<bit name="PORTA5" address="0x20"/>
+				<bit name="PORTA4" address="0x10"/>
+				<bit name="PORTA3" address="0x8"/>
+				<bit name="PORTA2" address="0x4"/>
+				<bit name="PORTA1" address="0x2"/>
+				<bit name="PORTA0" address="0x1"/>
+			</bits>
+		</register>
+		<register name="DDRA" bits="8">
+			<bits>
+				<bit name="DDA7" address="0x80"/>
+				<bit name="DDA6" address="0x40"/>
+				<bit name="DDA5" address="0x20"/>
+				<bit name="DDA4" address="0x10"/>
+				<bit name="DDA3" address="0x8"/>
+				<bit name="DDA2" address="0x4"/>
+				<bit name="DDA1" address="0x2"/>
+				<bit name="DDA0" address="0x1"/>
+			</bits>
+		</register>
+		<register name="PINA" bits="8">
+			<bits>
+				<bit name="PINA7" address="0x80"/>
+				<bit name="PINA6" address="0x40"/>
+				<bit name="PINA5" address="0x20"/>
+				<bit name="PINA4" address="0x10"/>
+				<bit name="PINA3" address="0x8"/>
+				<bit name="PINA2" address="0x4"/>
+				<bit name="PINA1" address="0x2"/>
+				<bit name="PINA0" address="0x1"/>
+			</bits>
+		</register>
 		<register name="OCR1B" bits="16"/>
 		<register name="OCR1A" bits="16"/>
 		<register name="ICR1" bits="16"/>
 		<register name="TCNT1" bits="16"/>
 		<register name="ADC" bits="16"/>
-		<register name="EEAR" bits="16"/>
+		<register name="SP" bits="16"/>
 	</registers>
 	<ports>
 		<port char="D"/>
 		<port char="C"/>
 		<port char="B"/>
+		<port char="A"/>
 	</ports>
+	<features>
+		<feature name="SPI">
+			<pin name="SS" port="B" nr="4"/>
+			<pin name="SCK" port="B" nr="7"/>
+			<pin name="MOSI" port="B" nr="5"/>
+			<pin name="MISO" port="B" nr="6"/>
+		</feature>
+	</features>
 </controller>

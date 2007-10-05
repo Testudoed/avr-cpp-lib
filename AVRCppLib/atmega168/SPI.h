@@ -26,15 +26,15 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA168_IO_H__
-#define __AVR_CPP_ATMEGA168_IO_H__
+#ifndef __AVR_CPP_ATMEGA168_SPI_H__
+#define __AVR_CPP_ATMEGA168_SPI_H__
 
-#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
-#include <avr/cpp/IO.h>
+#if defined(__DOXYGEN__) && !defined(__AVR_CPP_SPI_H__)
+#include <avr/cpp/SPI.h>
 #endif
 
-#ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega168/IO.h>"
+#ifndef __AVR_CPP_SPI_H__
+#error "Include <avr/cpp/SPI.h> instead of <avr/cpp/atmega168/SPI.h>"
 #else
 
 /**********************************************************************************************************************\
