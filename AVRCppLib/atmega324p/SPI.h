@@ -45,7 +45,6 @@
 \**********************************************************************************************************************/
 
 
-
 #define SPI_STC_ns		SPI
 #define SPI_STC_struct	SPI::SPI0::TransmissionCompleteInterrupt
 
@@ -61,13 +60,13 @@ namespace AVRCpp
 		}; // namespace Internal
 
 		struct SPI0 : Internal::SPIBase <
-				_SPCR,							/* ControlRegister */
-				_SPSR,							/* StatusRegister */
-				_SPDR,							/* DataRegister */				
-				Pin4<PortB>,		/* SlaveSelectPin */	
-				Pin7<PortB>,		/* ClockPin */
-				Pin5<PortB>,		/* MasterOutPin */
-				Pin6<PortB> >		/* MasterInPin */			
+				_SPCR,					/* ControlRegister */
+				_SPSR,					/* StatusRegister */
+				_SPDR,					/* DataRegister */				
+				Pin4<PortB>,			/* SlaveSelectPin */	
+				Pin7<PortB>,			/* ClockPin */
+				Pin5<PortB>,			/* MasterOutPin */
+				Pin6<PortB> >			/* MasterInPin */			
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt<Bits<_SPCR, _SPIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 
@@ -79,5 +78,5 @@ namespace AVRCpp
 
 /**********************************************************************************************************************/
 
-#endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_ATMEGA324P_IO_H__
+#endif // ifndef __AVR_CPP_SPI_H__
+#endif // ifndef __AVR_CPP_ATMEGA324P_SPI_H__

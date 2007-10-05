@@ -6,6 +6,7 @@
 
 <xsl:call-template name="header">
 	<xsl:with-param name="feature" select="'IO'"/>
+	<xsl:with-param name="definition" select="'IO'"/>
 </xsl:call-template>
 
 /**********************************************************************************************************************\
@@ -45,6 +46,7 @@ namespace AVRCpp
 
 <xsl:call-template name="footer">
 	<xsl:with-param name="feature" select="'IO'"/>
+	<xsl:with-param name="definition" select="'IO'"/>
 </xsl:call-template>
 
 </xsl:template>

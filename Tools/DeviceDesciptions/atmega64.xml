@@ -826,10 +826,12 @@
 	</ports>
 	<features>
 		<feature name="SPI">
-			<pin name="SS" port="B" nr="0"/>
-			<pin name="SCK" port="B" nr="1"/>
-			<pin name="MOSI" port="B" nr="2"/>
-			<pin name="MISO" port="B" nr="3"/>
+			<spi nr="0">
+				<pin name="SS" port="B" nr="0"/>
+				<pin name="SCK" port="B" nr="1"/>
+				<pin name="MOSI" port="B" nr="2"/>
+				<pin name="MISO" port="B" nr="3"/>
+			</spi>
 		</feature>
 	</features>
 </controller>

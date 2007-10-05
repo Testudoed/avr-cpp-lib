@@ -6,6 +6,7 @@
 
 <xsl:call-template name="header">
 	<xsl:with-param name="feature" select="'SPI'"/>
+	<xsl:with-param name="definition" select="'SPI'"/>
 </xsl:call-template>
 
 /**********************************************************************************************************************\
@@ -15,12 +16,11 @@
 
 \**********************************************************************************************************************/
 
-<xsl:variable name="SPI" select="features/feature[@name='SPI']"/>
-<xsl:if test="$SPI">
-
+<xsl:variable name="feature" select="features/feature[@name='SPI']"/>
+<xsl:if test="$feature">
 #define SPI_STC_ns		SPI
-#define SPI_STC_struct	SPI::SPI0::TransmissionCompleteInterrupt
-
+<xsl:for-each select="$feature/spi">#define SPI_STC_struct	SPI::SPI<xsl:value-of select="@nr"/>::TransmissionCompleteInterrupt
+</xsl:for-each>
 namespace AVRCpp
 {
 	namespace SPI
@@ -31,19 +31,21 @@ namespace AVRCpp
 			bool <![CDATA[&]]>Cancel();
 
 		}; // namespace Internal
-
-		struct SPI0 : Internal::SPIBase &lt;
-				_SPCR,							/* ControlRegister */
-				_SPSR,							/* StatusRegister */
-				_SPDR,							/* DataRegister */				
-				Pin<xsl:value-of select="$SPI/pin[@name='SS']/@nr"/>&lt;Port<xsl:value-of select="$SPI/pin[@name='SS']/@port"/>&gt;,		/* SlaveSelectPin */	
-				Pin<xsl:value-of select="$SPI/pin[@name='SCK']/@nr"/>&lt;Port<xsl:value-of select="$SPI/pin[@name='SCK']/@port"/>&gt;,		/* ClockPin */
-				Pin<xsl:value-of select="$SPI/pin[@name='MOSI']/@nr"/>&lt;Port<xsl:value-of select="$SPI/pin[@name='MOSI']/@port"/>&gt;,		/* MasterOutPin */
-				Pin<xsl:value-of select="$SPI/pin[@name='MISO']/@nr"/>&lt;Port<xsl:value-of select="$SPI/pin[@name='MISO']/@port"/>&gt; &gt;		/* MasterInPin */			
+<xsl:for-each select="$feature/spi">
+		struct SPI<xsl:value-of select="@nr"/> : Internal::SPIBase &lt;
+				_SPCR,					/* ControlRegister */
+				_SPSR,					/* StatusRegister */
+				_SPDR,					/* DataRegister */				
+				Pin<xsl:value-of select="pin[@name='SS']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='SS']/@port"/>&gt;,			/* SlaveSelectPin */	
+				Pin<xsl:value-of select="pin[@name='SCK']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='SCK']/@port"/>&gt;,			/* ClockPin */
+				Pin<xsl:value-of select="pin[@name='MOSI']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='MOSI']/@port"/>&gt;,			/* MasterOutPin */
+				Pin<xsl:value-of select="pin[@name='MISO']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='MISO']/@port"/>&gt; &gt;			/* MasterInPin */			
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt&lt;Bits&lt;_SPCR, _SPIE&gt; &gt; { __INTERRUPT_HANDLER_SUPPORT__ };
 
-		}; // struct SPI0
+		}; // struct SPI<xsl:value-of select="@nr"/>
+
+</xsl:for-each>
 
 	} // namespace SPI
 
@@ -51,7 +53,8 @@ namespace AVRCpp
 </xsl:if>
 
 <xsl:call-template name="footer">
-	<xsl:with-param name="feature" select="'IO'"/>
+	<xsl:with-param name="feature" select="'SPI'"/>
+	<xsl:with-param name="definition" select="'SPI'"/>
 </xsl:call-template>
 
 </xsl:template>

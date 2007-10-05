@@ -1,0 +1,2 @@
+Saxon\Transform.exe -t	DeviceDesciptions/at90usb1287.xml	XSL/ExternalInterrupt.xsl	> ../AVRCppLib/at90usb1287/ExternalInterrupt.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega128.xml		XSL/ExternalInterrupt.xsl	> ../AVRCppLib/atmega128/ExternalInterrupt.h

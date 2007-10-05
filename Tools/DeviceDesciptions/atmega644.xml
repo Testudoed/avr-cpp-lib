@@ -714,10 +714,12 @@
 	</ports>
 	<features>
 		<feature name="SPI">
-			<pin name="SS" port="B" nr="4"/>
-			<pin name="SCK" port="B" nr="7"/>
-			<pin name="MOSI" port="B" nr="5"/>
-			<pin name="MISO" port="B" nr="6"/>
+			<spi nr="0">
+				<pin name="SS" port="B" nr="4"/>
+				<pin name="SCK" port="B" nr="7"/>
+				<pin name="MOSI" port="B" nr="5"/>
+				<pin name="MISO" port="B" nr="6"/>
+			</spi>
 		</feature>
 	</features>
 </controller>

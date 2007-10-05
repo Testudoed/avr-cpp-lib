@@ -7,7 +7,7 @@
 	
 -->
 
-<xsl:template name="header"><xsl:param name="feature"/>/**********************************************************************************************************************\
+<xsl:template name="header"><xsl:param name="feature"/><xsl:param name="definition"/>/**********************************************************************************************************************\
 <![CDATA[
 	C++ library for Atmel AVR microcontrollers
 	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTU TTU Robotiklubi
@@ -35,14 +35,14 @@
 ]]>
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
-#define __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
+#ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$definition"/>_H__
+#define __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$definition"/>_H__
 
-#if defined(__DOXYGEN__) <![CDATA[&&]]> !defined(__AVR_CPP_<xsl:value-of select="$feature"/>_H__)
+#if defined(__DOXYGEN__) <![CDATA[&&]]> !defined(__AVR_CPP_<xsl:value-of select="$definition"/>_H__)
 #include <![CDATA[<avr/cpp/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]>
 #endif
 
-#ifndef __AVR_CPP_<xsl:value-of select="$feature"/>_H__
+#ifndef __AVR_CPP_<xsl:value-of select="$definition"/>_H__
 #error "Include <![CDATA[<avr/cpp/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]> instead of <![CDATA[<avr/cpp/]]><xsl:value-of select="@name"/><![CDATA[/]]><xsl:value-of select="$feature"/><![CDATA[.h>"]]>
 #else</xsl:template>
 
@@ -53,11 +53,11 @@
 	
 -->
 
-<xsl:template name="footer"><xsl:param name="feature"/>
+<xsl:template name="footer"><xsl:param name="feature"/><xsl:param name="definition"/>
 /**********************************************************************************************************************/
 
-#endif // ifndef __AVR_CPP_<xsl:value-of select="$feature"/>_H__
-#endif // ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
+#endif // ifndef __AVR_CPP_<xsl:value-of select="$definition"/>_H__
+#endif // ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$definition"/>_H__
 </xsl:template>
 
 </xsl:stylesheet>

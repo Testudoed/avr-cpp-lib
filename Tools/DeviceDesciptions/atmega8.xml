@@ -475,10 +475,12 @@
 	</ports>
 	<features>
 		<feature name="SPI">
-			<pin name="SS" port="B" nr="2"/>
-			<pin name="SCK" port="B" nr="5"/>
-			<pin name="MOSI" port="B" nr="3"/>
-			<pin name="MISO" port="B" nr="4"/>
+			<spi nr="0">
+				<pin name="SS" port="B" nr="2"/>
+				<pin name="SCK" port="B" nr="5"/>
+				<pin name="MOSI" port="B" nr="3"/>
+				<pin name="MISO" port="B" nr="4"/>
+			</spi>
 		</feature>
 	</features>
 </controller>
