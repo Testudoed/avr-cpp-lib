@@ -34,9 +34,8 @@
 #endif
 
 #ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/at90usb1287/IO.h>."
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/at90usb1287/IO.h>"
 #else
-
 
 /**********************************************************************************************************************\
 
@@ -941,4 +940,3 @@ namespace AVRCpp
 
 #endif // ifndef __AVR_CPP_IO_H__
 #endif // ifndef __AVR_CPP_AT90USB1287_IO_H__
- 

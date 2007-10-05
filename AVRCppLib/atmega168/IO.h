@@ -34,9 +34,8 @@
 #endif
 
 #ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega168/IO.h>."
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega168/IO.h>"
 #else
-
 
 /**********************************************************************************************************************\
 
@@ -609,4 +608,3 @@ namespace AVRCpp
 
 #endif // ifndef __AVR_CPP_IO_H__
 #endif // ifndef __AVR_CPP_ATMEGA168_IO_H__
- 

@@ -34,9 +34,8 @@
 #endif
 
 #ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega324p/IO.h>."
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega324p/IO.h>"
 #else
-
 
 /**********************************************************************************************************************\
 

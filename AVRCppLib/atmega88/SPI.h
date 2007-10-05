@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTU TTU Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -19,31 +19,32 @@
 
 	See http://creativecommons.org/licenses/GPL/2.0/
 
-	MTÜ TTÜ Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
+	MTU TTU Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
 	Rasmus Raag          rasmus_raag@users.sourceforge.net
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA88_SPI_H__
-#define __AVR_CPP_ATMEGA88_SPI_H__
+#ifndef __AVR_CPP_ATMEGA88_IO_H__
+#define __AVR_CPP_ATMEGA88_IO_H__
 
-/* This file should only be included from <avr/cpp/SPI.h>, never directly. */
-
-#ifndef __AVR_CPP_SPI_H__
-#ifdef __DOXYGEN__
-#include <avr/cpp/SPI.h>
-#else
-#error "Include <avr/cpp/SPI.h> instead of <avr/cpp/atmega88/SPI.h>."
+#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
+#include <avr/cpp/IO.h>
 #endif
-#endif // ifndef __AVR_CPP_SPI_H__
 
-#ifndef __AVR_CPP_XXX_SPI_H__
-#define __AVR_CPP_XXX_SPI_H__ "atmega88/SPI.h"
+#ifndef __AVR_CPP_IO_H__
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega88/IO.h>"
 #else
-#error "Attempt to include more than one <avr/cpp/XXX/SPI.h> file."
-#endif
+
+/**********************************************************************************************************************\
+
+	atmega88 serial peripheral interace (SPI) declarations.
+	This file is generated. Do not modify manually !!!
+
+\**********************************************************************************************************************/
+
+
 
 #define SPI_STC_ns		SPI
 #define SPI_STC_struct	SPI::SPI0::TransmissionCompleteInterrupt
@@ -62,11 +63,11 @@ namespace AVRCpp
 		struct SPI0 : Internal::SPIBase <
 				_SPCR,							/* ControlRegister */
 				_SPSR,							/* StatusRegister */
-				_SPDR,							/* DataRegister */
-				Pin2<PortB>,					/* SlaveSelectPin */
-				Pin5<PortB>,					/* ClockPin */
-				Pin3<PortB>,					/* MasterOutPin */
-				Pin4<PortB> >					/* MasterInPin */
+				_SPDR,							/* DataRegister */				
+				Pin2<PortB>,		/* SlaveSelectPin */	
+				Pin5<PortB>,		/* ClockPin */
+				Pin3<PortB>,		/* MasterOutPin */
+				Pin4<PortB> >		/* MasterInPin */			
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt<Bits<_SPCR, _SPIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 
@@ -76,4 +77,7 @@ namespace AVRCpp
 
 } // namespace AVRCpp
 
-#endif // ifndef __AVR_CPP_ATMEGA88_SPI_H__
+/**********************************************************************************************************************/
+
+#endif // ifndef __AVR_CPP_IO_H__
+#endif // ifndef __AVR_CPP_ATMEGA88_IO_H__

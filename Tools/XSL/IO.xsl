@@ -1,49 +1,17 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns="http://www.w3.org/1999/xhtml">
 <xsl:output method="text" encoding="utf-8"/>
-<xsl:template match="/controller">/**********************************************************************************************************************\
-<![CDATA[
-	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTU TTU Robotiklubi
+<xsl:include href="General.xsl"/>
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+<xsl:template match="/controller">
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-	See http://creativecommons.org/licenses/GPL/2.0/
-
-	MTU TTU Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
-	Lauri Kirikal        laurikirikal@gmail.com
-	Mikk Leini           mikk.leini@gmail.com
-  Rasmus Raag          rasmus_raag@users.sourceforge.net
-]]>
-\**********************************************************************************************************************/
-
-#ifndef __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
-#define __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
-
-#if defined(__DOXYGEN__) <![CDATA[&&]]> !defined(__AVR_CPP_IO_H__)
-#include <![CDATA[<avr/cpp/IO.h>]]>
-#endif
-
-#ifndef __AVR_CPP_IO_H__
-#error "Include <![CDATA[<avr/cpp/IO.h>]]> instead of <![CDATA[<avr/cpp/]]><xsl:value-of select="@name"/><![CDATA[/IO.h>."]]>
-#else
-
+<xsl:call-template name="header">
+	<xsl:with-param name="feature" select="'IO'"/>
+</xsl:call-template>
 
 /**********************************************************************************************************************\
 
 	<xsl:value-of select="@name"/> registers, bits and ports declarations.
-	This file is generated. Do not modify manually.
+	This file is generated. Do not modify manually !!!
 
 \**********************************************************************************************************************/
 
@@ -75,10 +43,10 @@ namespace AVRCpp
 	
 } // namespace AVRCpp
 
+<xsl:call-template name="footer">
+	<xsl:with-param name="feature" select="'IO'"/>
+</xsl:call-template>
 
-/**********************************************************************************************************************/
-
-#endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_<xsl:value-of select="@id"/>_IO_H__
 </xsl:template>
+
 </xsl:stylesheet>

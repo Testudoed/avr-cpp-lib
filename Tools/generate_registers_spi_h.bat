@@ -1,0 +1,11 @@
+Saxon\Transform.exe -t	DeviceDesciptions/at90usb1287.xml	xSL/SPI.xsl	> ../AVRCppLib/at90usb1287/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega128.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega128/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega164p.xml	xSL/SPI.xsl	> ../AVRCppLib/atmega164p/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega168.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega168/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega324p.xml	xSL/SPI.xsl	> ../AVRCppLib/atmega324p/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega48.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega48/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega64.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega64/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega644.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega644/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega8.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega8/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega8515.xml	xSL/SPI.xsl	> ../AVRCppLib/atmega8515/SPI.h
+Saxon\Transform.exe -t	DeviceDesciptions/atmega88.xml		xSL/SPI.xsl	> ../AVRCppLib/atmega88/SPI.h

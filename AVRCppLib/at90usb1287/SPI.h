@@ -26,20 +26,20 @@
 
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA8_IO_H__
-#define __AVR_CPP_ATMEGA8_IO_H__
+#ifndef __AVR_CPP_AT90USB1287_IO_H__
+#define __AVR_CPP_AT90USB1287_IO_H__
 
 #if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
 #include <avr/cpp/IO.h>
 #endif
 
 #ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega8/IO.h>"
+#error "Include <avr/cpp/IO.h> instead of <avr/cpp/at90usb1287/IO.h>"
 #else
 
 /**********************************************************************************************************************\
 
-	atmega8 serial peripheral interace (SPI) declarations.
+	at90usb1287 serial peripheral interace (SPI) declarations.
 	This file is generated. Do not modify manually !!!
 
 \**********************************************************************************************************************/
@@ -64,10 +64,10 @@ namespace AVRCpp
 				_SPCR,							/* ControlRegister */
 				_SPSR,							/* StatusRegister */
 				_SPDR,							/* DataRegister */				
-				Pin2<PortB>,		/* SlaveSelectPin */	
-				Pin5<PortB>,		/* ClockPin */
-				Pin3<PortB>,		/* MasterOutPin */
-				Pin4<PortB> >		/* MasterInPin */			
+				Pin0<PortB>,		/* SlaveSelectPin */	
+				Pin1<PortB>,		/* ClockPin */
+				Pin2<PortB>,		/* MasterOutPin */
+				Pin3<PortB> >		/* MasterInPin */			
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt<Bits<_SPCR, _SPIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 
@@ -80,4 +80,4 @@ namespace AVRCpp
 /**********************************************************************************************************************/
 
 #endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_ATMEGA8_IO_H__
+#endif // ifndef __AVR_CPP_AT90USB1287_IO_H__

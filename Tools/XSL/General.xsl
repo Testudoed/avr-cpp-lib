@@ -1,5 +1,14 @@
-/**********************************************************************************************************************\
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns="http://www.w3.org/1999/xhtml">
+<xsl:output method="text" encoding="utf-8"/>
 
+<!-- 
+
+	General header
+	
+-->
+
+<xsl:template name="header"><xsl:param name="feature"/>/**********************************************************************************************************************\
+<![CDATA[
 	C++ library for Atmel AVR microcontrollers
 	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTU TTU Robotiklubi
 
@@ -23,43 +32,32 @@
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
 	Rasmus Raag          rasmus_raag@users.sourceforge.net
-
+]]>
 \**********************************************************************************************************************/
 
-#ifndef __AVR_CPP_ATMEGA88_IO_H__
-#define __AVR_CPP_ATMEGA88_IO_H__
+#ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
+#define __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
 
-#if defined(__DOXYGEN__) && !defined(__AVR_CPP_IO_H__)
-#include <avr/cpp/IO.h>
+#if defined(__DOXYGEN__) <![CDATA[&&]]> !defined(__AVR_CPP_<xsl:value-of select="$feature"/>_H__)
+#include <![CDATA[<avr/cpp/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]>
 #endif
 
-#ifndef __AVR_CPP_IO_H__
-#error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega88/IO.h>"
-#else
-
-/**********************************************************************************************************************\
-
-	atmega88 registers, bits and ports declarations.
-	This file is generated. Do not modify manually.
-
-\**********************************************************************************************************************/
-
-// Registers
-namespace AVRCpp
-{
-
-} // namespace AVRCpp
+#ifndef __AVR_CPP_<xsl:value-of select="$feature"/>_H__
+#error "Include <![CDATA[<avr/cpp/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]> instead of <![CDATA[<avr/cpp/]]><xsl:value-of select="@name"/><![CDATA[/]]><xsl:value-of select="$feature"/><![CDATA[.h>"]]>
+#else</xsl:template>
 
 
+<!-- 
 
-// General ports
-namespace AVRCpp
-{
+	General footer
 	
-} // namespace AVRCpp
+-->
 
-
+<xsl:template name="footer"><xsl:param name="feature"/>
 /**********************************************************************************************************************/
 
-#endif // ifndef __AVR_CPP_IO_H__
-#endif // ifndef __AVR_CPP_ATMEGA88_IO_H__
+#endif // ifndef __AVR_CPP_<xsl:value-of select="$feature"/>_H__
+#endif // ifndef __AVR_CPP_<xsl:value-of select="@id"/>_<xsl:value-of select="$feature"/>_H__
+</xsl:template>
+
+</xsl:stylesheet>
