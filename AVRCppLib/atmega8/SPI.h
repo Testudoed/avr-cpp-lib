@@ -45,6 +45,9 @@
 #error "Attempt to include more than one <avr/cpp/XXX/SPI.h> file."
 #endif
 
+#define SPI_STC_ns		SPI
+#define SPI_STC_struct	SPI::SPI0::TransmissionCompleteInterrupt
+
 namespace AVRCpp
 {
 	namespace SPI
@@ -56,7 +59,7 @@ namespace AVRCpp
 
 		}; // namespace Internal
 
-		struct SPI0 : Internal::SPIbase <
+		struct SPI0 : Internal::SPIBase <
 				_SPCR,							/* ControlRegister */
 				_SPSR,							/* StatusRegister */
 				_SPDR,							/* DataRegister */
