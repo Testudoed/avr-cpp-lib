@@ -36,10 +36,10 @@ namespace AVRCpp
 				_SPCR,					/* ControlRegister */
 				_SPSR,					/* StatusRegister */
 				_SPDR,					/* DataRegister */				
-				Pin<xsl:value-of select="pin[@name='SS']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='SS']/@port"/>&gt;,			/* SlaveSelectPin */	
-				Pin<xsl:value-of select="pin[@name='SCK']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='SCK']/@port"/>&gt;,			/* ClockPin */
-				Pin<xsl:value-of select="pin[@name='MOSI']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='MOSI']/@port"/>&gt;,			/* MasterOutPin */
-				Pin<xsl:value-of select="pin[@name='MISO']/@nr"/>&lt;Port<xsl:value-of select="pin[@name='MISO']/@port"/>&gt; &gt;			/* MasterInPin */			
+				Pin<xsl:value-of select="pin[@name='SS']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='SS']/@port"/>&gt;,			/* SlaveSelectPin */	
+				Pin<xsl:value-of select="pin[@name='SCK']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='SCK']/@port"/>&gt;,			/* ClockPin */
+				Pin<xsl:value-of select="pin[@name='MOSI']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='MOSI']/@port"/>&gt;,			/* MasterOutPin */
+				Pin<xsl:value-of select="pin[@name='MISO']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='MISO']/@port"/>&gt; &gt;			/* MasterInPin */			
 		{
 			struct TransmissionCompleteInterrupt : BasicInterrupt&lt;Bits&lt;_SPCR, _SPIE&gt; &gt; { __INTERRUPT_HANDLER_SUPPORT__ };
 

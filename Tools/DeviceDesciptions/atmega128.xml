@@ -824,37 +824,61 @@
 	</ports>
 	<features>
 		<feature name="ExternalInterrupt">
-			<interrupt nr="0" shift="0" detecton="async" register="A">
-				<pin port="D" nr="0"/>
+			<interrupt nr="0" shift="0" detecton="async">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="0"/>			
 			</interrupt>
-			<interrupt nr="1" shift="2" detecton="async" register="A">
-				<pin port="D" nr="1"/>
+			<interrupt nr="1" shift="2" detecton="async">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="1"/>
 			</interrupt>
-			<interrupt nr="2" shift="4" detecton="async" register="A">
-				<pin port="D" nr="2"/>
+			<interrupt nr="2" shift="4" detecton="async">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="2"/>
 			</interrupt>
-			<interrupt nr="3" shift="6" detecton="async" register="A">
-				<pin port="D" nr="3"/>
+			<interrupt nr="3" shift="6" detecton="async">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="3"/>
 			</interrupt>
-			<interrupt nr="4" shift="0" detecton="sync" register="B">
-				<pin port="E" nr="4"/>
+			<interrupt nr="4" shift="0" detecton="sync">
+				<register type="conrol" name="EICRB"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="E" pin="4"/>
 			</interrupt>
-			<interrupt nr="5" shift="2" detecton="sync" register="B">
-				<pin port="E" nr="5"/>
+			<interrupt nr="5" shift="2" detecton="sync">
+				<register type="conrol" name="EICRB"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="E" pin="5"/>
 			</interrupt>
-			<interrupt nr="6" shift="4" detecton="sync" register="B">
-				<pin port="E" nr="6"/>
+			<interrupt nr="6" shift="4" detecton="sync">
+				<register type="conrol" name="EICRB"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="E" pin="6"/>
 			</interrupt>
-			<interrupt nr="7" shift="6" detecton="sync" register="B">
-				<pin port="E" nr="7"/>
-			</interrupt>		
+			<interrupt nr="7" shift="6" detecton="sync">
+				<register type="conrol" name="EICRB"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="E" pin="7"/>
+			</interrupt>
 		</feature>
 		<feature name="SPI">
 			<spi nr="0">
-				<pin name="SS" port="B" nr="0"/>
-				<pin name="SCK" port="B" nr="1"/>
-				<pin name="MOSI" port="B" nr="2"/>
-				<pin name="MISO" port="B" nr="3"/>
+				<pin name="SS" port="B" pin="0"/>
+				<pin name="SCK" port="B" pin="1"/>
+				<pin name="MOSI" port="B" pin="2"/>
+				<pin name="MISO" port="B" pin="3"/>
 			</spi>
 		</feature>
 	</features>

@@ -37,6 +37,12 @@
 #error "Include <avr/cpp/ExternalInterrupt.h> instead of <avr/cpp/atmega128/ExternalInterrupt.h>"
 #else
 
+#ifndef __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
+#define __AVR_CPP_XXX_EXTERNAL_INTERRUPT_H__
+#else
+#error "Attempt to include more than one <avr/cpp/XXX/ExternalInterrupt.h> file"
+#endif
+
 /**********************************************************************************************************************\
 
 	atmega128 external interrupts declarations.

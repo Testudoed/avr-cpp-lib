@@ -37,6 +37,12 @@
 #error "Include <avr/cpp/SPI.h> instead of <avr/cpp/at90usb1287/SPI.h>"
 #else
 
+#ifndef __AVR_CPP_XXX_SPI_H__
+#define __AVR_CPP_XXX_SPI_H__
+#else
+#error "Attempt to include more than one <avr/cpp/XXX/SPI.h> file"
+#endif
+
 /**********************************************************************************************************************\
 
 	at90usb1287 serial peripheral interace (SPI) declarations.

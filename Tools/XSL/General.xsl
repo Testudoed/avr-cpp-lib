@@ -44,7 +44,13 @@
 
 #ifndef __AVR_CPP_<xsl:value-of select="$definition"/>_H__
 #error "Include <![CDATA[<avr/cpp/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]> instead of <![CDATA[<avr/cpp/]]><xsl:value-of select="@name"/><![CDATA[/]]><xsl:value-of select="$feature"/><![CDATA[.h>"]]>
-#else</xsl:template>
+#else
+
+#ifndef __AVR_CPP_XXX_<xsl:value-of select="$definition"/>_H__
+#define __AVR_CPP_XXX_<xsl:value-of select="$definition"/>_H__
+#else
+#error "Attempt to include more than one <![CDATA[<avr/cpp/XXX/]]><xsl:value-of select="$feature"/><![CDATA[.h>]]> file"
+#endif</xsl:template>
 
 
 <!-- 

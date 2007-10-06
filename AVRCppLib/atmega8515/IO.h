@@ -37,6 +37,12 @@
 #error "Include <avr/cpp/IO.h> instead of <avr/cpp/atmega8515/IO.h>"
 #else
 
+#ifndef __AVR_CPP_XXX_IO_H__
+#define __AVR_CPP_XXX_IO_H__
+#else
+#error "Attempt to include more than one <avr/cpp/XXX/IO.h> file"
+#endif
+
 /**********************************************************************************************************************\
 
 	atmega8515 registers, bits and ports declarations.

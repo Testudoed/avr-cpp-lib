@@ -763,12 +763,52 @@
 		<port char="A"/>
 	</ports>
 	<features>
+		<feature name="ExternalInterrupt">
+			<interrupt nr="0" shift="0" detecton="sync">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="2"/>			
+			</interrupt>
+			<interrupt nr="1" shift="2" detecton="sync">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="D" pin="3"/>
+			</interrupt>
+			<interrupt nr="2" shift="4" detecton="sync">
+				<register type="conrol" name="EICRA"/>
+				<register type="interrupt_control" name="EIMSK"/>
+				<register type="interrupt_flag" name="EIFR"/>
+				<pin port="B" pin="2"/>
+			</interrupt>			
+			<pin_change_interrupt nr="0">
+				<register type="mask" name="PCMSK0"/>
+				<register type="interrupt_control" name="PCICR"/>
+				<register type="interrupt_flag" name="PCIFR"/>				
+			</pin_change_interrupt>
+			<pin_change_interrupt nr="1">
+				<register type="mask" name="PCMSK1"/>
+				<register type="interrupt_control" name="PCICR"/>
+				<register type="interrupt_flag" name="PCIFR"/>				
+			</pin_change_interrupt>
+			<pin_change_interrupt nr="2">
+				<register type="mask" name="PCMSK2"/>
+				<register type="interrupt_control" name="PCICR"/>
+				<register type="interrupt_flag" name="PCIFR"/>				
+			</pin_change_interrupt>
+			<pin_change_interrupt nr="3">
+				<register type="mask" name="PCMSK3"/>
+				<register type="interrupt_control" name="PCICR"/>
+				<register type="interrupt_flag" name="PCIFR"/>				
+			</pin_change_interrupt>
+		</feature>
 		<feature name="SPI">
 			<spi nr="0">
-				<pin name="SS" port="B" nr="4"/>
-				<pin name="SCK" port="B" nr="7"/>
-				<pin name="MOSI" port="B" nr="5"/>
-				<pin name="MISO" port="B" nr="6"/>
+				<pin name="SS" port="B" pin="4"/>
+				<pin name="SCK" port="B" pin="7"/>
+				<pin name="MOSI" port="B" pin="5"/>
+				<pin name="MISO" port="B" pin="6"/>
 			</spi>
 		</feature>
 	</features>

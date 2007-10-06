@@ -37,6 +37,12 @@
 #error "Include <avr/cpp/SPI.h> instead of <avr/cpp/atmega8515/SPI.h>"
 #else
 
+#ifndef __AVR_CPP_XXX_SPI_H__
+#define __AVR_CPP_XXX_SPI_H__
+#else
+#error "Attempt to include more than one <avr/cpp/XXX/SPI.h> file"
+#endif
+
 /**********************************************************************************************************************\
 
 	atmega8515 serial peripheral interace (SPI) declarations.
