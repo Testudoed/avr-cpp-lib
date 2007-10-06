@@ -257,13 +257,31 @@ namespace AVRCpp
 
 /**********************************************************************************************************************/
 
-/* Devices supported and not */
-#if defined(__AVR_ATmega8__)
-#include "atmega8/SPI.h"
-#elif defined(__AVR_ATmega88__)
-#include "atmega88/SPI.h"
+/* Include controller specific files */
+#if defined(__AVR_AT90USB1287__)
+#include "at90usb1287/SPI.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/SPI.h"
+#elif defined(__AVR_ATmega64__)
+#include "atmega64/SPI.h"
+#elif defined(__AVR_ATmega8__)
+#include "atmega8/SPI.h"
+#elif defined(__AVR_ATmega8515__)
+#include "atmega8515/SPI.h"
+#elif defined(__AVR_ATmega88__)
+#include "atmega88/SPI.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/SPI.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/SPI.h"
+#elif defined(__AVR_ATmega164P__)
+#include "atmega164p/SPI.h"
+#elif defined(__AVR_ATmega324P__)
+#include "atmega324p/SPI.h"
+#elif defined(__AVR_ATmega644P__)
+#include "atmega644p/SPI.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/SPI.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif
