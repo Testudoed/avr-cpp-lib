@@ -38,8 +38,7 @@
 	AVRCppLib Serial Peripheral Interface
 	
 	Most AVR microcontroller have integrated SPI.
-	Most controllers with SPI have same functionality, register and bit names.
-	Therefore whole SPI code is in this one file.
+	Most controllers with SPI have same functionality, register and bit names.	
 
 \**********************************************************************************************************************/
 

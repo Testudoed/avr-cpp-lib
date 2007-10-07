@@ -50,9 +50,8 @@
 
 \**********************************************************************************************************************/
 
-
-#define SPI_STC_ns		SPI
-#define SPI_STC_struct	SPI::SPI0::TransmissionCompleteInterrupt
+#define SPI0_TC_ns		SPI
+#define SPI0_TC_struct	SPI::SPI0::TransmissionCompleteInterrupt
 
 namespace AVRCpp
 {
