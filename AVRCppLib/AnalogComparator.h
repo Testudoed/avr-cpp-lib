@@ -54,8 +54,8 @@ namespace AVRCpp
 		
 		enum NegativeInputSource
 		{
-			NegativeInput    = 0x00,
-			MultiplexedInput = 0x01
+			NegativeInput    = false,
+			MultiplexedInput = true
 
 		}; // enum NegativeInputSource		
 		
@@ -111,6 +111,7 @@ namespace AVRCpp
 			
 			/**
 			 *  Analog comparator with multiplexed negative voltage input
+			 *	Extends base class and provides new setup function.
 			 */
 			template <
 						class ControlRegister,						
@@ -160,7 +161,7 @@ namespace AVRCpp
 			
 			/**
 			 *  Analog comparator with multiplexed negative voltage input and digital input disabling
-			 *	Extends base class, but keeps setup function the same for compatibilty reason.
+			 *	Extends base class, but keeps setup function the same for compatibility reason.
 			 *	Provides additional function to disable digital inputs.
 			 */
 			template <
