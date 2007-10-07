@@ -464,25 +464,31 @@
 		<port char="E"/>
 	</ports>
 	<features>
+		<feature name="AnalogComparator">
+			<analog_comparator nr="0">
+				<register name="conrol" register="ACSR"/>
+				<interrupt name="compare" register="ACSR" bit="ACIE"/>			
+			</analog_comparator>
+		</feature>
 		<feature name="ExternalInterrupt">
-			<interrupt nr="0" shift="0" detecton="sync">
-				<register type="conrol" name="MCUCR"/>
-				<register type="interrupt_control" name="GICR"/>
-				<register type="interrupt_flag" name="GIFR"/>
+			<external_interrupt nr="0" shift="0" detecton="sync">
+				<register name="conrol" register="MCUCR"/>
+				<register name="interrupt_control" register="GICR"/>
+				<register name="interrupt_flag" register="GIFR"/>
 				<pin port="D" pin="2"/>
-			</interrupt>
-			<interrupt nr="1" shift="2" detecton="sync" register="A">
-				<register type="conrol" name="MCUCR"/>
-				<register type="interrupt_control" name="GICR"/>
-				<register type="interrupt_flag" name="GIFR"/>
+			</external_interrupt>
+			<external_interrupt nr="1" shift="2" detecton="sync">
+				<register name="conrol" register="MCUCR"/>
+				<register name="interrupt_control" register="GICR"/>
+				<register name="interrupt_flag" register="GIFR"/>
 				<pin port="D" pin="3"/>
-			</interrupt>
-			<interrupt nr="2" shift="0" detecton="simple_async" register="A">
-				<register type="conrol" name="EMCUCR"/>
-				<register type="interrupt_control" name="GICR"/>
-				<register type="interrupt_flag" name="GIFR"/>
+			</external_interrupt>
+			<external_interrupt nr="2" shift="0" detecton="simple_async">
+				<register name="conrol" register="EMCUCR"/>
+				<register name="interrupt_control" register="GICR"/>
+				<register name="interrupt_flag" register="GIFR"/>
 				<pin port="E" pin="0"/>
-			</interrupt>
+			</external_interrupt>
 		</feature>
 		<feature name="SPI">
 			<spi nr="0">

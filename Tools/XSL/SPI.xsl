@@ -18,8 +18,10 @@
 
 <xsl:variable name="feature" select="features/feature[@name='SPI']"/>
 <xsl:if test="$feature">
-#define SPI_STC_ns		SPI
-<xsl:for-each select="$feature/spi">#define SPI_STC_struct	SPI::SPI<xsl:value-of select="@nr"/>::TransmissionCompleteInterrupt
+
+<xsl:for-each select="$feature/spi">#define SPI<xsl:value-of select="@nr"/>_TC_ns		SPI
+</xsl:for-each>
+<xsl:for-each select="$feature/spi">#define SPI<xsl:value-of select="@nr"/>_TC_struct	SPI::SPI<xsl:value-of select="@nr"/>::TransmissionCompleteInterrupt
 </xsl:for-each>
 namespace AVRCpp
 {

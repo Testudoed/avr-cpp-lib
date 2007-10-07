@@ -30,8 +30,7 @@
 				<bit name="RXB80" address="0x2"/>
 				<bit name="TXB80" address="0x1"/>
 			</bits>
-		</register>
-		<register name="UCSR0A" bits="8">
+		</register>		<register name="UCSR0A" bits="8">
 			<bits>
 				<bit name="RXC0" address="0x80"/>
 				<bit name="TXC0" address="0x40"/>
@@ -637,33 +636,44 @@
 		<port char="B"/>
 	</ports>
 	<features>
+		<feature name="AnalogComparator">
+			<analog_comparator nr="0" multiplexed="yes" digital_disable="yes">
+				<register name="conrol" register="ACSR"/>
+				<register name="multiplexer_selection" register="ADMUX"/>
+				<bit name="multiplexer_enable" register="ADCSRB" bit="ACME"/>
+				<bit name="adc_disable" register="ADCSRA" bit="ADEN"/>
+				<bit name="digital_disable_positive" register="DIDR1" bit="AIN0D"/>
+				<bit name="digital_disable_negative" register="DIDR1" bit="AIN1D"/>
+				<interrupt name="compare" register="ACSR" bit="ACIE"/>
+			</analog_comparator>
+		</feature>
 		<feature name="ExternalInterrupt">
-			<interrupt nr="0" shift="0" detecton="sync">
-				<register type="conrol" name="EICRA"/>
-				<register type="interrupt_control" name="EIMSK"/>
-				<register type="interrupt_flag" name="EIFR"/>
+			<external_interrupt nr="0" shift="0" detecton="sync">
+				<register name="conrol" register="EICRA"/>
+				<register name="interrupt_control" register="EIMSK"/>
+				<register name="interrupt_flag" register="EIFR"/>
 				<pin port="D" pin="2"/>			
-			</interrupt>
-			<interrupt nr="1" shift="2" detecton="sync">
-				<register type="conrol" name="EICRA"/>
-				<register type="interrupt_control" name="EIMSK"/>
-				<register type="interrupt_flag" name="EIFR"/>
+			</external_interrupt>
+			<external_interrupt nr="1" shift="2" detecton="sync">
+				<register name="conrol" register="EICRA"/>
+				<register name="interrupt_control" register="EIMSK"/>
+				<register name="interrupt_flag" register="EIFR"/>
 				<pin port="D" pin="3"/>
-			</interrupt>
+			</external_interrupt>
 			<pin_change_interrupt nr="0">
-				<register type="mask" name="PCMSK0"/>
-				<register type="interrupt_control" name="PCICR"/>
-				<register type="interrupt_flag" name="PCIFR"/>
+				<register name="mask" register="PCMSK0"/>
+				<register name="interrupt_control" register="PCICR"/>
+				<register name="interrupt_flag" register="PCIFR"/>
 			</pin_change_interrupt>
 			<pin_change_interrupt nr="1">
-				<register type="mask" name="PCMSK1"/>
-				<register type="interrupt_control" name="PCICR"/>
-				<register type="interrupt_flag" name="PCIFR"/>
+				<register name="mask" register="PCMSK1"/>
+				<register name="interrupt_control" register="PCICR"/>
+				<register name="interrupt_flag" register="PCIFR"/>
 			</pin_change_interrupt>
 			<pin_change_interrupt nr="2">
-				<register type="mask" name="PCMSK2"/>
-				<register type="interrupt_control" name="PCICR"/>
-				<register type="interrupt_flag" name="PCIFR"/>
+				<register name="mask" register="PCMSK2"/>
+				<register name="interrupt_control" register="PCICR"/>
+				<register name="interrupt_flag" register="PCIFR"/>
 			</pin_change_interrupt>
 		</feature>
 		<feature name="SPI">
