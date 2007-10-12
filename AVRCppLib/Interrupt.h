@@ -32,59 +32,66 @@
 #include "IO.h"
 #include "Assembler.h"
 
-#ifndef EXCLUDE_INTERRUPT_HANDLERS
-
+/// Common interrupt handler.
 #define INTERRUPT_HANDLER(interruptName) \
 		extern "C" void interruptName ## _vect(void) __attribute__ ((signal)); \
 		void interruptName ## _vect(void)
 
+/// Interrupts aren't disabled by default.
 #define RECURSIVE_INTERRUPT_HANDLER(interruptName)	\
 		extern "C" void interruptName ## _vect(void) __attribute__ ((interrupt)); \
 		void interruptName ## _vect(void)
 
+/// This type of interrupt handler can be simulated.
 #define EVOCABLE_INTERRUPT_HANDLER(interruptName) \
 		extern "C" void interruptName ## _vect(void) __attribute__ ((signal)); \
 		void interruptName ## _vect(void) { AVRCpp::interruptName ## _struct::Evoke(); } \
 		void AVRCpp::interruptName ## _struct::Evoke(void)
 
+/// This type of interrupt handler can be simulated and interrupts aren't disabled by default.
 #define EVOCABLE_RECURSIVE_INTERRUPT_HANDLER(interruptName) \
 		extern "C" void interruptName ## _vect(void) __attribute__ ((interrupt)); \
 		void interruptName ## _vect(void) { AVRCpp::interruptName ## _struct::Evoke(); } \
 		void AVRCpp::interruptName ## _struct::Evoke(void)
 
+/// Using this macro, it is ensured that this interrupt cannot be associated with any interrupt handler (delegates included).
 #define EXCLUDE_INTERRUPT(interruptName) \
 		extern "C" void interruptName ## _vect(void) __attribute__ ((naked)); \
 		void interruptName ## _vect(void) {  __asm__ __volatile__ ("reti" ::); }
 
+/// For library's internal use only.
 #define __DELEGATE_HANDLER__(vector) \
 		extern "C" void vector(void) __attribute__ ((signal)); \
 		void vector (void)
 
-#define USING_MULTI_DELEGATE(interruptName) \
-		namespace AVRCpp { namespace interruptName ## _ns { namespace Internal { CppDelegate::MultiDelegate interruptName ## Delegate; } \
-		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Delegate(); } \
-		template <> CppDelegate::MultiDelegate & interruptName ## _struct::Me<CppDelegate::MultiDelegate>() { return interruptName ## _ns::Internal::interruptName ## Delegate; } } } \
-		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Delegate(); }
-
+/// Declares that CppDelegate::FastDelegate is used for this interrupt.
 #define USING_FAST_DELEGATE(interruptName) \
 		namespace AVRCpp { namespace interruptName ## _ns	{ namespace Internal { CppDelegate::FastDelegate interruptName ## Delegate; } \
 		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Delegate(); } \
 		template <> CppDelegate::FastDelegate & interruptName ## _struct::Me<CppDelegate::FastDelegate>() { return interruptName ## _ns::Internal::interruptName ## Delegate; } } } \
+		namespace CppDelegate { template <> FastDelegate &GetFastDelegate<interruptName ## _struct>() { return interruptName ## _struct::Me<FastDelegate>(); } } \
 		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Delegate(); }
 
+/// Declares that CppDelegate::MultiDelegate is used for this interrupt.
+#define USING_MULTI_DELEGATE(interruptName) \
+		namespace AVRCpp { namespace interruptName ## _ns { namespace Internal { CppDelegate::MultiDelegate interruptName ## Delegate; } \
+		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Delegate(); } \
+		template <> CppDelegate::MultiDelegate & interruptName ## _struct::Me<CppDelegate::MultiDelegate>() { return interruptName ## _ns::Internal::interruptName ## Delegate; } } } \
+		namespace CppDelegate { template <> MultiDelegate &GetMultiDelegate<interruptName ## _struct>() { return interruptName ## _struct::Me<MultiDelegate>(); } } \
+		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Delegate(); }
+
+/// Declares that CppDelegate::DataDelegate is used for this interrupt.
 #define USING_DATA_DELEGATE(interruptName, controllerName) \
 		namespace AVRCpp { namespace interruptName ## _ns { namespace Internal { controllerName interruptName ## Controller; } \
 		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Controller(); } \
 		template <> CppDelegate::DataDelegate<controllerName> & interruptName ## _struct::Me<CppDelegate::DataDelegate<controllerName> >() { return interruptName ## _ns::Internal::interruptName ## Controller.Delegate(); } \
 		template <> controllerName & interruptName ## _struct::Controller<controllerName>() { return (controllerName &)interruptName ## _ns::Internal::interruptName ## Controller; } } } \
+		namespace CppDelegate { template <> DataDelegate<controllerName> &GetDataDelegate<interruptName ## _struct, controllerName>() { return interruptName ## _struct::Me<DataDelegate<controllerName> >(); } } \
 		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Controller(); }
 
 
-#endif // ifndef EXCLUDE_INTERRUPT_HANDLERS
-
-
 /**
- * Temporarily disable interrupts.
+ * Disables temporarily all interrupts.
  * Use INTERRUPT_SAFE to execute commands that need to run uninterrupted. Interruptsafe disables interrupts,
  * executes your command(s) and finally enables interrupts, if they were enabled before using INTERRUPT_SAFE.
  * To disable interrupts during one command, use the following code:

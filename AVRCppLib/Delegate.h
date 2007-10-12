@@ -57,8 +57,6 @@
 #ifndef __AVR_CPP_DELEGATE_H__
 #define __AVR_CPP_DELEGATE_H__
 
-#if !(defined(EXCLUDE_FAST_DELEGATE) && defined(EXCLUDE_MULTI_DELEGATE) && defined(EXLUDE_DATA_DELEGATE))
-
 #ifndef __cplusplus
 #error "Delegate.h needs C++ compiler."
 #else
@@ -1545,11 +1543,7 @@ private:	// Invoker for static functions
 
 \**********************************************************************************************************************/
 
-#ifndef EXCLUDE_FAST_DELEGATE
 	typedef FastDelegate0<void> FastDelegate;
-#endif
-
-#if !defined(EXCLUDE_DATA_DELEGATE) || !defined(EXCLUDE_MULTI_DELEGATE)
 
 	namespace Internal
 	{
@@ -1716,13 +1710,10 @@ private:	// Invoker for static functions
 		} // Clear
 		
 	} // namespace Internal
-
-#endif // if !defined(EXCLUDE_DATA_DELEGATE) || !defined(EXCLUDE_MULTI_DELEGATE)
-
-#ifndef EXCLUDE_DATA_DELEGATE
-
+	
+	
 	template<class Derived> class DelegateController;
-
+	
 	template <class Controller> class DataDelegate
 	{
 	public:
@@ -1890,10 +1881,7 @@ private:	// Invoker for static functions
 		virtual ~DelegateController() {}
 		
 	}; // class DelegateController
-
-#endif // ifndef EXCLUDE_DATA_DELEGATE
-
-#ifndef EXCLUDE_MULTI_DELEGATE
+	
 	
 	class MultiDelegate
 	{
@@ -2024,7 +2012,9 @@ private:	// Invoker for static functions
 		
 	}; // class MultiDelegate
 
-#endif // ifndef EXCLUDE_MULTI_DELEGATE
+	template <class InterruptType> FastDelegate &GetFastDelegate();
+	template <class InterruptType> MultiDelegate &GetMultiDelegate();
+	template <class InterruptType, class ControllerType> DataDelegate<ControllerType> &GetDataDelegate();
 
  // clean up after ourselves...
 #undef FASTDLGT_RETTYPE
@@ -2032,7 +2022,5 @@ private:	// Invoker for static functions
 } // namespace CppDelegate
 
 #endif // ifdef __cplusplus
-#endif // if !(defined(EXCLUDE_FAST_DELEGATE) && defined(EXCLUDE_MULTI_DELEGATE) && defined(EXLUDE_DATA_DELEGATE))
 #endif // ifndef __AVR_CPP_DELEGATE_H__
 
- 
