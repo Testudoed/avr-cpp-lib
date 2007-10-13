@@ -30,17 +30,13 @@ namespace AVRCpp
 		struct AnalogComparator<xsl:value-of select="@nr"/> : Internal::<xsl:choose>
 	<xsl:when test="@digital_disable">DigitalDisableAnalogComparatorBase &lt;
 				_<xsl:value-of select="register[@name='conrol']/@register"/>,					/* ControlRegister */
-				_<xsl:value-of select="register[@name='multiplexer_selection']/@register"/>,					/* MultiplexerSelectionRegister */	
 				Bits&lt;_<xsl:value-of select="bit[@name='multiplexer_enable']/@register"/>, _<xsl:value-of select="bit[@name='multiplexer_enable']/@bit"/>&gt;,	/* MultiplexerEnableBit */ 			
-				Bits&lt;_<xsl:value-of select="bit[@name='adc_disable']/@register"/>, _<xsl:value-of select="bit[@name='adc_disable']/@bit"/>&gt;,	/* ADCDisableBit */
 				Bits&lt;_<xsl:value-of select="bit[@name='digital_disable_positive']/@register"/>, _<xsl:value-of select="bit[@name='digital_disable_positive']/@bit"/>&gt;,	/* DigitalDisablePositivePin */
 				Bits&lt;_<xsl:value-of select="bit[@name='digital_disable_negative']/@register"/>, _<xsl:value-of select="bit[@name='digital_disable_negative']/@bit"/>&gt; &gt;	/* DigitalDisableNegativePin */
 	</xsl:when>
 	<xsl:when test="@multiplexed">MultiplexedInputAnalogComparatorBase &lt;
 				_<xsl:value-of select="register[@name='conrol']/@register"/>,					/* ControlRegister */
-				_<xsl:value-of select="register[@name='multiplexer_selection']/@register"/>,					/* MultiplexerSelectionRegister */	
-				Bits&lt;_<xsl:value-of select="bit[@name='multiplexer_enable']/@register"/>, _<xsl:value-of select="bit[@name='multiplexer_enable']/@bit"/>&gt;,	/* MultiplexerEnableBit */ 			
-				Bits&lt;_<xsl:value-of select="bit[@name='adc_disable']/@register"/>, _<xsl:value-of select="bit[@name='adc_disable']/@bit"/>&gt; &gt;	/* ADCDisableBit */			
+				Bits&lt;_<xsl:value-of select="bit[@name='multiplexer_enable']/@register"/>, _<xsl:value-of select="bit[@name='multiplexer_enable']/@bit"/>&gt; &gt;	/* MultiplexerEnableBit */
 	</xsl:when>
 	<xsl:otherwise>AnalogComparatorBase &lt;_<xsl:value-of select="register[@name='conrol']/@register"/>&gt;	/* ControlRegister */
 	</xsl:otherwise>
