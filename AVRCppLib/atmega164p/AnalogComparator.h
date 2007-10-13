@@ -60,9 +60,7 @@ namespace AVRCpp
 	{	
 		struct AnalogComparator0 : Internal::DigitalDisableAnalogComparatorBase <
 				_ACSR,					/* ControlRegister */
-				_ADMUX,					/* MultiplexerSelectionRegister */	
 				Bits<_ADCSRB, _ACME>,	/* MultiplexerEnableBit */ 			
-				Bits<_ADCSRA, _ADEN>,	/* ADCDisableBit */
 				Bits<_DIDR1, _AIN0D>,	/* DigitalDisablePositivePin */
 				Bits<_DIDR1, _AIN1D> >	/* DigitalDisableNegativePin */
 		{

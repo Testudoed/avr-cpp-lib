@@ -60,9 +60,7 @@ namespace AVRCpp
 	{	
 		struct AnalogComparator0 : Internal::MultiplexedInputAnalogComparatorBase <
 				_ACSR,					/* ControlRegister */
-				_ADMUX,					/* MultiplexerSelectionRegister */	
-				Bits<_SFIOR, _ACME>,	/* MultiplexerEnableBit */ 			
-				Bits<_ADCSRA, _ADEN> >	/* ADCDisableBit */			
+				Bits<_SFIOR, _ACME> >	/* MultiplexerEnableBit */
 		{
 			struct CompareInterrupt : BasicInterrupt<Bits<_ACSR, _ACIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 		};

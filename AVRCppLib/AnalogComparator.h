@@ -108,7 +108,7 @@ namespace AVRCpp
 				/// Switches voltige supply for analog comparator on. By default analog comparator power is on.
 				static inline void Enable() { ClearBits<ControlRegister>(_ACD); }
 				/// Reduces power consumption. For safety reasons it disables comparator interrupt beforehand.
-				static inline void Disable() { ComparatorInterrupt::Disable(); SetBits<ControlRegister>(_ACD); }
+				static inline void Disable() { ClearBits<ControlRegister>(_ACIE); SetBits<ControlRegister>(_ACD); }
 				/// Return true if analog comparator power is on.
 				static inline bool IsEnabled() { return !IsBitsSet<ControlRegister>(_ACD); }
 				
@@ -133,11 +133,11 @@ namespace AVRCpp
 				static inline bool IsInputCaptureEnabled() {return IsBitsSet<ControlRegister>(_ACIC); }
 				
 				/// To use fixed bandgap instead of positive input pin.
-				static inline void EnableFixedBandgap() { SetBits<ControlRegister>(_ADBG); }
+				static inline void EnableFixedBandgap() { SetBits<ControlRegister>(_ACBG); }
 				/// To use positive input pin instead of fixed bandgap.
-				static inline void DisableFixedBandgap() { ClearBits<ControlRegister>(_ADBG); }
+				static inline void DisableFixedBandgap() { ClearBits<ControlRegister>(_ACBG); }
 				/// Returns 'false' if positive input pin is selected.
-				static inline bool IsFixedBandgapEnabled() { return IsBitsSet<ControlRegister>(_ADBG); }
+				static inline bool IsFixedBandgapEnabled() { return IsBitsSet<ControlRegister>(_ACBG); }
 				
 	   		}; // template struct AnalogComparatorBase
 			
@@ -188,7 +188,7 @@ namespace AVRCpp
 					if (negativeSource)
 					{														
 						EnableMultiplexer();							
-						SelectNegativeInput(ADC0);	// default to ADC0
+						SelectNegativeInput(AnalogToDigital::ADC0);	// default to ADC0
 					}
 					else
 					{
@@ -206,10 +206,8 @@ namespace AVRCpp
 			 *	Provides additional function to disable digital inputs.
 			 */
 			template <
-						class ControlRegister,						
-						class MultiplexerSelectionRegister,
+						class ControlRegister,
 						class MultiplexerEnableBit,
-						class ADCDisableBit,
 						class DigitalDisablePositivePin,
 						class DigitalDisableNegativePin >
 						
@@ -217,9 +215,7 @@ namespace AVRCpp
 				
 					MultiplexedInputAnalogComparatorBase <
 							ControlRegister,						
-							MultiplexerSelectionRegister,
-							MultiplexerEnableBit,
-							ADCDisableBit >
+							MultiplexerEnableBit >
 			{
 			public:
 				
