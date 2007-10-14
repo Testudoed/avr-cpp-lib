@@ -1,8 +1,8 @@
 object Main: TMain
   Left = 446
   Top = 329
-  Width = 582
-  Height = 590
+  Width = 771
+  Height = 661
   Caption = 'AVRCppLib device-specific code generator'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,9 +17,9 @@ object Main: TMain
   TextHeight = 13
   object Grid: TStringGrid
     Left = 0
-    Top = 169
-    Width = 574
-    Height = 351
+    Top = 201
+    Width = 763
+    Height = 390
     Align = alClient
     DefaultColWidth = 100
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
@@ -29,8 +29,8 @@ object Main: TMain
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 574
-    Height = 169
+    Width = 763
+    Height = 201
     Align = alTop
     Caption = 'Configuration'
     TabOrder = 1
@@ -57,17 +57,24 @@ object Main: TMain
     end
     object Label4: TLabel
       Left = 16
-      Top = 108
+      Top = 140
       Width = 63
       Height = 13
       Caption = 'Transformer:'
     end
     object Label5: TLabel
       Left = 16
-      Top = 132
+      Top = 164
       Width = 101
       Height = 13
       Caption = 'Transform command:'
+    end
+    object Label6: TLabel
+      Left = 16
+      Top = 116
+      Width = 83
+      Height = 13
+      Caption = 'Exclude XSL files:'
     end
     object eDirXML: TEdit
       Left = 136
@@ -92,32 +99,39 @@ object Main: TMain
     end
     object eTransformerPath: TEdit
       Left = 136
-      Top = 104
+      Top = 136
       Width = 425
       Height = 21
       TabOrder = 2
     end
     object eTransformCommand: TEdit
       Left = 136
-      Top = 128
+      Top = 160
       Width = 425
       Height = 21
       TabOrder = 4
     end
+    object eXSLFileExclusion: TEdit
+      Left = 136
+      Top = 112
+      Width = 425
+      Height = 21
+      TabOrder = 5
+    end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 520
-    Width = 574
+    Top = 591
+    Width = 763
     Height = 43
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
     DesignSize = (
-      574
+      763
       43)
     object bTransform: TBitBtn
-      Left = 368
+      Left = 557
       Top = 10
       Width = 201
       Height = 25
@@ -128,7 +142,7 @@ object Main: TMain
       Kind = bkOK
     end
     object bRefresh: TBitBtn
-      Left = 264
+      Left = 453
       Top = 10
       Width = 94
       Height = 25

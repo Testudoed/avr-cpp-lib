@@ -65,8 +65,7 @@ namespace AVRCpp
 				Bits<_DIDR1, _AIN1D> >	/* DigitalDisableNegativePin */
 		{
 			struct CompareInterrupt : BasicInterrupt<Bits<_ACSR, _ACIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
-		};
-
+		}; // struct AnalogComparator0
 
 	} // namespace AnalogComparator
 

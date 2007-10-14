@@ -42,7 +42,7 @@ namespace AVRCpp
 	<xsl:when test="@detecton='async'">AsyncEvent</xsl:when>
 	<xsl:when test="@detecton='simple_async'">SimpleAsyncEvent</xsl:when>	
 </xsl:choose>,						/* EventEnum */
-			Bits&lt;_<xsl:value-of select="register[@name='conrol']/@register"/>, <xsl:choose>
+			Bits&lt;_<xsl:value-of select="register[@name='control']/@register"/>, <xsl:choose>
 <xsl:when test="@detecton='simple_async'">_ISC<xsl:value-of select="@nr"/></xsl:when>
 <xsl:otherwise>_ISC<xsl:value-of select="@nr"/>0 | _ISC<xsl:value-of select="@nr"/>1</xsl:otherwise>
 </xsl:choose>&gt;,	/* EventBits */

@@ -67,8 +67,8 @@ namespace AVRCpp
 		struct SPI0 : Internal::SPIBase <
 				_SPCR,					/* ControlRegister */
 				_SPSR,					/* StatusRegister */
-				_SPDR,					/* DataRegister */				
-				Pin0<PortB>,			/* SlaveSelectPin */	
+				_SPDR,					/* DataRegister */								
+				Pin0<PortB>,			/* SlaveSelectPin */
 				Pin1<PortB>,			/* ClockPin */
 				Pin2<PortB>,			/* MasterOutPin */
 				Pin3<PortB> >			/* MasterInPin */			

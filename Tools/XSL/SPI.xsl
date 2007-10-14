@@ -35,10 +35,10 @@ namespace AVRCpp
 		}; // namespace Internal
 <xsl:for-each select="$feature/spi">
 		struct SPI<xsl:value-of select="@nr"/> : Internal::SPIBase &lt;
-				_SPCR,					/* ControlRegister */
-				_SPSR,					/* StatusRegister */
-				_SPDR,					/* DataRegister */				
-				Pin<xsl:value-of select="pin[@name='SS']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='SS']/@port"/>&gt;,			/* SlaveSelectPin */	
+				_<xsl:value-of select="register[@name='control']/@register"/>,					/* ControlRegister */
+				_<xsl:value-of select="register[@name='status']/@register"/>,					/* StatusRegister */
+				_<xsl:value-of select="register[@name='data']/@register"/>,					/* DataRegister */								
+				Pin<xsl:value-of select="pin[@name='SS']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='SS']/@port"/>&gt;,			/* SlaveSelectPin */
 				Pin<xsl:value-of select="pin[@name='SCK']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='SCK']/@port"/>&gt;,			/* ClockPin */
 				Pin<xsl:value-of select="pin[@name='MOSI']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='MOSI']/@port"/>&gt;,			/* MasterOutPin */
 				Pin<xsl:value-of select="pin[@name='MISO']/@pin"/>&lt;Port<xsl:value-of select="pin[@name='MISO']/@port"/>&gt; &gt;			/* MasterInPin */			

@@ -26,6 +26,8 @@ type
     bRefresh: TBitBtn;
     Label5: TLabel;
     eTransformCommand: TEdit;
+    Label6: TLabel;
+    eXSLFileExclusion: TEdit;
     procedure FormShow(Sender: TObject);
     procedure bRefreshClick(Sender: TObject);
     procedure GridMouseDown(Sender: TObject; Button: TMouseButton;
@@ -81,6 +83,7 @@ begin
 
   eDirXML.Text := 'DeviceDesciptions';
   eDirXSL.Text := 'XSL';
+  eXSLFileExclusion.Text := 'General';
   eTransformerPath.Text := 'Saxon\Transform.exe';
   eDirDestination.Text := '../AVRCppLib';
   eTransformCommand.Text := '%Transformer -t %XML %XSL > %Code';
@@ -125,6 +128,7 @@ var
     SRec: TSearchRec;
     Found: integer;
     Col: integer;
+    Name: string;
 begin
   Grid.ColCount := 1;
   Col := 1;
@@ -132,11 +136,16 @@ begin
   Found := FindFirst(AddDirEnd(eDirXSL.Text) + '*.xsl', 0, SRec);
   while Found = 0 do
   begin
-    Grid.ColCount := Grid.ColCount + 1;
-    Grid.Cells[Col, 0] := ExtractFileNameOnly(Srec.Name);
+    Name := ExtractFileNameOnly(Srec.Name);
+
+    if Pos(Name, eXSLFileExclusion.Text) = 0 then
+    begin
+      Grid.ColCount := Grid.ColCount + 1;
+      Grid.Cells[Col, 0] := Name;
+      Inc(Col);
+    end;
 
     Found := FindNext(SRec);
-    Inc(Col);
   end;
   FindClose(SRec);
 

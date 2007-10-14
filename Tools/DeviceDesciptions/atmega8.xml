@@ -476,7 +476,7 @@
 	<features>
 		<feature name="AnalogComparator">
 			<analog_comparator nr="0" multiplexed="yes">
-				<register name="conrol" register="ACSR"/>
+				<register name="control" register="ACSR"/>
 				<register name="multiplexer_selection" register="ADMUX"/>
 				<bit name="multiplexer_enable" register="SFIOR" bit="ACME"/>
 				<bit name="adc_disable" register="ADCSRA" bit="ADEN"/>
@@ -485,13 +485,13 @@
 		</feature>
 		<feature name="ExternalInterrupt">
 			<external_interrupt nr="0" shift="0" detecton="sync">
-				<register name="conrol" register="MCUCR"/>
+				<register name="control" register="MCUCR"/>
 				<register name="interrupt_control" register="GICR"/>
 				<register name="interrupt_flag" register="GIFR"/>
 				<pin port="D" pin="2"/>
 			</external_interrupt>
 			<external_interrupt nr="1" shift="2" detecton="sync">
-				<register name="conrol" register="MCUCR"/>
+				<register name="control" register="MCUCR"/>
 				<register name="interrupt_control" register="GICR"/>
 				<register name="interrupt_flag" register="GIFR"/>
 				<pin port="D" pin="3"/>
@@ -499,6 +499,9 @@
 		</feature>
 		<feature name="SPI">
 			<spi nr="0">
+				<register name="control" register="SPCR"/>
+				<register name="status" register="SPSR"/>
+				<register name="data" register="SPDR"/>
 				<pin name="SS" port="B" pin="2"/>
 				<pin name="SCK" port="B" pin="5"/>
 				<pin name="MOSI" port="B" pin="3"/>

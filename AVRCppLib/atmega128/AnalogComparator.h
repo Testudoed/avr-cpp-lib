@@ -63,8 +63,7 @@ namespace AVRCpp
 				Bits<_SFIOR, _ACME> >	/* MultiplexerEnableBit */
 		{
 			struct CompareInterrupt : BasicInterrupt<Bits<_ACSR, _ACIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
-		};
-
+		}; // struct AnalogComparator0
 
 	} // namespace AnalogComparator
 

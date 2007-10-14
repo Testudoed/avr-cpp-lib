@@ -61,8 +61,7 @@ namespace AVRCpp
 		struct AnalogComparator0 : Internal::AnalogComparatorBase <_ACSR>	/* ControlRegister */
 		{
 			struct CompareInterrupt : BasicInterrupt<Bits<_ACSR, _ACIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
-		};
-
+		}; // struct AnalogComparator0
 
 	} // namespace AnalogComparator
 
