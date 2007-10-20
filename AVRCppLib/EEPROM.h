@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -22,7 +22,6 @@
 	MTÜ TTÜ Robotiklubi  http://www.robotiklubi.ee robotiklubi@gmail.com
 	Lauri Kirikal        laurikirikal@gmail.com
 	Mikk Leini           mikk.leini@gmail.com
-	Rasmus Raag          rasmus_raag@users.sourceforge.net
 
 \**********************************************************************************************************************/
 
@@ -65,8 +64,13 @@
 
 #define EEPROM_SIZE E2END
 
+#ifdef EE_READY_vect
+#define EE_READY_ns		EEPROM
+#define EE_READY_struct	EEPROM::ReadyInterrupt
+#else
 #define EE_RDY_ns		EEPROM
-#define EE_RDY_struct	EE_RDY_ns::ReadyInterrupt
+#define EE_RDY_struct	EEPROM::ReadyInterrupt
+#endif
 
 /**********************************************************************************************************************\
 	
