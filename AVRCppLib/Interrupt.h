@@ -69,7 +69,7 @@
 		namespace AVRCpp { namespace interruptName ## _ns	{ namespace Internal { CppDelegate::FastDelegate interruptName ## Delegate; } \
 		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Delegate(); } \
 		template <> CppDelegate::FastDelegate & interruptName ## _struct::Me<CppDelegate::FastDelegate>() { return interruptName ## _ns::Internal::interruptName ## Delegate; } } } \
-		namespace CppDelegate { template <> FastDelegate &GetFastDelegate<interruptName ## _struct>() { return interruptName ## _struct::Me<FastDelegate>(); } } \
+		namespace CppDelegate { template <> FastDelegate &GetFastDelegate<AVRCpp::interruptName ## _struct>() { return AVRCpp::interruptName ## _struct::Me<FastDelegate>(); } } \
 		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Delegate(); }
 
 /// Declares that CppDelegate::MultiDelegate is used for this interrupt.
@@ -77,7 +77,7 @@
 		namespace AVRCpp { namespace interruptName ## _ns { namespace Internal { CppDelegate::MultiDelegate interruptName ## Delegate; } \
 		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Delegate(); } \
 		template <> CppDelegate::MultiDelegate & interruptName ## _struct::Me<CppDelegate::MultiDelegate>() { return interruptName ## _ns::Internal::interruptName ## Delegate; } } } \
-		namespace CppDelegate { template <> MultiDelegate &GetMultiDelegate<interruptName ## _struct>() { return interruptName ## _struct::Me<MultiDelegate>(); } } \
+		namespace CppDelegate { template <> MultiDelegate &GetMultiDelegate<AVRCpp::interruptName ## _struct>() { return AVRCpp::interruptName ## _struct::Me<MultiDelegate>(); } } \
 		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Delegate(); }
 
 /// Declares that CppDelegate::DataDelegate is used for this interrupt.
@@ -86,7 +86,7 @@
 		void interruptName ## _struct::Evoke() { interruptName ## _ns::Internal::interruptName ## Controller(); } \
 		template <> CppDelegate::DataDelegate<controllerName> & interruptName ## _struct::Me<CppDelegate::DataDelegate<controllerName> >() { return interruptName ## _ns::Internal::interruptName ## Controller.Delegate(); } \
 		template <> controllerName & interruptName ## _struct::Controller<controllerName>() { return (controllerName &)interruptName ## _ns::Internal::interruptName ## Controller; } } } \
-		namespace CppDelegate { template <> DataDelegate<controllerName> &GetDataDelegate<interruptName ## _struct, controllerName>() { return interruptName ## _struct::Me<DataDelegate<controllerName> >(); } } \
+		namespace CppDelegate { template <> DataDelegate<controllerName> &GetDataDelegate<AVRCpp::interruptName ## _struct, controllerName>() { return AVRCpp::interruptName ## _struct::Me<DataDelegate<controllerName> >(); } } \
 		__DELEGATE_HANDLER__(interruptName ## _vect) { AVRCpp::interruptName ## _ns::Internal::interruptName ## Controller(); }
 
 
