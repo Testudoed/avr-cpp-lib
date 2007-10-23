@@ -274,6 +274,7 @@ namespace AVRCpp
 			inline bool Pop(uint8_t &byte) const { return false; }
 			inline uint8_t GetCapacity() const { return 0; }
 			inline uint8_t GetSize() const { return 0; }
+			inline bool IsEmpty() const { return true; }
 			
 		}; // class NoBuffer
 		
@@ -374,7 +375,7 @@ namespace AVRCpp
 				
 				virtual void ReadyToWrite()
 				{
-					uint8_t byte;
+					uint8_t byte = 0;
 					
 					if (outputBuffer.Pop(byte) )
 						FileIO::Write(byte);
