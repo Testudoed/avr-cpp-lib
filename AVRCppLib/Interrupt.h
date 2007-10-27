@@ -118,7 +118,8 @@
  *		 interrupts and restoring SREG adds 3 instructions. At the expense of only 2 instructions, INTERRUPT_SAFE makes the code easier
  *       to read and write.
  */
-#define INTERRUPT_SAFE for(AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.IsFinished(); safeObject.Finished() )
+#define INTERRUPT_SAFE for (AVRCpp::GlobalInterrupts::Internal::InterruptDisabler safeObject; !safeObject.IsFinished(); safeObject.Finish() )
+#define INTERRUPT_CRITICAL(InterruptClass) for (AVRCpp::GlobalInterrupts::Internal::OneInterruptDisabler<InterruptClass> critical; !critical.IsFinished(); critical.Finish() )
 
 namespace AVRCpp
 {
@@ -146,7 +147,7 @@ namespace AVRCpp
 					
 				} // InterruptDisabler CONSTRUCTOR
 				
-				inline void Finished() { sreg |= _SREG_C; }
+				inline void Finish() { sreg |= _SREG_C; }
 				inline bool IsFinished() { return sreg & _SREG_C; }
 				
 				~InterruptDisabler()
@@ -157,6 +158,35 @@ namespace AVRCpp
 				
 			}; // class InterruptDisabler
 			
+
+			template <class InterruptClass> class OneInterruptDisabler
+			{
+			private:
+			
+				uint8_t wasEnabled : 1;
+				uint8_t finished : 1;
+				
+			public:
+				
+				OneInterruptDisabler<InterruptClass>()
+				{
+					finished = 0;
+					wasEnabled = InterruptClass::IsEnabled();
+					InterruptClass::Disable();
+					
+				} // OneInterruptDisabler CONSTRUCTOR
+				
+				inline void Finish() { finished = 1; }
+				inline bool IsFinished() { return finished; }
+				
+				~InterruptDisabler<InterruptClass>()
+				{
+					if (wasEnabled) InterruptClass::Enable();
+					
+				} // OneInterruptDisabler DESTRUCTOR
+				
+			}; // template class OneInterruptDisabler
+
 		} // namespace Internal
 		
 	} // namespace GlobalInterrupts
