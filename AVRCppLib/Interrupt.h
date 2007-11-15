@@ -179,7 +179,7 @@ namespace AVRCpp
 				inline void Finish() { finished = 1; }
 				inline bool IsFinished() { return finished; }
 				
-				~InterruptDisabler<InterruptClass>()
+				~OneInterruptDisabler<InterruptClass>()
 				{
 					if (wasEnabled) InterruptClass::Enable();
 					
