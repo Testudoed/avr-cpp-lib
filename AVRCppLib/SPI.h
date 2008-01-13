@@ -133,9 +133,8 @@ namespace AVRCpp
 					typedef DataRegister	Data;
 					
 					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
-					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
-					
-					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }					
+					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }					
+					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }								
 					
 				public:
 					
