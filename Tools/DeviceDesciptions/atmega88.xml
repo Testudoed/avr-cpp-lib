@@ -30,7 +30,8 @@
 				<bit name="RXB80" address="0x2"/>
 				<bit name="TXB80" address="0x1"/>
 			</bits>
-		</register>		<register name="UCSR0A" bits="8">
+		</register>
+		<register name="UCSR0A" bits="8">
 			<bits>
 				<bit name="RXC0" address="0x80"/>
 				<bit name="TXC0" address="0x40"/>
@@ -636,6 +637,11 @@
 		<port char="B"/>
 	</ports>
 	<features>
+		<feature name="Watchdog" enhanced="1" >
+			<register name="mcu_status" register="MCUSR"/>
+			<register name="control" register="WDTCSR"/>
+			<interrupt name="timer" register="WDTCSR" bit="WDIE"/>
+		</feature>
 		<feature name="AnalogComparator">
 			<analog_comparator nr="0" multiplexed="yes" digital_disable="yes">
 				<register name="control" register="ACSR"/>

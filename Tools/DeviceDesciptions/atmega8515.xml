@@ -463,7 +463,11 @@
 		<port char="D"/>
 		<port char="E"/>
 	</ports>
-	<features>
+	<features>	
+		<feature name="Watchdog">
+			<register name="mcu_status" register="MCUCSR"/>
+			<register name="control" register="WDTCR"/>
+		</feature>
 		<feature name="AnalogComparator">
 			<analog_comparator nr="0">
 				<register name="control" register="ACSR"/>

@@ -2,16 +2,50 @@
 <controller name="at90usb1287" id="AT90USB1287">
 	<registers>
 		<register name="OTGTCON" bits="8">
+			<bits>
+				<bit name="PAGE1" address="0x40"/>
+				<bit name="PAGE0" address="0x20"/>
+				<bit name="VALUE1" address="0x2"/>
+				<bit name="VALUE0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPINT" bits="8">
+			<bits>
+				<bit name="PINT7" address="0x80"/>
+				<bit name="PINT6" address="0x40"/>
+				<bit name="PINT5" address="0x20"/>
+				<bit name="PINT4" address="0x10"/>
+				<bit name="PINT3" address="0x8"/>
+				<bit name="PINT2" address="0x4"/>
+				<bit name="PINT1" address="0x2"/>
+				<bit name="PINT0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPBCHX" bits="8">
 		</register>
 		<register name="UPBCLX" bits="8">
 		</register>
 		<register name="UPERRX" bits="8">
+			<bits>
+				<bit name="COUNTER1" address="0x40"/>
+				<bit name="COUNTER0" address="0x20"/>
+				<bit name="CRC16" address="0x10"/>
+				<bit name="TIMEOUT" address="0x8"/>
+				<bit name="PID" address="0x4"/>
+				<bit name="DATAPID" address="0x2"/>
+				<bit name="DATATGL" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UEINT" bits="8">
+			<bits>
+				<bit name="EPINT6" address="0x40"/>
+				<bit name="EPINT5" address="0x20"/>
+				<bit name="EPINT4" address="0x10"/>
+				<bit name="EPINT3" address="0x8"/>
+				<bit name="EPINT2" address="0x4"/>
+				<bit name="EPINT1" address="0x2"/>
+				<bit name="EPINT0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UEBCHX" bits="8">
 		</register>
@@ -31,18 +65,66 @@
 			</bits>
 		</register>
 		<register name="UESTA1X" bits="8">
+			<bits>
+				<bit name="CTRLDIR" address="0x4"/>
+				<bit name="CURRBK1" address="0x2"/>
+				<bit name="CURRBK0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UESTA0X" bits="8">
+			<bits>
+				<bit name="CFGOK" address="0x80"/>
+				<bit name="OVERFI" address="0x40"/>
+				<bit name="UNDERFI" address="0x20"/>
+				<bit name="ZLPSEEN" address="0x10"/>
+				<bit name="DTSEQ1" address="0x8"/>
+				<bit name="DTSEQ0" address="0x4"/>
+				<bit name="NBUSYBK1" address="0x2"/>
+				<bit name="NBUSYBK0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UECFG1X" bits="8">
+			<bits>
+				<bit name="EPSIZE2" address="0x40"/>
+				<bit name="EPSIZE1" address="0x20"/>
+				<bit name="EPSIZE0" address="0x10"/>
+				<bit name="EPBK1" address="0x8"/>
+				<bit name="EPBK0" address="0x4"/>
+				<bit name="ALLOC" address="0x2"/>
+			</bits>
 		</register>
 		<register name="UECFG0X" bits="8">
+			<bits>
+				<bit name="EPTYPE1" address="0x80"/>
+				<bit name="EPTYPE0" address="0x40"/>
+				<bit name="EPDIR" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UECONX" bits="8">
+			<bits>
+				<bit name="STALLRQ" address="0x20"/>
+				<bit name="STALLRQC" address="0x10"/>
+				<bit name="RSTDT" address="0x8"/>
+				<bit name="EPEN" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UERST" bits="8">
+			<bits>
+				<bit name="EPRST6" address="0x40"/>
+				<bit name="EPRST5" address="0x20"/>
+				<bit name="EPRST4" address="0x10"/>
+				<bit name="EPRST3" address="0x8"/>
+				<bit name="EPRST2" address="0x4"/>
+				<bit name="EPRST1" address="0x2"/>
+				<bit name="EPRST0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UENUM" bits="8">
+			<bits>
+				<bit name="EPNUM2" address="0x4"/>
+				<bit name="EPNUM1" address="0x2"/>
+				<bit name="EPNUM0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UEINTX" bits="8">
 			<bits>
@@ -57,38 +139,127 @@
 			</bits>
 		</register>
 		<register name="UDTST" bits="8">
+			<bits>
+				<bit name="OPMODE2" address="0x20"/>
+				<bit name="TSTPCKT" address="0x10"/>
+				<bit name="TSTK" address="0x8"/>
+				<bit name="TSTJ" address="0x4"/>
+			</bits>
 		</register>
 		<register name="UDMFN" bits="8">
+			<bits>
+				<bit name="FNCERR" address="0x10"/>
+			</bits>
 		</register>
 		<register name="UDFNUMH" bits="8">
 		</register>
 		<register name="UDFNUML" bits="8">
 		</register>
 		<register name="UDADDR" bits="8">
+			<bits>
+				<bit name="ADDEN" address="0x80"/>
+				<bit name="UADD6" address="0x40"/>
+				<bit name="UADD5" address="0x20"/>
+				<bit name="UADD4" address="0x10"/>
+				<bit name="UADD3" address="0x8"/>
+				<bit name="UADD2" address="0x4"/>
+				<bit name="UADD1" address="0x2"/>
+				<bit name="UADD0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UDIEN" bits="8">
+			<bits>
+				<bit name="UPRSME" address="0x40"/>
+				<bit name="EORSME" address="0x20"/>
+				<bit name="WAKEUPE" address="0x10"/>
+				<bit name="EORSTE" address="0x8"/>
+				<bit name="SOFE" address="0x4"/>
+				<bit name="MSOFE" address="0x2"/>
+				<bit name="SUSPE" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UDINT" bits="8">
+			<bits>
+				<bit name="UPRSMI" address="0x40"/>
+				<bit name="EORSMI" address="0x20"/>
+				<bit name="WAKEUPI" address="0x10"/>
+				<bit name="EORSTI" address="0x8"/>
+				<bit name="SOFI" address="0x4"/>
+				<bit name="MSOFI" address="0x2"/>
+				<bit name="SUSPI" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UDCON" bits="8">
+			<bits>
+				<bit name="LSM" address="0x4"/>
+				<bit name="RMWKUP" address="0x2"/>
+				<bit name="DETACH" address="0x1"/>
+			</bits>
 		</register>
 		<register name="OTGINT" bits="8">
+			<bits>
+				<bit name="STOI" address="0x20"/>
+				<bit name="HNPERRI" address="0x10"/>
+				<bit name="ROLEEXI" address="0x8"/>
+				<bit name="BCERRI" address="0x4"/>
+				<bit name="VBERRI" address="0x2"/>
+				<bit name="SRPI" address="0x1"/>
+			</bits>
 		</register>
 		<register name="OTGIEN" bits="8">
+			<bits>
+				<bit name="STOE" address="0x20"/>
+				<bit name="HNPERRE" address="0x10"/>
+				<bit name="ROLEEXE" address="0x8"/>
+				<bit name="BCERRE" address="0x4"/>
+				<bit name="VBERRE" address="0x2"/>
+				<bit name="SRPE" address="0x1"/>
+			</bits>
 		</register>
 		<register name="OTGCON" bits="8">
+			<bits>
+				<bit name="HNPREQ" address="0x20"/>
+				<bit name="SRPREQ" address="0x10"/>
+				<bit name="SRPSEL" address="0x8"/>
+				<bit name="VBUSHWC" address="0x4"/>
+				<bit name="VBUSREQ" address="0x2"/>
+				<bit name="VBUSRQC" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UDPADDH" bits="8">
 		</register>
 		<register name="UDPADDL" bits="8">
 		</register>
 		<register name="USBINT" bits="8">
+			<bits>
+				<bit name="IDTI" address="0x2"/>
+				<bit name="VBUSTI" address="0x1"/>
+			</bits>
 		</register>
 		<register name="USBSTA" bits="8">
+			<bits>
+				<bit name="SPEED" address="0x8"/>
+				<bit name="ID" address="0x2"/>
+				<bit name="VBUS" address="0x1"/>
+			</bits>
 		</register>
 		<register name="USBCON" bits="8">
+			<bits>
+				<bit name="USBE" address="0x80"/>
+				<bit name="HOST" address="0x40"/>
+				<bit name="FRZCLK" address="0x20"/>
+				<bit name="OTGPADE" address="0x10"/>
+				<bit name="IDTE" address="0x2"/>
+				<bit name="VBUSTE" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHWCON" bits="8">
+			<bits>
+				<bit name="UIMOD" address="0x80"/>
+				<bit name="UIDE" address="0x40"/>
+				<bit name="UVCONE" address="0x10"/>
+				<bit name="UVREGE" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UDR1" bits="8">
 		</register>
@@ -232,18 +403,75 @@
 			</bits>
 		</register>
 		<register name="UPCFG2X" bits="8">
+			<bits>
+				<bit name="INTFRQ7" address="0x80"/>
+				<bit name="INTFRQ6" address="0x40"/>
+				<bit name="INTFRQ5" address="0x20"/>
+				<bit name="INTFRQ4" address="0x10"/>
+				<bit name="INTFRQ3" address="0x8"/>
+				<bit name="INTFRQ2" address="0x4"/>
+				<bit name="INTFRQ1" address="0x2"/>
+				<bit name="INTFRQ0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPSTAX" bits="8">
+			<bits>
+				<bit name="CFGOK" address="0x80"/>
+				<bit name="OVERFI" address="0x40"/>
+				<bit name="UNDERFI" address="0x20"/>
+				<bit name="DTSEQ1" address="0x8"/>
+				<bit name="DTSEQ0" address="0x4"/>
+				<bit name="NBUSYBK1" address="0x2"/>
+				<bit name="NBUSYBK0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPCFG1X" bits="8">
+			<bits>
+				<bit name="PSIZE2" address="0x40"/>
+				<bit name="PSIZE1" address="0x20"/>
+				<bit name="PSIZE0" address="0x10"/>
+				<bit name="PBK1" address="0x8"/>
+				<bit name="PBK0" address="0x4"/>
+				<bit name="ALLOC" address="0x2"/>
+			</bits>
 		</register>
 		<register name="UPCFG0X" bits="8">
+			<bits>
+				<bit name="PTYPE1" address="0x80"/>
+				<bit name="PTYPE0" address="0x40"/>
+				<bit name="PTOKEN1" address="0x20"/>
+				<bit name="PTOKEN0" address="0x10"/>
+				<bit name="PEPNUM3" address="0x8"/>
+				<bit name="PEPNUM2" address="0x4"/>
+				<bit name="PEPNUM1" address="0x2"/>
+				<bit name="PEPNUM0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPCONX" bits="8">
+			<bits>
+				<bit name="PFREEZE" address="0x40"/>
+				<bit name="INMODE" address="0x20"/>
+				<bit name="RSTDT" address="0x8"/>
+				<bit name="PEN" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPRST" bits="8">
+			<bits>
+				<bit name="PRST6" address="0x40"/>
+				<bit name="PRST5" address="0x20"/>
+				<bit name="PRST4" address="0x10"/>
+				<bit name="PRST3" address="0x8"/>
+				<bit name="PRST2" address="0x4"/>
+				<bit name="PRST1" address="0x2"/>
+				<bit name="PRST0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPNUM" bits="8">
+			<bits>
+				<bit name="PNUM2" address="0x4"/>
+				<bit name="PNUM1" address="0x2"/>
+				<bit name="PNUM0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UPINTX" bits="8">
 			<bits>
@@ -258,20 +486,72 @@
 			</bits>
 		</register>
 		<register name="UPINRQX" bits="8">
+			<bits>
+				<bit name="INRQ7" address="0x80"/>
+				<bit name="INRQ6" address="0x40"/>
+				<bit name="INRQ5" address="0x20"/>
+				<bit name="INRQ4" address="0x10"/>
+				<bit name="INRQ3" address="0x8"/>
+				<bit name="INRQ2" address="0x4"/>
+				<bit name="INRQ1" address="0x2"/>
+				<bit name="INRQ0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHFLEN" bits="8">
+			<bits>
+				<bit name="FLEN7" address="0x80"/>
+				<bit name="FLEN6" address="0x40"/>
+				<bit name="FLEN5" address="0x20"/>
+				<bit name="FLEN4" address="0x10"/>
+				<bit name="FLEN3" address="0x8"/>
+				<bit name="FLEN2" address="0x4"/>
+				<bit name="FLEN1" address="0x2"/>
+				<bit name="FLEN0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHFNUMH" bits="8">
 		</register>
 		<register name="UHFNUML" bits="8">
 		</register>
 		<register name="UHADDR" bits="8">
+			<bits>
+				<bit name="HADD6" address="0x40"/>
+				<bit name="HADD5" address="0x20"/>
+				<bit name="HADD4" address="0x10"/>
+				<bit name="HADD3" address="0x8"/>
+				<bit name="HADD2" address="0x4"/>
+				<bit name="HADD1" address="0x2"/>
+				<bit name="HADD0" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHIEN" bits="8">
+			<bits>
+				<bit name="UPRSME" address="0x40"/>
+				<bit name="EORSME" address="0x20"/>
+				<bit name="WAKEUPE" address="0x10"/>
+				<bit name="EORSTE" address="0x8"/>
+				<bit name="SOFE" address="0x4"/>
+				<bit name="MSOFE" address="0x2"/>
+				<bit name="SUSPE" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHINT" bits="8">
+			<bits>
+				<bit name="HWUPI" address="0x40"/>
+				<bit name="HSOFI" address="0x20"/>
+				<bit name="RXRSMI" address="0x10"/>
+				<bit name="RSMEDI" address="0x8"/>
+				<bit name="RSTI" address="0x4"/>
+				<bit name="DDISCI" address="0x2"/>
+				<bit name="DCONNI" address="0x1"/>
+			</bits>
 		</register>
 		<register name="UHCON" bits="8">
+			<bits>
+				<bit name="RESUME" address="0x4"/>
+				<bit name="RESET" address="0x2"/>
+				<bit name="SOFEN" address="0x1"/>
+			</bits>
 		</register>
 		<register name="OCR3CH" bits="8">
 		</register>
@@ -1029,9 +1309,6 @@
 				<bit name="PINA0" address="0x1"/>
 			</bits>
 		</register>
-		<register name="UDFNUM" bits="16"/>
-		<register name="UDPADD" bits="16"/>
-		<register name="UHFNUM" bits="16"/>
 		<register name="OCR3C" bits="16"/>
 		<register name="OCR3B" bits="16"/>
 		<register name="OCR3A" bits="16"/>
@@ -1054,6 +1331,11 @@
 		<port char="A"/>
 	</ports>
 	<features>
+		<feature name="Watchdog" enhanced="1" >
+			<register name="mcu_status" register="MCUSR"/>
+			<register name="control" register="WDTCSR"/>
+			<interrupt name="timer" register="WDTCSR" bit="WDIE"/>
+		</feature>
 		<feature name="AnalogComparator">
 			<analog_comparator nr="0" multiplexed="yes" digital_disable="yes">
 				<register name="control" register="ACSR"/>

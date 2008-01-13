@@ -225,9 +225,6 @@ namespace AVRCpp
 	__DECLARE_8BIT_REGISTER__(PORTA);
 	__DECLARE_8BIT_REGISTER__(DDRA);
 	__DECLARE_8BIT_REGISTER__(PINA);
-	__DECLARE_16BIT_REGISTER__(UDFNUM);
-	__DECLARE_16BIT_REGISTER__(UDPADD);
-	__DECLARE_16BIT_REGISTER__(UHFNUM);
 	__DECLARE_16BIT_REGISTER__(OCR3C);
 	__DECLARE_16BIT_REGISTER__(OCR3B);
 	__DECLARE_16BIT_REGISTER__(OCR3A);
@@ -244,6 +241,40 @@ namespace AVRCpp
 } // namespace AVRCpp
 
 
+// OTGTCON
+#define _PAGE1 0x40
+#define _PAGE0 0x20
+#define _VALUE1 0x2
+#define _VALUE0 0x1
+
+// UPINT
+#define _PINT7 0x80
+#define _PINT6 0x40
+#define _PINT5 0x20
+#define _PINT4 0x10
+#define _PINT3 0x8
+#define _PINT2 0x4
+#define _PINT1 0x2
+#define _PINT0 0x1
+
+// UPERRX
+#define _COUNTER1 0x40
+#define _COUNTER0 0x20
+#define _CRC16 0x10
+#define _TIMEOUT 0x8
+#define _PID 0x4
+#define _DATAPID 0x2
+#define _DATATGL 0x1
+
+// UEINT
+#define _EPINT6 0x40
+#define _EPINT5 0x20
+#define _EPINT4 0x10
+#define _EPINT3 0x8
+#define _EPINT2 0x4
+#define _EPINT1 0x2
+#define _EPINT0 0x1
+
 // UEIENX
 #define _FLERRE 0x80
 #define _NAKINE 0x40
@@ -252,6 +283,54 @@ namespace AVRCpp
 #define _RXOUTE 0x4
 #define _STALLEDE 0x2
 #define _TXINE 0x1
+
+// UESTA1X
+#define _CTRLDIR 0x4
+#define _CURRBK1 0x2
+#define _CURRBK0 0x1
+
+// UESTA0X
+#define _CFGOK 0x80
+#define _OVERFI 0x40
+#define _UNDERFI 0x20
+#define _ZLPSEEN 0x10
+#define _DTSEQ1 0x8
+#define _DTSEQ0 0x4
+#define _NBUSYBK1 0x2
+#define _NBUSYBK0 0x1
+
+// UECFG1X
+#define _EPSIZE2 0x40
+#define _EPSIZE1 0x20
+#define _EPSIZE0 0x10
+#define _EPBK1 0x8
+#define _EPBK0 0x4
+#define _ALLOC 0x2
+
+// UECFG0X
+#define _EPTYPE1 0x80
+#define _EPTYPE0 0x40
+#define _EPDIR 0x1
+
+// UECONX
+#define _STALLRQ 0x20
+#define _STALLRQC 0x10
+#define _RSTDT 0x8
+#define _EPEN 0x1
+
+// UERST
+#define _EPRST6 0x40
+#define _EPRST5 0x20
+#define _EPRST4 0x10
+#define _EPRST3 0x8
+#define _EPRST2 0x4
+#define _EPRST1 0x2
+#define _EPRST0 0x1
+
+// UENUM
+#define _EPNUM2 0x4
+#define _EPNUM1 0x2
+#define _EPNUM0 0x1
 
 // UEINTX
 #define _FIFOCON 0x80
@@ -262,6 +341,95 @@ namespace AVRCpp
 #define _RXOUTI 0x4
 #define _STALLEDI 0x2
 #define _TXINI 0x1
+
+// UDTST
+#define _OPMODE2 0x20
+#define _TSTPCKT 0x10
+#define _TSTK 0x8
+#define _TSTJ 0x4
+
+// UDMFN
+#define _FNCERR 0x10
+
+// UDADDR
+#define _ADDEN 0x80
+#define _UADD6 0x40
+#define _UADD5 0x20
+#define _UADD4 0x10
+#define _UADD3 0x8
+#define _UADD2 0x4
+#define _UADD1 0x2
+#define _UADD0 0x1
+
+// UDIEN
+#define _UPRSME 0x40
+#define _EORSME 0x20
+#define _WAKEUPE 0x10
+#define _EORSTE 0x8
+#define _SOFE 0x4
+#define _MSOFE 0x2
+#define _SUSPE 0x1
+
+// UDINT
+#define _UPRSMI 0x40
+#define _EORSMI 0x20
+#define _WAKEUPI 0x10
+#define _EORSTI 0x8
+#define _SOFI 0x4
+#define _MSOFI 0x2
+#define _SUSPI 0x1
+
+// UDCON
+#define _LSM 0x4
+#define _RMWKUP 0x2
+#define _DETACH 0x1
+
+// OTGINT
+#define _STOI 0x20
+#define _HNPERRI 0x10
+#define _ROLEEXI 0x8
+#define _BCERRI 0x4
+#define _VBERRI 0x2
+#define _SRPI 0x1
+
+// OTGIEN
+#define _STOE 0x20
+#define _HNPERRE 0x10
+#define _ROLEEXE 0x8
+#define _BCERRE 0x4
+#define _VBERRE 0x2
+#define _SRPE 0x1
+
+// OTGCON
+#define _HNPREQ 0x20
+#define _SRPREQ 0x10
+#define _SRPSEL 0x8
+#define _VBUSHWC 0x4
+#define _VBUSREQ 0x2
+#define _VBUSRQC 0x1
+
+// USBINT
+#define _IDTI 0x2
+#define _VBUSTI 0x1
+
+// USBSTA
+#define _SPEED 0x8
+#define _ID 0x2
+#define _VBUS 0x1
+
+// USBCON
+#define _USBE 0x80
+#define _HOST 0x40
+#define _FRZCLK 0x20
+#define _OTGPADE 0x10
+#define _IDTE 0x2
+#define _VBUSTE 0x1
+
+// UHWCON
+#define _UIMOD 0x80
+#define _UIDE 0x40
+#define _UVCONE 0x10
+#define _UVREGE 0x1
 
 // UCSR1C
 #define _UMSEL11 0x80
@@ -364,6 +532,63 @@ namespace AVRCpp
 #define _RXSTALLE 0x2
 #define _RXINE 0x1
 
+// UPCFG2X
+#define _INTFRQ7 0x80
+#define _INTFRQ6 0x40
+#define _INTFRQ5 0x20
+#define _INTFRQ4 0x10
+#define _INTFRQ3 0x8
+#define _INTFRQ2 0x4
+#define _INTFRQ1 0x2
+#define _INTFRQ0 0x1
+
+// UPSTAX
+#define _CFGOK 0x80
+#define _OVERFI 0x40
+#define _UNDERFI 0x20
+#define _DTSEQ1 0x8
+#define _DTSEQ0 0x4
+#define _NBUSYBK1 0x2
+#define _NBUSYBK0 0x1
+
+// UPCFG1X
+#define _PSIZE2 0x40
+#define _PSIZE1 0x20
+#define _PSIZE0 0x10
+#define _PBK1 0x8
+#define _PBK0 0x4
+#define _ALLOC 0x2
+
+// UPCFG0X
+#define _PTYPE1 0x80
+#define _PTYPE0 0x40
+#define _PTOKEN1 0x20
+#define _PTOKEN0 0x10
+#define _PEPNUM3 0x8
+#define _PEPNUM2 0x4
+#define _PEPNUM1 0x2
+#define _PEPNUM0 0x1
+
+// UPCONX
+#define _PFREEZE 0x40
+#define _INMODE 0x20
+#define _RSTDT 0x8
+#define _PEN 0x1
+
+// UPRST
+#define _PRST6 0x40
+#define _PRST5 0x20
+#define _PRST4 0x10
+#define _PRST3 0x8
+#define _PRST2 0x4
+#define _PRST1 0x2
+#define _PRST0 0x1
+
+// UPNUM
+#define _PNUM2 0x4
+#define _PNUM1 0x2
+#define _PNUM0 0x1
+
 // UPINTX
 #define _FIFOCON 0x80
 #define _NAKEDI 0x40
@@ -373,6 +598,58 @@ namespace AVRCpp
 #define _TXOUTI 0x4
 #define _RXSTALLI 0x2
 #define _RXINI 0x1
+
+// UPINRQX
+#define _INRQ7 0x80
+#define _INRQ6 0x40
+#define _INRQ5 0x20
+#define _INRQ4 0x10
+#define _INRQ3 0x8
+#define _INRQ2 0x4
+#define _INRQ1 0x2
+#define _INRQ0 0x1
+
+// UHFLEN
+#define _FLEN7 0x80
+#define _FLEN6 0x40
+#define _FLEN5 0x20
+#define _FLEN4 0x10
+#define _FLEN3 0x8
+#define _FLEN2 0x4
+#define _FLEN1 0x2
+#define _FLEN0 0x1
+
+// UHADDR
+#define _HADD6 0x40
+#define _HADD5 0x20
+#define _HADD4 0x10
+#define _HADD3 0x8
+#define _HADD2 0x4
+#define _HADD1 0x2
+#define _HADD0 0x1
+
+// UHIEN
+#define _UPRSME 0x40
+#define _EORSME 0x20
+#define _WAKEUPE 0x10
+#define _EORSTE 0x8
+#define _SOFE 0x4
+#define _MSOFE 0x2
+#define _SUSPE 0x1
+
+// UHINT
+#define _HWUPI 0x40
+#define _HSOFI 0x20
+#define _RXRSMI 0x10
+#define _RSMEDI 0x8
+#define _RSTI 0x4
+#define _DDISCI 0x2
+#define _DCONNI 0x1
+
+// UHCON
+#define _RESUME 0x4
+#define _RESET 0x2
+#define _SOFEN 0x1
 
 // TCCR3C
 #define _FOC3A 0x80

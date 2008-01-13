@@ -763,6 +763,11 @@
 		<port char="A"/>
 	</ports>
 	<features>
+		<feature name="Watchdog" enhanced="1" >
+			<register name="mcu_status" register="MCUSR"/>
+			<register name="control" register="WDTCSR"/>
+			<interrupt name="timer" register="WDTCSR" bit="WDIE"/>
+		</feature>
 		<feature name="AnalogComparator">
 			<analog_comparator nr="0" multiplexed="yes" digital_disable="yes">
 				<register name="control" register="ACSR"/>
