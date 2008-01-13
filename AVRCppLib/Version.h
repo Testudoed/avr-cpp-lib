@@ -31,6 +31,6 @@
 
 #define __AVR_CPP_LIB_MAJOR__		0
 #define __AVR_CPP_LIB_MINOR__		5
-#define __AVR_CPP_LIB_REVISION__	0
+#define __AVR_CPP_LIB_REVISION__	1
 
 #endif // __AVR_CPP_VERSION_H__
