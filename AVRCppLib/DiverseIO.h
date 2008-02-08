@@ -204,6 +204,19 @@ public:
 		if (flags7) SetBitsTo<Pins7>(flags7, value);
 
 	} // SetTo
+	
+	static inline void SetToValue(uint8_t value)
+	{
+		if (flags0) SetBitsTo<Pins0>(flags0, (value & 0x01) > 0);
+		if (flags1) SetBitsTo<Pins1>(flags1, (value & 0x02) > 0);
+		if (flags2) SetBitsTo<Pins2>(flags2, (value & 0x04) > 0);
+		if (flags3) SetBitsTo<Pins3>(flags3, (value & 0x08) > 0);
+		if (flags4) SetBitsTo<Pins4>(flags4, (value & 0x10) > 0);
+		if (flags5) SetBitsTo<Pins5>(flags5, (value & 0x20) > 0);
+		if (flags6) SetBitsTo<Pins6>(flags6, (value & 0x40) > 0);
+		if (flags7) SetBitsTo<Pins7>(flags7, (value & 0x80) > 0);
+
+	} // SetToValue
 
 	static inline void Clear()
 	{
