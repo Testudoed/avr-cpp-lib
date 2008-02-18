@@ -185,4 +185,3 @@ namespace AVRCpp
 } // namespace AVRCpp
 
 #endif // ifndef __AVR_CPP_AT90USB1287_TIMER_H__
- 
