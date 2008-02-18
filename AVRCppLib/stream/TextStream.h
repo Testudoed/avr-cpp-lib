@@ -102,7 +102,7 @@ namespace AVRCpp
 			/**
 			 * Returns text encoding.
 			 */
-			inline TextEncoding GetEncoding() { return encoding; };
+			inline TextEncoding GetEncoding() const { return encoding; };
 			
 			/**
 			 * Provides functionality identical to standard C 'printf'.
@@ -168,7 +168,7 @@ namespace AVRCpp
 			
 			/**
 			 * Writes string to output stream.
-			 * @param[in] s Pointer to bytes array.
+			 * @param[in] s Pointer to byte array.
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (str_t s)
 			{
@@ -176,6 +176,17 @@ namespace AVRCpp
 				return *this;
 				
 			} // operator << (char *)
+			
+			/**
+			 * Writes constant string expression to output stream.
+			 * @param[in] s Pointer to byte array.
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (cstr_t s)
+			{
+				fputs(s, this->file);
+				return *this;
+				
+			} // operator << (const char *)
 			
 			/**
 			 * Writes string to output stream.

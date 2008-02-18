@@ -421,13 +421,13 @@ namespace AVRCpp
 				} // Stream DESTRUCTOR
 				
 				/// Returns maximum number of characters that can be stored in input queue.
-				inline uint16_t GetInputBufferCapacity() { INTERRUPT_SAFE return inputBuffer.GetCapacity(); }
+				inline uint16_t GetInputBufferCapacity() { INTERRUPT_SAFE return inputBuffer.GetCapacity(); return 0; }
 				/// Returns number of characters waiting in input queue.
-				inline uint16_t GetInputBufferSize() { INTERRUPT_SAFE return inputBuffer.GetSize(); }
+				inline uint16_t GetInputBufferSize() { INTERRUPT_SAFE return inputBuffer.GetSize(); return 0; }
 				/// Returns maximum number of characters that can be stored in output queue.
-				inline uint16_t GetOutputBufferCapacity() { INTERRUPT_SAFE return outputBuffer.GetCapacity(); }
+				inline uint16_t GetOutputBufferCapacity() { INTERRUPT_SAFE return outputBuffer.GetCapacity(); return 0; }
 				/// Returns number of characters waiting in output queue.
-				inline uint16_t GetOutputBufferSize() { INTERRUPT_SAFE return outputBuffer.GetSize(); }
+				inline uint16_t GetOutputBufferSize() { INTERRUPT_SAFE return outputBuffer.GetSize(); return 0; }
 				/// Returns file associated with this stream.
 				inline File GetFile() { return file; };
 				/// Returns 'true' if file error has occurred
