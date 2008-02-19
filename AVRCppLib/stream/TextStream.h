@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2008 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -93,6 +93,11 @@ namespace AVRCpp
 			
 		public:
 			
+			/**
+			 * Constructor. Opens file according to FileIO template parameter.
+			 * @param textEncoding see TextStream::TextEncoding. Default value is UTF7.
+			 * @see TextStream::GetEncoding
+			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer>(TextEncoding textEncoding = UTF7) :
 					Internal::FileStreamBase<FileIO, OutputBuffer, InputBuffer>(),
 					encoding(textEncoding)
@@ -195,37 +200,42 @@ namespace AVRCpp
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (AVRCpp::Collection::BaseString &s)
 			{
 				fwrite(s.Get(), s.GetLength(), 1, this->file);
-				
 				return *this;
 				
 			} // operator << (BaseString &)
 			
 			/**
-			 * Writes an integer in human readable way to output stream.
+			 * Writes a signed integer in human readable way to output stream.
 			 * @param[in] i Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (int i)
 			{
-				AVRCpp::Collection::StaticString<7> s;
-				
-				s.FromInt(i);
-				fwrite(s.Get(), s.GetLength(), 1, this->file);
-				
+				fprintf(this->file, "%i", i);
 				return *this;
 				
 			} // operator << (int)
 			
 			/**
+			 * Writes an unsigned integer in human readable way to output stream.
+			 * @param[in] i Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (unsigned int u)
+			{
+				fprintf(this->file, "%u", u);
+				return *this;
+				
+			} // operator << (unsigned int)
+
+			/**
 			 * Writes a floating point variable in human readable way to output stream.
 			 * @param[in] d Floating point value to convert to string and write to stream.
+			 * @see TextStream::Print
 			 */
-			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (double d)
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (double f)
 			{
-				AVRCpp::Collection::StaticString<128> s;
-				
-				s.FromDouble(d);
-				fwrite(s.Get(), s.GetLength(), 1, this->file);
-				
+				fprintf(this->file, "%f", f);
 				return *this;
 				
 			} // operator << (double)
@@ -237,7 +247,6 @@ namespace AVRCpp
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (char &c)
 			{
 				c = fgetc(this->file);
-				
 				return *this;
 				
 			} // operator >> (char &)
@@ -287,10 +296,9 @@ namespace AVRCpp
 			} // operator >> (BaseString &)
 			
 			/**
-			 * Reads an integer value form input stream.
+			 * Reads a signed integer value form input stream.
 			 * @param[out] i Read value is written to this variable.
-			 * @note Stream::Scan function is recommended to use
-			 * instead of >> operator in this context.
+			 * @see TextStream::Scan
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (int &i)
 			{
@@ -300,10 +308,21 @@ namespace AVRCpp
 			} // operator >> (int &)
 			
 			/**
+			 * Reads an unsigned integer value form input stream.
+			 * @param[out] i Read value is written to this variable.
+			 * @see TextStream::Scan
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (unsigned int &u)
+			{
+				Scan("%u", &u);
+				return *this;
+				
+			} // operator >> (unsigned int &)
+
+			/**
 			 * Reads a floating point value form input stream.
 			 * @param[out] d Read value is written to this variable.
-			 * @note Stream::Scan function is recommended to use
-			 * instead of >> operator in this context.
+			 * @see TextStream::Scan
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (double &d)
 			{

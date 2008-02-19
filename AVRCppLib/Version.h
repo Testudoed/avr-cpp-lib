@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2008 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -36,9 +36,9 @@
 /// Build number
 #define __AVR_CPP_LIB_BUILD__		1
 /// SVN revision
-#define __AVR_CPP_LIB_REVISION__	127
+#define __AVR_CPP_LIB_REVISION__	129
 /// Release date day
-#define __AVR_CPP_LIB_DAY__			18
+#define __AVR_CPP_LIB_DAY__			19
 /// Release date month
 #define __AVR_CPP_LIB_MONTH__		02
 /// Release date year
