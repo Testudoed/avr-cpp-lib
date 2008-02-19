@@ -36,7 +36,7 @@
 /// Build number
 #define __AVR_CPP_LIB_BUILD__		1
 /// SVN revision
-#define __AVR_CPP_LIB_REVISION__	129
+#define __AVR_CPP_LIB_REVISION__	131
 /// Release date day
 #define __AVR_CPP_LIB_DAY__			19
 /// Release date month

@@ -218,7 +218,7 @@ namespace AVRCpp
 			
 			/**
 			 * Writes an unsigned integer in human readable way to output stream.
-			 * @param[in] i Integer value to convert to string and write to stream.
+			 * @param[in] u Integer value to convert to string and write to stream.
 			 * @see TextStream::Print
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (unsigned int u)
@@ -227,7 +227,67 @@ namespace AVRCpp
 				return *this;
 				
 			} // operator << (unsigned int)
-
+			
+			/**
+			 * Writes a signed long integer in human readable way to output stream.
+			 * @param[in] li Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (long li)
+			{
+				fprintf(this->file, "%li", li);
+				return *this;
+				
+			} // operator << (long)
+			
+			/**
+			 * Writes an unsigned long integer in human readable way to output stream.
+			 * @param[in] lu Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (unsigned long lu)
+			{
+				fprintf(this->file, "%lu", lu);
+				return *this;
+				
+			} // operator << (unsigned long)
+			
+			/**
+			 * Writes a signed long long integer in human readable way to output stream.
+			 * @param[in] lli Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (long long lli)
+			{
+				fprintf(this->file, "%lli", lli);
+				return *this;
+				
+			} // operator << (long long)
+			
+			/**
+			 * Writes an unsigned long long integer in human readable way to output stream.
+			 * @param[in] llu Integer value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (unsigned long long llu)
+			{
+				fprintf(this->file, "%llu", llu);
+				return *this;
+				
+			} // operator << (unsigned long long)
+			
+			/**
+			 * Writes a floating point variable in human readable way to output stream.
+			 * @param[in] d Floating point value to convert to string and write to stream.
+			 * @see TextStream::Print
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator << (float f)
+			{
+				fprintf(this->file, "%f", f);
+				return *this;
+				
+			} // operator << (float)
+			
 			/**
 			 * Writes a floating point variable in human readable way to output stream.
 			 * @param[in] d Floating point value to convert to string and write to stream.
@@ -309,7 +369,7 @@ namespace AVRCpp
 			
 			/**
 			 * Reads an unsigned integer value form input stream.
-			 * @param[out] i Read value is written to this variable.
+			 * @param[out] u Read value is written to this variable.
 			 * @see TextStream::Scan
 			 */
 			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (unsigned int &u)
@@ -318,6 +378,30 @@ namespace AVRCpp
 				return *this;
 				
 			} // operator >> (unsigned int &)
+
+			/**
+			 * Reads a signed long integer value form input stream.
+			 * @param[out] li Read value is written to this variable.
+			 * @see TextStream::Scan
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (long &li)
+			{
+				Scan("%li", &li);
+				return *this;
+				
+			} // operator >> (long &)
+
+			/**
+			 * Reads an unsigned long integer value form input stream.
+			 * @param[out] lu Read value is written to this variable.
+			 * @see TextStream::Scan
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (unsigned long &lu)
+			{
+				Scan("%lu", &lu);
+				return *this;
+				
+			} // operator >> (unsigned long &)
 
 			/**
 			 * Reads a floating point value form input stream.
@@ -330,6 +414,18 @@ namespace AVRCpp
 				return *this;
 				
 			} // operator >> (double &)
+			
+			/**
+			 * Reads a floating point value form input stream.
+			 * @param[out] d Read value is written to this variable.
+			 * @see TextStream::Scan
+			 */
+			TextStream<FileIO, OutputBuffer, InputBuffer> &operator >> (float &f)
+			{
+				Scan("%f", &f);
+				return *this;
+				
+			} // operator >> (float &)
 			
 		}; // template class TextStream 
 		
