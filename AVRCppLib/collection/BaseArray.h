@@ -53,6 +53,7 @@ namespace AVRCpp
 template <typename DataType, typename SizeType, typename ListType> class BaseArray
 {
 	protected:
+	
 		ListType data;
 		SizeType current_size;
 
@@ -168,9 +169,18 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 
 		/**
 		 *  Return reference of item at specified position
-		 *  NB! For speed purposes does not check constraints!
+		 *  NB! For the sake of performance this function does not check constraints!
 		 */
 		inline DataType &At(SizeType pos)
+		{
+			return this->data[pos];
+		}
+
+		/*
+		 * Operator for item reference getting
+		 * NB! For the sake of performance this operator does not check constraints!		  
+		 */		  				 
+		DataType& operator [] (SizeType pos)
 		{
 			return this->data[pos];
 		}

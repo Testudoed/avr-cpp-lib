@@ -55,14 +55,6 @@ namespace AVRCpp
 template <typename DataType, typename SizeType, SizeType array_capacity> class StaticArray : public BaseArray<DataType, SizeType, DataType[array_capacity]>
 {	
 	public:
-	
-		/**
-		 *	Constructor
-		 */
-		StaticArray()
-		{			
-			BaseArray<DataType, SizeType, DataType[array_capacity]>();
-		}
 		
 		/**
 		 *	Resize array to certain length

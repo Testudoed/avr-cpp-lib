@@ -53,6 +53,7 @@ namespace AVRCpp
 template <typename DataType, typename SizeType, typename ListType> class BaseQueue
 {
 	protected:
+	
 		ListType data;
 		volatile SizeType write_pointer;
 		volatile SizeType read_pointer;

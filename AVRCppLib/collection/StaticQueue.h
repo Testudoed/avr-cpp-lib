@@ -55,15 +55,7 @@ namespace AVRCpp
 template <typename DataType, typename SizeType, SizeType queue_capacity> class StaticQueue : public BaseQueue<DataType, SizeType, DataType[queue_capacity]>
 {
 	public:
-	
-		/**
-		 *	Constructor
-		 */
-		StaticQueue()
-		{
-			BaseQueue<DataType, SizeType, DataType[queue_capacity]>();
-		}
-	
+				
 		/**
 		 *  Push item to the queue
 		 */
