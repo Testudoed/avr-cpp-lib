@@ -40,7 +40,7 @@ namespace AVRCpp
 {
 	namespace Collection
 	{
-	
+
 
 /**********************************************************************************************************************\
 
@@ -55,7 +55,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 	protected:
 	
 		ListType data;
-		SizeType current_size;
+		volatile SizeType current_size;
 
 		/**
 		 *	Resize array to certain length
@@ -127,6 +127,22 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 
 			// Decrease size
 			this->current_size--;
+
+			return true;
+		}
+		
+		/**
+		 *	Remove specified item(s)
+		 */
+		inline bool Remove(const DataType &item)
+		{
+			for (register SizeType index = 0; index < this->current_size; index++)
+			{
+				if (this->data[index] == item)
+				{
+					this->Remove(index);
+				}
+			}
 
 			return true;
 		}

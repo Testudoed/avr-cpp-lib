@@ -94,10 +94,8 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		/**
 		 *	Constructor
 		 */
-		DynamicArray()
+		DynamicArray() : BaseArray<DataType, SizeType, DataType*>()
 		{
-			BaseArray<DataType, SizeType, DataType*>();
-
 			this->data				= (DataType *) malloc(reserve_size);
 			this->allocated_size	= 0;
 		}
@@ -166,6 +164,23 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		bool Remove(const SizeType pos)
 		{
 			if (!BaseArray<DataType, SizeType, DataType*>::Remove(pos)) return false;
+			
+			// If current size is one block size smaller than allocated size then decrease memory size
+			if (this->current_size <= this->allocated_size - block_size)
+			{
+				// No matter the realloc succeeds or not, fictios size will still be smaller
+				this->Realloc(this->allocated_size - block_size);
+			}
+
+			return true;
+		}
+		
+		/**
+		 *	Remove specified item(s)
+		 */
+		bool Remove(const DataType &item)
+		{
+			if (!BaseArray<DataType, SizeType, DataType*>::Remove(item)) return false;
 			
 			// If current size is one block size smaller than allocated size then decrease memory size
 			if (this->current_size <= this->allocated_size - block_size)
