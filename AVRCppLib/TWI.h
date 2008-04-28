@@ -63,14 +63,14 @@
 
 /**********************************************************************************************************************\
 
-	AVRCppLib Two-Wire Interface		
+	AVRCppLib Two-Wire (I2C) Interface		
 
 \**********************************************************************************************************************/
 
-#define TWIClockCalc(BitRate, Prescale) F_CPU / (16 + 2  * BitRate * (4 ^ Prescale))
+#define TWIClockCalculation(BitRate, Prescale)       F_CPU / (16 + 2  * BitRate * (4 ^ Prescale))
 
 #define TWI_TC_ns		TWI
-#define TWI_TC_struct	TWI::SPI0::TransmissionCompleteInterrupt
+#define TWI_TC_struct	TWI::TWI0::TransmissionCompleteInterrupt
 
 namespace AVRCpp
 {
@@ -145,7 +145,8 @@ namespace AVRCpp
 						class StatusRegister,
 						class DataRegister,
 						class SlaveAddressRegister,
-						class SlaveAddressMaskRegister >
+						class SlaveAddressMaskRegister,
+						bool waitForTaskCompletion = false >
 						
 			struct TWIBase
 			{
@@ -156,6 +157,7 @@ namespace AVRCpp
 				protected:
 				
 					static inline bool volatile IsJobCompleted() { return JobCompleteBit::IsSet(); }				
+					static inline void WaitUntilJobComplete() { while (!IsJobCompleted()); }
 					
 				public:
 					
@@ -222,6 +224,9 @@ namespace AVRCpp
 						// Send start condition
 						ControlRegister::Set(JobCompleteFlag | StartConditionFlag | TWIEnableFlag);
 						
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
 					} // Start
 					
 					
@@ -233,40 +238,80 @@ namespace AVRCpp
 						// Send stop condition
 						ControlRegister::Set(JobCompleteFlag | StopConditionFlag | TWIEnableFlag);
 						
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
 					} // Stop
 					
 					
 					/**
 					 * Restart (instant stop and start)
 					 */
-					static inline void Retart()
+					static inline void Restart()
 					{
 						// Send start and stop conditions in one command
 						ControlRegister::Set(JobCompleteFlag | StartConditionFlag | StopConditionFlag | TWIEnableFlag);
 						
-					} // Start
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
+					} // Restart
+					
+					
+					/**
+					 * Acknowledge
+					 */
+					static inline void Acknowledge()
+					{
+						// Send start and stop conditions in one command
+						ControlRegister::Set(JobCompleteFlag | AcknowledgeFlag | TWIEnableFlag);
+						
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
+					} // Acknowledge
+					
+					
+					/**
+					 * Not acknowledge
+					 */
+					static inline void NotAcknowledge()
+					{
+						// Send start and stop conditions in one command
+						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
+						
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
+					} // NotAcknowledge
 					
 					
 					/**
 					 * Select write-to-slave mode for desired slave
 					 */					 
-					static inline void WriteToSlave(uint8_t address)
+					static inline void SlaveToWriteMode(uint8_t address)
 					{												
 						DataRegister::Set((address << 1) | WriteModeFlag);	
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
 						
-					} // WriteToSlave
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
+					} // SlaveToWriteMode
 					
 					
 					/**
 					 * Select read-from-slave mode for desired slave
 					 */					 					
-					static inline void ReadFromSlave(uint8_t address)
+					static inline void SlaveToReadMode(uint8_t address)
 					{							
 						DataRegister::Set((address << 1) | ReadModeFlag);																	
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
 						
-					}  // ReadFromSlave
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
+						
+					}  // SlaveToReadMode
 					
 					
 					/**
@@ -276,6 +321,9 @@ namespace AVRCpp
 					{					
 						DataRegister::Set(data);
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
+						
+						if (waitForTaskCompletion)
+							WaitUntilJobComplete();	
 
 					} // Write					
 					
@@ -283,16 +331,11 @@ namespace AVRCpp
 					/**
 					 * Read byte					 
 					 */
-					static uint8_t Read()
-					{
-						
-						return DataRegister::Get();
+					static void Read(uint8_t &data)
+					{						
+						data = DataRegister::Get();
 
-					} // Read					
-					
-					void WaitForStatus(Status excpected)
-					{
-					}
+					} // Read
 							
 	   		}; // template struct TWIBase
    			
@@ -306,13 +349,14 @@ namespace AVRCpp
 {
 	namespace TWI
 	{		
-		struct TWI0 : Internal::TWIBase <
-				_TWBR,                  /* BitRateRegister */
-				_TWCR,                  /* ControlRegister */
-				_TWSR,                  /* StatusRegister */
-				_TWDR,                  /* DataRegister */								
-				_TWAR,                  /* SlaveAddressRegister */
-				_TWAMR >                /* SlaveAddressMaskRegister */							
+		template <bool waitForTaskCompletion = false> struct TWI0 : Internal::TWIBase <
+				_TWBR,                   /* BitRateRegister */
+				_TWCR,                   /* ControlRegister */
+				_TWSR,                   /* StatusRegister */
+				_TWDR,                   /* DataRegister */								
+				_TWAR,                   /* SlaveAddressRegister */
+				_TWAMR,                  /* SlaveAddressMaskRegister */							
+				waitForTaskCompletion >  /* waitForTaskCompletion */
 		{
 			struct JobCompleteInterrupt : BasicInterrupt<Bits<_TWCR, _TWIE> > { __INTERRUPT_HANDLER_SUPPORT__ };
 
