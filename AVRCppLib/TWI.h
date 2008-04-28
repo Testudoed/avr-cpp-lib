@@ -219,7 +219,7 @@ namespace AVRCpp
 					/**
 					 * Start 
 					 */
-					static inline void Start()
+					static void Start()
 					{
 						// Send start condition
 						ControlRegister::Set(JobCompleteFlag | StartConditionFlag | TWIEnableFlag);
@@ -233,7 +233,7 @@ namespace AVRCpp
 					/**
 					 * Stop 
 					 */
-					static inline void Stop()
+					static void Stop()
 					{
 						// Send stop condition
 						ControlRegister::Set(JobCompleteFlag | StopConditionFlag | TWIEnableFlag);
@@ -247,7 +247,7 @@ namespace AVRCpp
 					/**
 					 * Restart (instant stop and start)
 					 */
-					static inline void Restart()
+					static void Restart()
 					{
 						// Send start and stop conditions in one command
 						ControlRegister::Set(JobCompleteFlag | StartConditionFlag | StopConditionFlag | TWIEnableFlag);
@@ -261,7 +261,7 @@ namespace AVRCpp
 					/**
 					 * Acknowledge
 					 */
-					static inline void Acknowledge()
+					static void Acknowledge()
 					{
 						// Send start and stop conditions in one command
 						ControlRegister::Set(JobCompleteFlag | AcknowledgeFlag | TWIEnableFlag);
@@ -275,7 +275,7 @@ namespace AVRCpp
 					/**
 					 * Not acknowledge
 					 */
-					static inline void NotAcknowledge()
+					static void NotAcknowledge()
 					{
 						// Send start and stop conditions in one command
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
@@ -289,7 +289,7 @@ namespace AVRCpp
 					/**
 					 * Select write-to-slave mode for desired slave
 					 */					 
-					static inline void SlaveToWriteMode(uint8_t address)
+					static void SlaveToWriteMode(uint8_t address)
 					{												
 						DataRegister::Set((address << 1) | WriteModeFlag);	
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
@@ -303,7 +303,7 @@ namespace AVRCpp
 					/**
 					 * Select read-from-slave mode for desired slave
 					 */					 					
-					static inline void SlaveToReadMode(uint8_t address)
+					static void SlaveToReadMode(uint8_t address)
 					{							
 						DataRegister::Set((address << 1) | ReadModeFlag);																	
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);

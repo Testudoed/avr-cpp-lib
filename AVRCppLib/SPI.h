@@ -90,16 +90,15 @@ namespace AVRCpp
 		{
 			enum BitFlags
 			{
-				TransferEnableFlag		= 0x40,
-				DataOrderFlag			= 0x20,
-				MasterSlaveSelectFlag	= 0x10,
-				ClockPolarityFlag		= 0x08,
-				ClockPhaseFlag			= 0x04,
-				ClockRateFlag			= 0x03,
-
-				TransferCompleteFlag	= 0x80,
-				CollisionFlag			= 0x40,
-				DoubleSpeedFlag			= 0x01
+				TransferEnableFlag		= _SPE,
+				DataOrderFlag			= _DORD,
+				MasterSlaveSelectFlag	= _MSTR,
+				ClockPolarityFlag		= _CPOL,
+				ClockPhaseFlag			= _CPHA,
+				ClockRateFlag			= _SPR1 | _SPR0,
+				TransferCompleteFlag	= _SPIF,
+				CollisionFlag			= _WCOL,
+				DoubleSpeedFlag			= _SPI2X
 				
 			}; // enum BitFlags
 			
@@ -118,19 +117,18 @@ namespace AVRCpp
 			struct SPIBase
 			{
 				private:
+				
 					typedef Bits<ControlRegister, TransferEnableFlag>		TransferEnableBit;
 					typedef Bits<ControlRegister, DataOrderFlag>			DataOrderBit;
 					typedef Bits<ControlRegister, MasterSlaveSelectFlag>	MasterSlaveSelectBit;
 					typedef Bits<ControlRegister, ClockPolarityFlag>		ClockPolarityBit;
 					typedef Bits<ControlRegister, ClockPhaseFlag>			ClockPhaseBit;
-					typedef Bits<ControlRegister, ClockRateFlag>			ClockRateBits;
-					
+					typedef Bits<ControlRegister, ClockRateFlag>			ClockRateBits;					
 					typedef Bits<StatusRegister, TransferCompleteFlag>		TransferCompleteBit;
 					typedef Bits<StatusRegister, CollisionFlag>				CollisionBit;
 					typedef Bits<StatusRegister, DoubleSpeedFlag>			DoubleSpeedBit;
 					
-				protected:
-					typedef DataRegister	Data;
+				protected:					
 					
 					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
 					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }					
@@ -164,7 +162,6 @@ namespace AVRCpp
 							MasterOutPin::Input::InitInput();
 							MasterInPin::Output::InitOutput();						
 						}
-												
 														
 						// Setup SPI																		
 						ControlRegister::Set(_SPE | order | mode | polarity | phase | (rate & ClockRateFlag));
@@ -207,7 +204,7 @@ namespace AVRCpp
 					 */
 					static inline bool Write(uint8_t data)
 					{					
-						Data::Set(data);
+						DataRegister::Set(data);
 						
 						WaitUntilTransferCompleted();
 						
@@ -224,7 +221,7 @@ namespace AVRCpp
 					{
 						WaitUntilTransferCompleted();
 
-						return Data::Get();
+						return DataRegister::Get();
 
 					} // Read
 					
@@ -260,28 +257,28 @@ namespace AVRCpp
 #include "at90usb1287/SPI.h"
 #elif defined(__AVR_ATmega128__)
 #include "atmega128/SPI.h"
+#elif defined(__AVR_ATmega164P__)
+#include "atmega164p/SPI.h"
+#elif defined(__AVR_ATmega168__)
+#include "atmega168/SPI.h"
+#elif defined(__AVR_ATmega324P__)
+#include "atmega324p/SPI.h"
+#elif defined(__AVR_ATmega48__)
+#include "atmega48/SPI.h"
 #elif defined(__AVR_ATmega64__)
 #include "atmega64/SPI.h"
+#elif defined(__AVR_ATmega644__)
+#include "atmega644/SPI.h"
+#elif defined(__AVR_ATmega644P__)
+#include "atmega644p/SPI.h"
 #elif defined(__AVR_ATmega8__)
 #include "atmega8/SPI.h"
 #elif defined(__AVR_ATmega8515__)
 #include "atmega8515/SPI.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/SPI.h"
-#elif defined(__AVR_ATmega48__)
-#include "atmega48/SPI.h"
-#elif defined(__AVR_ATmega168__)
-#include "atmega168/SPI.h"
-#elif defined(__AVR_ATmega164P__)
-#include "atmega164p/SPI.h"
-#elif defined(__AVR_ATmega324P__)
-#include "atmega324p/SPI.h"
-#elif defined(__AVR_ATmega644P__)
-#include "atmega644p/SPI.h"
-#elif defined(__AVR_ATmega644__)
-#include "atmega644/SPI.h"
 #else
-#error "Device is not selected or selected device is not supported."
+#error "Selected device does not have SPI support."
 #endif
 
 #endif // ifndef __AVR_CPP_SPI_H__
