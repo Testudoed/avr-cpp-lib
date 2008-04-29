@@ -108,7 +108,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 		/**
 		 *	Remove item at pos
 		 */
-		inline bool Remove(const SizeType pos)
+		inline bool Erase(const SizeType pos)
 		{
 			// Check constraints
 			if (pos >= this->current_size)
@@ -138,9 +138,10 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 		{
 			for (register SizeType index = 0; index < this->current_size; index++)
 			{
-				if (this->data[index] == item)
+				// Check by memory address
+				if (&this->data[index] == &item)
 				{
-					this->Remove(index);
+					this->Erase(index);
 				}
 			}
 

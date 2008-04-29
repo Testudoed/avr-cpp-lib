@@ -95,9 +95,17 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
   		/**
 		 *	Remove item at pos
 		 */
-		bool Remove(const SizeType pos)
+		bool Erase(const SizeType pos)
 		{
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Remove(pos);
+			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Erase(pos);
+		}
+		
+		/**
+		 *	Remove specified item(s)
+		 */
+		bool Remove(const DataType &item)
+		{
+			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Erase(item);
 		}
 
 		/**

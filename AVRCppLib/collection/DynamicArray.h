@@ -161,9 +161,9 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		/**
 		 *	Remove item at pos
 		 */
-		bool Remove(const SizeType pos)
+		bool Erase(const SizeType pos)
 		{
-			if (!BaseArray<DataType, SizeType, DataType*>::Remove(pos)) return false;
+			if (!BaseArray<DataType, SizeType, DataType*>::Erase(pos)) return false;
 			
 			// If current size is one block size smaller than allocated size then decrease memory size
 			if (this->current_size <= this->allocated_size - block_size)
