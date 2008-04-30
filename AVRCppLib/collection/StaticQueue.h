@@ -125,9 +125,9 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 		}
 		
 		/**
-		 *	Return queue free size
+		 *	Return queue free space
 		 */
-		volatile SizeType GetFreeSize(void)
+		volatile SizeType GetFreeSpace(void)
 		{
 			return GetCapacity() - GetSize();
 		}
