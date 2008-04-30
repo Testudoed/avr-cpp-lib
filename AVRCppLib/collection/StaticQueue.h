@@ -55,6 +55,13 @@ namespace AVRCpp
 template <typename DataType, typename SizeType, SizeType queue_capacity> class StaticQueue : public BaseQueue<DataType, SizeType, DataType[queue_capacity]>
 {
 	public:
+	
+		/**
+		 * Constructor
+		 */
+		StaticQueue() : BaseQueue<DataType, SizeType, DataType[queue_capacity]>()
+		{
+		}
 				
 		/**
 		 *  Push item to the queue
@@ -69,7 +76,8 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 			this->write_pointer %= queue_capacity;
 
 			// If new write pointer matches read pointer then mark queue as full
-			if (this->write_pointer == this->read_pointer) this->is_full = 1;
+			if (this->write_pointer == this->read_pointer)
+				this->is_full = true;
 
 			return true;
 		}
@@ -87,7 +95,7 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 			this->read_pointer %= queue_capacity;
 			
 			// Queue can't be full now
-			this->is_full = 0;
+			this->is_full = false;
 			
 			return true;
 		}
@@ -114,6 +122,14 @@ template <typename DataType, typename SizeType, SizeType queue_capacity> class S
 				return (this->write_pointer - this->read_pointer);
 			else
 				return ((queue_capacity - this->read_pointer) + this->write_pointer);
+		}
+		
+		/**
+		 *	Return queue free size
+		 */
+		volatile SizeType GetFreeSize(void)
+		{
+			return GetCapacity() - GetSize();
 		}
 
 }; // class StaticQueue

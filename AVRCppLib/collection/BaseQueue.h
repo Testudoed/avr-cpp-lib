@@ -55,13 +55,9 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 	protected:
 	
 		ListType data;
-		volatile SizeType write_pointer;
-		volatile SizeType read_pointer;
-		
-		struct
-		{
-			volatile uint8_t is_full : 1;
-		};
+		SizeType write_pointer;
+		SizeType read_pointer;		
+		bool is_full;		
 
 	public:
 
@@ -72,7 +68,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		{
 			this->write_pointer	= 0;
 			this->read_pointer  = 0;
-			this->is_full 		= 0;
+			this->is_full 		= false;
 		}
 		
 		/**
@@ -88,7 +84,7 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		 */
 		inline bool IsEmpty(void)
 		{
-			return ((this->read_pointer == this->write_pointer) && (this->is_full == 0));
+			return ((this->read_pointer == this->write_pointer) && (!this->is_full));
 		}
 		
 		/**
