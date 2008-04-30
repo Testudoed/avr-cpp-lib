@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2008 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -405,7 +405,7 @@ __DECLARE_STATE_WATCH_PORT_INPUT_PIN__(7);
 
 /**********************************************************************************************************************\
 
-	Output pins with only ground pulled or loose output
+	Output pins with only ground pulled or loose (open-collector) output
 
 \**********************************************************************************************************************/
 
