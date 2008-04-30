@@ -63,7 +63,12 @@ template <
 
 class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 {
+	private:
+	
+		typedef BaseArray<DataType, SizeType, DataType*> Parent;
+
 	protected:
+	
 		SizeType allocated_size;
 
 		/**
@@ -94,7 +99,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		/**
 		 *	Constructor
 		 */
-		DynamicArray() : BaseArray<DataType, SizeType, DataType*>()
+		DynamicArray() : Parent()
 		{
 			this->data				= (DataType *) malloc(reserve_size);
 			this->allocated_size	= 0;
@@ -118,7 +123,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 
 			if (!this->Realloc(size)) return false;
 
-			return BaseArray<DataType, SizeType, DataType*>::Resize(size, values);
+			return Parent::Resize(size, values);
 		}
 
 		/**
@@ -135,7 +140,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 				if (!this->Realloc(this->current_size + block_size)) return false;
 			}
 
-			return BaseArray<DataType, SizeType, DataType*>::Add(value);
+			return Parent::Add(value);
 		}
 
 		/**
@@ -155,7 +160,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 				if (!this->Realloc(this->current_size + block_size)) return false;
 			}
 
-			return BaseArray<DataType, SizeType, DataType*>::Insert(value, pos);
+			return Parent::Insert(value, pos);
 		}
 
 		/**
@@ -163,7 +168,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		 */
 		bool Erase(const SizeType pos)
 		{
-			if (!BaseArray<DataType, SizeType, DataType*>::Erase(pos)) return false;
+			if (!Parent::Erase(pos)) return false;
 			
 			// If current size is one block size smaller than allocated size then decrease memory size
 			if (this->current_size <= this->allocated_size - block_size)
@@ -180,7 +185,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		 */
 		bool Remove(const DataType &item)
 		{
-			if (!BaseArray<DataType, SizeType, DataType*>::Remove(item)) return false;
+			if (!Parent::Remove(item)) return false;
 			
 			// If current size is one block size smaller than allocated size then decrease memory size
 			if (this->current_size <= this->allocated_size - block_size)
@@ -197,7 +202,7 @@ class DynamicArray : public BaseArray<DataType, SizeType, DataType*>
 		 */
 		inline bool Clear()
 		{
-			if (!BaseArray<DataType, SizeType, DataType*>::Clear()) return false;
+			if (!Parent::Clear()) return false;
 			
 			// No matter the realloc succeeds or not, fictios size will still be 0
 			this->Realloc(0);

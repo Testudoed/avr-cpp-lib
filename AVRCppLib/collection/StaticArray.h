@@ -54,6 +54,10 @@ namespace AVRCpp
 
 template <typename DataType, typename SizeType, SizeType array_capacity> class StaticArray : public BaseArray<DataType, SizeType, DataType[array_capacity]>
 {	
+	private:
+		
+		typedef BaseArray<DataType, SizeType, DataType[array_capacity]> Parent;
+
 	public:
 		
 		/**
@@ -64,7 +68,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 			// If new size is larger than maximum capacity then abort
 			if (size >= array_capacity) return false;
 
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Resize(size, values);
+			return Parent::Resize(size, values);
 		}
 
 		/**
@@ -75,7 +79,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 			// If new size is larger than maximum capacity then abort
 			if (this->current_size >= array_capacity) return false;
 
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Add(value);
+			return Parent::Add(value);
 		}
 
 		/**
@@ -89,7 +93,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 			// Check constraints
 			if (pos > this->current_size) return false;
 
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Insert(value, pos);
+			return Parent::Insert(value, pos);
 		}
 
   		/**
@@ -97,7 +101,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 		 */
 		bool Erase(const SizeType pos)
 		{
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Erase(pos);
+			return Parent::Erase(pos);
 		}
 		
 		/**
@@ -105,7 +109,7 @@ template <typename DataType, typename SizeType, SizeType array_capacity> class S
 		 */
 		bool Remove(const DataType &item)
 		{
-			return BaseArray<DataType, SizeType, DataType[array_capacity]>::Erase(item);
+			return Parent::Erase(item);
 		}
 
 		/**
