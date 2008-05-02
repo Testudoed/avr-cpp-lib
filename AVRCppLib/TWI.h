@@ -167,18 +167,30 @@ namespace AVRCpp
 						SlaveAddressRegister,
 						SlaveAddressMaskRegister,
 						waitForTaskCompletion > >;
+						
+				typedef Transceiver< TWIBase<
+						BitRateRegister,
+						ControlRegister,
+						StatusRegister,
+						DataRegister,
+						SlaveAddressRegister,
+						SlaveAddressMaskRegister,
+						waitForTaskCompletion > > Parent;
 			
 				private:
 				
 					typedef Bits<ControlRegister, JobCompleteFlag> JobCompleteBit;
 					
-				protected:
 					
-					/**
-					 * Neccessary functions for transceiver
-					 */
+/**********************************************************************************************************************/
 					
-					static inline bool CanSend()
+				/**
+				 * Neccessary functions for transceiver
+				 */
+					 
+				public:
+					
+					static inline bool CanTransmit()
 					{
 						switch (GetStatus())
 						{
@@ -215,7 +227,7 @@ namespace AVRCpp
 						
 					} // CanReceive
 					
-					static inline bool WasSendingError()
+					static inline bool WasTransmitError()
 					{					
 						switch (GetStatus())
 						{							
@@ -233,29 +245,39 @@ namespace AVRCpp
 								return false;
 						}
 						
-					} // WasSendingError
+					} // WasTransmitError
 					
-					static inline bool WasReceivingError()
+					static inline bool WasReceiveError()
 					{
 						// If the data was reed after receive possibility check there cannot be any errors						
 						return false;
 						
-					} // WasReceivingError
+					} // WasReceiveError
 					
-					static inline void PureByteSend(const uint8_t &data)
+				protected:
+					
+					static inline void PureByteTransmit(const uint8_t &data)
 					{					
 						DataRegister::Set(data);
+					
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);		
 						
-					} // PureByteSend
+					} // PureByteTransmit
 					
 					static inline void PureByteReceive(uint8_t &data)
 					{
-						data = DataRegister::Get();
+						Acknowledge(); // Acknowledge incoming data
+						// todo - sometimes NACK should be returned
 						
-						Acknowledge();	// Most of the time we ACK
+						if (!Parent::WaitUntilReceiveCompleted())
+							return;
+
+						data = DataRegister::Get();						
 												
-					} // PureByteReceive								
+					} // PureByteReceive
+					
+					
+/**********************************************************************************************************************/					
 					
 				public:
 				

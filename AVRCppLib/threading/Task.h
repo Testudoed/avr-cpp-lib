@@ -159,7 +159,7 @@ class Task
 		 */
 		bool RemoveSubTask(uint8_t index)
 		{
-			return subTasks.Remove(index);							
+			return subTasks.Erase(index);							
 		}
 
 		/**

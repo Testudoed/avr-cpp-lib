@@ -48,35 +48,40 @@ namespace AVRCpp
 		FORMATTED_TEXT_SENDING - Not defined by default. Allows printf style formatted text sending. Uses lot of memory.
 		
 	Inheriting class should have following functions:
-		static inline bool CanSend()
+		static inline bool CanTransmit()
 		static inline bool CanReceive()
-		static inline bool WasSendingError()
-		static inline bool WasReceivingError()
-		static inline void PureByteSend(const uint8_t &data)
+		static inline bool IsTransmitCompleted()
+		static inline bool IsReceiveCompleted()
+		static inline bool WasTransmitError()
+		static inline bool WasReceiveError()
+		static inline void PureByteTransmit(const uint8_t &data)
 		static inline void PureByteReceive(uint8_t &data)
+		
+	For developers:
+		Transceiver = Transmitter + Receiver		
+		Transfer = Data moving in either of directions		
 
 \**********************************************************************************************************************/
 
 
 template <class Interface> class Transceiver
 {
-	private:
+	protected:
 	
 		#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-		static volatile bool userSendingAbort   = false;
-		static volatile bool userReceivingAbort = false;
+		static volatile bool userTransmittingAbort = false;
+		static volatile bool userReceivingAbort    = false;
 		#endif
 	
 		/**
-		 * Wait until possible to send or until error occurs
+		 * Wait until possible to transmit or until error occurs
 		 */
-		static inline bool WaitUntilPossibleToSend()
+		static inline bool WaitUntilPossibleToTransmit()
 		{
-			while (!Interface::CanSend())
-			{
-				if (Interface::WasSendingError()) return false;
+			while (!Interface::CanTransmit())
+			{				
 				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserAbort()) return false;
+				if (WasUserTransmittingAbort()) return false;
 				#endif
 			}
 			
@@ -90,9 +95,40 @@ template <class Interface> class Transceiver
 		{
 			while (!Interface::CanReceive())
 			{
-				if (Interface::WasReceivingError()) return false;
 				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserAbort()) return false;
+				if (WasUserReceivingAbort()) return false;
+				#endif
+			}
+			
+			return true;
+		}
+		
+		/**
+		 * Wait until transmit completed or until error occurs
+		 */
+		static inline bool WaitUntilTransmitCompleted()
+		{
+			while (!Interface::IsTransmitCompleted())
+			{
+				if (Interface::WasTransmitError()) return false;
+				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
+				if (WasUserTransmittingAbort()) return false;
+				#endif
+			}
+			
+			return true;
+		}
+		
+		/**
+		 * Wait until receive completed or until error occurs
+		 */
+		static inline bool WaitUntilReceiveCompleted()
+		{
+			while (!Interface::IsReceiveCompleted())
+			{
+				if (Interface::WasReceiveError()) return false;
+				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
+				if (WasUserReceivingAbort()) return false;
 				#endif
 			}
 			
@@ -102,16 +138,16 @@ template <class Interface> class Transceiver
 	protected:
 
 		/**
-		 * Wait until possible to send and then do it
+		 * Wait until possible to transmit and then do it
 		 */
-		static inline bool SafeByteSend(const uint8_t &data)
+		static inline bool SafeByteTransmit(const uint8_t &data)
 		{
-			if (!WaitUntilPossibleToSend())
+			if (!WaitUntilPossibleToTransmit())
 				return false;
 			
-			Interface::PureByteSend(data);
+			Interface::PureByteTransmit(data);
 			
-			return true;
+			return WaitUntilTransmitCompleted();
 		}
 		
 		/**
@@ -124,18 +160,18 @@ template <class Interface> class Transceiver
 			
 			Interface::PureByteReceive(data);
 			
-			return true;
+			return WaitUntilReceiveCompleted();
 		}
 		
 		/**
-		 * Byte-array sending
+		 * Safe byte-array transmiting
 		 */
-		template <typename SizeType> static inline bool SafeByteArraySend(uint8_t *byteData, SizeType bytesCount)
+		template <typename SizeType> static inline bool SafeByteArrayTransmit(uint8_t *byteData, SizeType bytesCount)
 		{
 			register SizeType i;
 			
 			for (i = 0; i < bytesCount; i++)
-				if (!SafeByteSend(byteData[i]))
+				if (!SafeByteTransmit(byteData[i]))
 					return false;
 
 			return true;
@@ -143,7 +179,7 @@ template <class Interface> class Transceiver
 		} // SendByteArray
 		
 		/**
-		 * Byte-array receiving
+		 * Safe byte-array receiving
 		 */
 		template <typename SizeType> static inline bool SafeByteArrayReceive(uint8_t *byteData, SizeType bytesCount)
 		{
@@ -173,16 +209,16 @@ template <class Interface> class Transceiver
 		 */
 		static inline void Abort()
 		{
-			userSendingAbort   = true;
-			userReceivingAbort = true;
+			userTransmittingAbort = true;
+			userReceivingAbort    = true;
 		}
 		
 		/**
-		 * Abort sending 
+		 * Abort transmitting 
 		 */
-		static inline void AbortSending()
+		static inline void AbortTransmitting()
 		{
-			userSendingAbort = true;
+			userTransmittingAbort = true;
 		}
 		
 		/**
@@ -198,16 +234,16 @@ template <class Interface> class Transceiver
 		 */
 		static inline void ResetAbort()
 		{
-			userSendingAbort   = false;
+			userTransmittingAbort   = false;
 			userReceivingAbort = false;
 		}
 		
 		/**
-		 * Sending abort resetting
+		 * Transmitting abort resetting
 		 */
-		static inline void ResetSendingAbort()
+		static inline void ResetTransmittingAbort()
 		{
-			userSendingAbort = false;			
+			userTransmittingAbort = false;			
 		}
 		
 		/**
@@ -223,15 +259,15 @@ template <class Interface> class Transceiver
 		 */
 		static volatile inline bool WasUserAbort()
 		{
-			return userSendingAbort || userReceivingAbort;
+			return userTransmittingAbort || userReceivingAbort;
 		}
 		
 		/**
 		 * User sending abort presence returning
 		 */
-		static volatile inline bool WasUserSendingAbort()
+		static volatile inline bool WasUserTransmittingAbort()
 		{
-			return userSendingAbort;
+			return userTransmittingAbort;
 		}
 		
 		/**
@@ -256,7 +292,7 @@ template <class Interface> class Transceiver
 		 */
 		static bool Send(const uint8_t &data)
 		{
-			return SafeByteSend(data);
+			return SafeByteTransmit(data);
 			
 		} // Send
 		
@@ -265,7 +301,7 @@ template <class Interface> class Transceiver
 		 */
 		template <typename DataType> static bool Send(const DataType &data)
 		{
-			return SafeByteArraySend((uint8_t *)(&data), sizeof(DataType));
+			return SafeByteArrayTransmit((uint8_t *)(&data), (uint8_t)sizeof(DataType));
 			
 		} // Send
 		
@@ -274,7 +310,7 @@ template <class Interface> class Transceiver
 		 */
 		template <typename DataType, typename SizeType> static bool SendArray(DataType *data, SizeType size)
 		{
-			return SafeByteArraySend((uint8_t *)(data), size * sizeof(DataType));
+			return SafeByteArrayTransmit((uint8_t *)(data), size * sizeof(DataType));
 			
 		} // SendArray
 
@@ -283,7 +319,7 @@ template <class Interface> class Transceiver
 		 */
 		template <typename DataType, typename SizeType, typename ListType> static bool SendArray(BaseArray<DataType, SizeType, ListType> &array)
 		{
-			return SafeByteArraySend((uint8_t *)array.Front(), array.Size() * sizeof(DataType));
+			return SafeByteArrayTransmit((uint8_t *)array.Front(), array.Size() * sizeof(DataType));
 			
 		} // SendArray
 		
@@ -296,7 +332,7 @@ template <class Interface> class Transceiver
 			
 			while (queue.Pop(item))
 			{
-				if (!SafeByteArraySend((uint8_t *)item, sizeof(DataType)))
+				if (!SafeByteArrayTransmit((uint8_t *)item, (uint8_t)sizeof(DataType)))
 					return false;
 			}
 			
@@ -312,11 +348,11 @@ template <class Interface> class Transceiver
 			register SizeType i;
 			
 			for (i = 0; (i < size) && (text[i] > 0); i++)			
-				if (!SafeByteSend(text[i]))
+				if (!SafeByteTransmit(text[i]))
 					return false;
 			
 			while (i++ < size)
-				if (!SafeByteSend(0))
+				if (!SafeByteTransmit(0))
 					return false;
 			
 			return true;
@@ -332,7 +368,7 @@ template <class Interface> class Transceiver
 			
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			for (i = 0; text[i] > 0; i++)			
-				if (!SafeByteSend(text[i]))
+				if (!SafeByteTransmit(text[i]))
 					return false;			
 			
 			return true;
@@ -356,7 +392,7 @@ template <class Interface> class Transceiver
 			va_end(args);			
 			
 			for (i = 0; i < len; i++)
-				if (!SafeByteSend(text[i]))
+				if (!SafeByteTransmit(text[i]))
 					return false;
 					
 			return true;

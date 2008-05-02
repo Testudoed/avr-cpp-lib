@@ -189,21 +189,21 @@ namespace AVRCpp
 				
 				private:
 					
-					typedef Bits<ControlRegisterB, NinthTransmitFlag>		NinthTransmitBit;
-					typedef Bits<ControlRegisterB, NinthReceiveFlag>		NinthReceiveBit;
-					typedef Bits<ControlRegisterA, ReceiveCompleteFlag>		ReceiveCompleteBit;
-					typedef Bits<ControlRegisterA, TransferCompleteFlag>	TransferCompleteBit;
-					typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>	DataRegisterEmptyBit;
-					typedef Bits<ControlRegisterA, FrameErrorFlag>			FrameErrorBit;
-					typedef Bits<ControlRegisterA, DataOverRunFlag>			DataOverRunBit;
-					typedef Bits<ControlRegisterA, ParityErrorFlag>			ParityErrorBit;
-					typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
-					typedef Bits<ControlRegisterB, TransmitterEnableFlag>	TransmitterEnableBit;
-					typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
-					typedef Bits<ControlRegisterA, MultiProcessorFlag>		MultiProcessorBit;
+					typedef Bits<ControlRegisterB, NinthTransmitFlag>       NinthTransmitBit;
+					typedef Bits<ControlRegisterB, NinthReceiveFlag>        NinthReceiveBit;
+					typedef Bits<ControlRegisterA, ReceiveCompleteFlag>     ReceiveCompleteBit;
+					typedef Bits<ControlRegisterA, TransferCompleteFlag>    TransferCompleteBit;
+					typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>   DataRegisterEmptyBit;
+					typedef Bits<ControlRegisterA, FrameErrorFlag>          FrameErrorBit;
+					typedef Bits<ControlRegisterA, DataOverRunFlag>         DataOverRunBit;
+					typedef Bits<ControlRegisterA, ParityErrorFlag>         ParityErrorBit;
+					typedef Bits<ControlRegisterA, ErrorFlags>              ErrorBits;
+					typedef Bits<ControlRegisterB, TransmitterEnableFlag>   TransmitterEnableBit;
+					typedef Bits<ControlRegisterB, ReceiverEnableFlag>      ReceiverEnableBit;
+					typedef Bits<ControlRegisterA, MultiProcessorFlag>      MultiProcessorBit;
 					
-					typedef typename TransferClockPin::Input	SlavePin;
-					typedef typename TransferClockPin::Output	MasterPin;
+					typedef typename TransferClockPin::Input   SlavePin;
+					typedef typename TransferClockPin::Output  MasterPin;
 					
 				public:
 					
@@ -271,29 +271,38 @@ namespace AVRCpp
 						return Success;
 						
 					} // DetailedErrorCheck
+
+
+/**********************************************************************************************************************/
+					
+				/**
+				 * Neccessary functions for transceiver
+				 */
+				public:
+				
+					static inline bool CanTransmit()         { return IsDataRegisterEmpty(); }
+					static inline bool CanReceive()          { return IsReceiveCompleted();  }
+					static inline bool IsTransmitCompleted() { return IsTransferCompleted(); }
+					// IsReceiveCompleted() already exists
+					static inline bool WasTransmitError()    { return false;                 }
+					static inline bool WasReceiveError()     { return WasError();            } // All USART errors are receiving errors
 					
 				protected:
-				
-					/**
-					 * Neccessary functions for transceiver
-					 */
-				
-					static inline bool CanSend() { return IsDataRegisterEmpty(); }
-					static inline bool CanReceive() { return IsReceiveCompleted(); }
-					static inline bool WasSendingError() { return false; }
-					static inline bool WasReceivingError() { return WasError(); } // All USART errors are receiving errors
-						
-					static inline void PureByteSend(const uint8_t &data)
+	
+					static inline void PureByteTransmit(const uint8_t &data)
 					{					
 						DataRegister::Set(data);
 						
-					} // PureByteSend
+					} // PureByteTransmit
 					
 					static inline void PureByteReceive(uint8_t &data)
 					{
 						data = DataRegister::Get();
 												
 					} // PureByteReceive
+					
+					
+/**********************************************************************************************************************/
 					
 				public:
 					
@@ -552,6 +561,9 @@ namespace AVRCpp
 	} // namespace USART
 	
 } // namespace AVRCpp
+
+
+/**********************************************************************************************************************/
 	
 #if defined(__AVR_ATmega8__)
 #include "atmega8/USART.h"

@@ -133,6 +133,15 @@ namespace AVRCpp
 						ClockPin,
 						MasterOutPin,
 						MasterInPin > >;
+						
+				typedef Transceiver< SPIBase< 
+						ControlRegister,
+						StatusRegister,
+						DataRegister,
+						SlaveSelectPin,
+						ClockPin,
+						MasterOutPin,
+						MasterInPin > > Parent;
 			
 				private:
 				
@@ -148,36 +157,51 @@ namespace AVRCpp
 					
 				protected:					
 										
-					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
-					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
-					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }											
+					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet();                  }
+					static inline bool WasWriteCollision()            { return CollisionBit::IsSet();                         }
+					static inline void WaitUntilTransferCompleted()   { while (IsTransferCompleted() || WasWriteCollision()); }
+					
+					
+/**********************************************************************************************************************/										
+				
+				/**
+				 * Neccessary functions for transceiver
+				 */
+					
+				public:
+					 
+					static inline bool CanTransmit()         { return IsTransferCompleted(); }
+					static inline bool CanReceive()          { return IsTransferCompleted(); }
+					static inline bool IsTransmitCompleted() { return IsTransferCompleted(); }
+					static inline bool IsReceiveCompleted()  { return IsTransferCompleted(); }
+					static inline bool WasTransmitError()    { return WasWriteCollision();   }
+					static inline bool WasReceiveError()     { return WasWriteCollision();   }				
 					
 				protected:
-				
-					/**
-					 * Neccessary functions for transceiver
-					 */
-					 
-					static inline bool CanSend() { return IsTransferCompleted(); }
-					static inline bool CanReceive() { return IsTransferCompleted(); }
-					static inline bool WasSendingError() { return WasWriteCollision(); }
-					static inline bool WasReceivingError() { return WasWriteCollision(); }
-						
-					static inline void PureByteSend(const uint8_t &data)
+					
+					static inline void PureByteTransmit(const uint8_t &data)
 					{					
 						DataRegister::Set(data);
 						
-					} // PureByteSend
+					} // PureByteTransmit
 					
 					static inline void PureByteReceive(uint8_t &data)
 					{
-						data = DataRegister::Get();
-						
-						// If master mode, then generate clock with random data to read data from slave
+						// In master mode, it is neccessary to generate clock with random data to read data from slave
 						if (MasterSlaveSelectBit::IsSet())
-							DataRegister::Set(0);
+						{	
+							PureByteTransmit(0);							
+							
+							if (!Parent::WaitUntilTransmitCompleted())
+								return;							
+						}
+	
+						data = DataRegister::Get();
 												
-					} // PureByteReceive					
+					} // PureByteReceive
+					
+
+/**********************************************************************************************************************/					
 					
 				public:
 					
