@@ -191,7 +191,10 @@ namespace AVRCpp
 				public:
 					
 					static inline bool CanTransmit()
-					{
+					{						
+						if (!IsJobCompleted())
+							return false;
+						
 						switch (GetStatus())
 						{
 							case MasterSlaveWriteModeSelected:
@@ -211,6 +214,9 @@ namespace AVRCpp
 					
 					static inline bool CanReceive()
 					{
+						if (!IsJobCompleted())
+							return false;
+							
 						switch (GetStatus())
 						{						
 							case MasterDataReceived:	
@@ -227,8 +233,15 @@ namespace AVRCpp
 						
 					} // CanReceive
 					
+					static inline bool IsTransmitCompleted() { return IsJobCompleted(); }
+					static inline bool IsReceiveCompleted()  { return IsJobCompleted(); }
+					
 					static inline bool WasTransmitError()
 					{					
+						// This function should not be called then the job has not completed
+						if (!IsJobCompleted())
+							return false;
+							
 						switch (GetStatus())
 						{							
 							case MasterDataNotTransmited:
@@ -249,6 +262,10 @@ namespace AVRCpp
 					
 					static inline bool WasReceiveError()
 					{
+						// This function should not be called then the job has not completed					
+						if (!IsJobCompleted())
+							return false;
+							
 						// If the data was reed after receive possibility check there cannot be any errors						
 						return false;
 						
