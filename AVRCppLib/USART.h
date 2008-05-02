@@ -306,14 +306,20 @@ namespace AVRCpp
 					
 				public:
 					
-					static inline void SetBaudRate(uint16_t baudRate)
+					/**
+					 * Set baud rate
+					 */
+					static void SetBaudRate(uint16_t baudRate)
 					{
 						BaudRateRegisterHigh::Set( (baudRate >> 8) & 0x0F);
 						BaudRateRegisterLow::Set( (uint8_t)baudRate);
 						
 					} // SetBaudRate
 					
-					static inline void SetupMasterSync (
+					/**
+					 * Setup synchronous master mode
+					 */
+					static void SetupMasterSync (
 							uint16_t baudRate,
 							Receiver receiver,
 							Transmitter transmitter,
@@ -338,7 +344,10 @@ namespace AVRCpp
 						
 					} // SetupMasterSync
 					
-					static inline void SetupSlaveSync (
+					/**
+					 * Setup synchronous slave mode
+					 */
+					static void SetupSlaveSync (
 							Receiver receiver,
 							Transmitter transmitter,
 							ParityCheck parityCheck,
@@ -361,8 +370,10 @@ namespace AVRCpp
 						
 					} // SetupSlaveSync
 					
-					
-					static inline void SetupAsynchronous (
+					/**
+					 * Setup asynchronous mode
+					 */
+					static void SetupAsynchronous (
 							uint16_t baudRate,
 							Receiver receiver,
 							Transmitter transmitter,
@@ -385,6 +396,17 @@ namespace AVRCpp
 						SREG = savedSREG;
 						
 					} // SetupAsynchronous
+					
+					/**					
+					 * Release USART unit
+					 */
+					static void Release()
+					{						
+						ControlRegisterA::Set(0);
+						ControlRegisterB::Set(0);
+						ControlRegisterC::Set(0);
+						
+					}  // Release
 					
 					static inline void WriteNinthSet(uint8_t data)
 					{

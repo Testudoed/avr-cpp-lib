@@ -175,7 +175,7 @@ namespace AVRCpp
 					static inline bool IsTransmitCompleted() { return IsTransferCompleted(); }
 					static inline bool IsReceiveCompleted()  { return IsTransferCompleted(); }
 					static inline bool WasTransmitError()    { return WasWriteCollision();   }
-					static inline bool WasReceiveError()     { return WasWriteCollision();   }				
+					static inline bool WasReceiveError()     { return (MasterSlaveSelectBit::IsSet() ? WasWriteCollision() : false); }				
 					
 				protected:
 					
@@ -208,7 +208,7 @@ namespace AVRCpp
 					/**
 					 * Setup SPI in master mode
 					 */
-					static inline void SetupMaster (
+					static void SetupMaster (
 							ClockRate rate,
 							DataOrder order,
 							ClockPolarity polarity,
@@ -234,7 +234,7 @@ namespace AVRCpp
 					/**
 					 * Setup SPI in slave mode
 					 */
-					static inline void SetupSlave (						
+					static void SetupSlave (						
 						DataOrder order,
 						ClockPolarity polarity,
 						ClockPhase phase )
@@ -249,6 +249,22 @@ namespace AVRCpp
 						ControlRegister::Set(_SPE | order | polarity | phase);					
 
 					} // SetupSlave
+					
+					/**					
+					 * Release SPI bus
+					 */
+					static void Release()
+					{
+						// Set pins										
+						SlaveSelectPin::Input::InitInput();							
+						ClockPin::Input::InitInput();
+						MasterOutPin::Input::InitInput();
+						MasterInPin::Input::InitInput();		
+						
+						// Turn off SPI unit
+						ControlRegister::Set(0);
+						
+					} // Release
 										
 					/**
 					 * Starts transmiting by setting SPI to master mode and selecting slave device

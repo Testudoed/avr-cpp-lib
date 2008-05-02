@@ -305,10 +305,10 @@ namespace AVRCpp
 					 *  Setup in master mode
 					 */
 					static void SetupMaster(uint8_t bitRate, ClockPrescaler prescale)
-					{
-					
+					{					
 						BitRateRegister::Set(bitRate);
 						StatusRegister::Set(prescale & ClockPrescaleFlag); 		
+						ControlRegister::Set(TWIEnableFlag);
 					
 					} // SetupMaster
 					
@@ -319,8 +319,18 @@ namespace AVRCpp
 					{
 						SlaveAddressRegister::Set((address << 1) | (listenForGeneralCalls ? GeneralCallEnableFlag : 0));
 						SlaveAddressMaskRegister::Set(addressMask << 1);
+						ControlRegister::Set(TWIEnableFlag);
 						
 					} // SetupSlave
+					
+					/**					
+					 * Release bus
+					 */
+					static void Release()
+					{						
+						ControlRegister::Set(0);
+						
+					} // Release
 					
 					/**
 					 * Release bus and go to non-addressed slave mode
