@@ -232,7 +232,7 @@ namespace CRC {
 	 */
 	template <typename DataType, typename SizeType, typename ListType> uint16_t CRC16_Optimized(BaseArray<DataType, SizeType, ListType> &array)
 	{
-	    return CRC16_Optimized<DataType, SizeType>(array.At(0), array.Size());
+	    return CRC16_Optimized<DataType, SizeType>(array.Front(), array.Size());
 	}
 
 	/**
@@ -243,7 +243,7 @@ namespace CRC {
 	 */
 	template <typename DataType, typename SizeType, typename ListType> uint16_t CRC16_CCITT(BaseArray<DataType, SizeType, ListType> &array)
 	{		
-		return CRC16_CCITT<DataType, SizeType>(array.At(0), array.Size());
+		return CRC16_CCITT<DataType, SizeType>(array.Front(), array.Size());
 	}
 	
 	/**
@@ -254,7 +254,7 @@ namespace CRC {
 	 */
 	template <typename DataType, typename SizeType, typename ListType> uint16_t CRC16_CCITT_Table(BaseArray<DataType, SizeType, ListType> &array)
 	{
-	    return CRC16_CCITT_Table<DataType, SizeType>(array.At(0), array.Size());
+	    return CRC16_CCITT_Table<DataType, SizeType>(array.Front(), array.Size());
 	}
 	
 	/**
@@ -265,7 +265,7 @@ namespace CRC {
 	 */
 	template <typename DataType, typename SizeType, typename ListType> uint16_t CRC8_IButton(BaseArray<DataType, SizeType, ListType> &array)
 	{
-		return CRC8_IButton<DataType, SizeType>(array.At(0), array.Size());
+		return CRC8_IButton<DataType, SizeType>(array.Front(), array.Size());
 	}
 	
 	/**
@@ -276,7 +276,7 @@ namespace CRC {
 	 */
 	template <typename DataType, typename SizeType, typename ListType> uint16_t CRC16_XModem(BaseArray<DataType, SizeType, ListType> &array)
 	{
-		return CRC16_XModem<DataType, SizeType>(array.At(0), array.Size());
+		return CRC16_XModem<DataType, SizeType>(array.Front(), array.Size());
 	}
 
 }; // Namespace CRC

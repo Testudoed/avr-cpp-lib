@@ -31,6 +31,7 @@
 
 #include "IO.h"
 #include "Interrupt.h"
+#include "Transceiver.h"
 
 /* What devices support TWI ? */
 #if defined(__AVR_AT90USB1287__)
@@ -98,7 +99,7 @@ namespace AVRCpp
 			MasterSlaveReadModeSelected     = 0x40,
 			MasterSlaveReadModeNotSelected  = 0x48,
 			MasterDataReceived              = 0x50,
-			MasterDataNotReceived           = 0x58,
+			MasterLastDataReceived          = 0x58,
 			
 			// Slave mode statuses
 			SlaveWriteModeReceived          = 0x60,
@@ -106,15 +107,15 @@ namespace AVRCpp
 			SlaveGeneralCallReceived        = 0x70,
 			SlaveGeneralCallArbitrationLost = 0x78,
 			SlaveDataReceived               = 0x80,
-			SlaveDataNotReceived            = 0x88,
+			SlaveLastDataReceived           = 0x88,
 			SlaveGeneralDataReceived        = 0x90,
-			SlaveGeneralDataNotReceived     = 0x98,			
+			SlaveGeneralLastDataReceived    = 0x98,			
 			SlaveFinish                     = 0xA0,			
 			SlaveReadModeReceived           = 0xA8,			
 			SlaveReadModeArbitrationLost    = 0xB0,
 			SlaveDataTransmitted            = 0xB8,
 			SlaveDataNotTransmitted         = 0xC0,
-			SlaveLastDataTransmitted        = 0xC8			
+			SlaveAnnoyedAfterLastData       = 0xC8			
 						
 		}; // enum Status
 			
@@ -122,7 +123,7 @@ namespace AVRCpp
 		{
 			enum BitFlags
 			{
-				JobCompleteFlag		    = _TWINT,
+				JobCompleteFlag	        = _TWINT,
 				AcknowledgeFlag         = _TWEA,
 				StartConditionFlag      = _TWSTA,
 				StopConditionFlag       = _TWSTO,
@@ -140,26 +141,126 @@ namespace AVRCpp
 			 *  TWI base structure
 			 */
 			template <
-						class BitRateRegister,
-						class ControlRegister,
-						class StatusRegister,
-						class DataRegister,
-						class SlaveAddressRegister,
-						class SlaveAddressMaskRegister,
-						bool waitForTaskCompletion = false >
+					class BitRateRegister,
+					class ControlRegister,
+					class StatusRegister,
+					class DataRegister,
+					class SlaveAddressRegister,
+					class SlaveAddressMaskRegister,
+					bool waitForTaskCompletion = false >
 						
-			struct TWIBase
+			struct TWIBase : public Transceiver< TWIBase<
+					BitRateRegister,
+					ControlRegister,
+					StatusRegister,
+					DataRegister,
+					SlaveAddressRegister,
+					SlaveAddressMaskRegister,
+					waitForTaskCompletion > >
 			{
+			
+				friend class Transceiver< TWIBase<
+						BitRateRegister,
+						ControlRegister,
+						StatusRegister,
+						DataRegister,
+						SlaveAddressRegister,
+						SlaveAddressMaskRegister,
+						waitForTaskCompletion > >;
+			
 				private:
 				
 					typedef Bits<ControlRegister, JobCompleteFlag> JobCompleteBit;
 					
 				protected:
+					
+					/**
+					 * Neccessary functions for transceiver
+					 */
+					
+					static inline bool CanSend()
+					{
+						switch (GetStatus())
+						{
+							case MasterSlaveWriteModeSelected:
+							case MasterSlaveWriteModeNotSelected:
+							case MasterDataTransmitted:
+							case MasterDataNotTransmited:
+							case SlaveReadModeReceived:
+							case SlaveReadModeArbitrationLost:
+							case SlaveDataTransmitted:
+								return true;
+								
+							default:
+								return false;
+						}
+						
+					} // CanSend
+					
+					static inline bool CanReceive()
+					{
+						switch (GetStatus())
+						{						
+							case MasterDataReceived:	
+							case MasterLastDataReceived:							
+							case SlaveDataReceived:	
+							case SlaveLastDataReceived:
+							case SlaveGeneralDataReceived:							
+							case SlaveGeneralLastDataReceived:
+								return true;
+								
+							default:
+								return false;
+						}
+						
+					} // CanReceive
+					
+					static inline bool WasSendingError()
+					{					
+						switch (GetStatus())
+						{							
+							case MasterDataNotTransmited:
+							case MasterArbitrationLost:
+							case SlaveAnnoyedAfterLastData:													
+								return true;
+								
+							// Special case - if slave has sent it's last byte and masters does not NACK
+							// it's probably master's fault
+							case SlaveDataNotTransmitted:
+								return !slaveLastByteSent;								
+								
+							default:
+								return false;
+						}
+						
+					} // WasSendingError
+					
+					static inline bool WasReceivingError()
+					{
+						// If the data was reed after receive possibility check there cannot be any errors						
+						return false;
+						
+					} // WasReceivingError
+					
+					static inline void PureByteSend(const uint8_t &data)
+					{					
+						DataRegister::Set(data);
+						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);		
+						
+					} // PureByteSend
+					
+					static inline void PureByteReceive(uint8_t &data)
+					{
+						data = DataRegister::Get();
+						
+						Acknowledge();	// Most of the time we ACK
+												
+					} // PureByteReceive								
+					
+				public:
 				
 					static inline bool volatile IsJobCompleted() { return JobCompleteBit::IsSet(); }				
 					static inline void WaitUntilJobComplete() { while (!IsJobCompleted()); }
-					
-				public:
 					
 					/**
 					 *  Setup in master mode
@@ -172,7 +273,6 @@ namespace AVRCpp
 					
 					} // SetupMaster
 					
-					
 					/**
 					 * Setup in slave mode
 					 */					 
@@ -182,7 +282,6 @@ namespace AVRCpp
 						SlaveAddressMaskRegister::Set(addressMask << 1);
 						
 					} // SetupSlave
-												
 					
 					/**
 					 * Release bus and go to non-addressed slave mode
@@ -195,7 +294,6 @@ namespace AVRCpp
 						
 					} // ReleaseBus
 					
-					
 					/**
 					 * Status code getting 
 					 */					 
@@ -205,7 +303,6 @@ namespace AVRCpp
 						
 					} // GetStatusCode
 					
-					
 					/**
 					 * Status enum getting 
 					 */					 
@@ -214,7 +311,6 @@ namespace AVRCpp
 						return (Status)GetStatusCode();
 						
 					} // GetStatus
-					
 					
 					/**
 					 * Start 
@@ -229,7 +325,6 @@ namespace AVRCpp
 						
 					} // Start
 					
-					
 					/**
 					 * Stop 
 					 */
@@ -242,7 +337,6 @@ namespace AVRCpp
 							WaitUntilJobComplete();	
 						
 					} // Stop
-					
 					
 					/**
 					 * Restart (instant stop and start)
@@ -257,13 +351,11 @@ namespace AVRCpp
 						
 					} // Restart
 					
-					
 					/**
 					 * Acknowledge
 					 */
 					static void Acknowledge()
-					{
-						// Send start and stop conditions in one command
+					{						
 						ControlRegister::Set(JobCompleteFlag | AcknowledgeFlag | TWIEnableFlag);
 						
 						if (waitForTaskCompletion)
@@ -271,20 +363,17 @@ namespace AVRCpp
 						
 					} // Acknowledge
 					
-					
 					/**
 					 * Not acknowledge
 					 */
 					static void NotAcknowledge()
 					{
-						// Send start and stop conditions in one command
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
 						
 						if (waitForTaskCompletion)
 							WaitUntilJobComplete();	
 						
 					} // NotAcknowledge
-					
 					
 					/**
 					 * Select write-to-slave mode for desired slave
@@ -299,7 +388,6 @@ namespace AVRCpp
 						
 					} // SlaveToWriteMode
 					
-					
 					/**
 					 * Select read-from-slave mode for desired slave
 					 */					 					
@@ -311,31 +399,39 @@ namespace AVRCpp
 						if (waitForTaskCompletion)
 							WaitUntilJobComplete();	
 						
-					}  // SlaveToReadMode
-					
+					}  // SlaveToReadMode					
 					
 					/**
 					 * Send byte
 					 */
-					static void Write(uint8_t data)
+					static inline void Write(uint8_t data)
 					{					
 						DataRegister::Set(data);
-						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
-						
-						if (waitForTaskCompletion)
-							WaitUntilJobComplete();	
+						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);						
 
-					} // Write					
-					
+					} // Write										
 					
 					/**
-					 * Read byte					 
+					 * Read byte (acknowledged will be returned)					 
 					 */
 					static void Read(uint8_t &data)
 					{						
 						data = DataRegister::Get();
+						
+						Acknowledge();
 
 					} // Read
+					
+					/**
+					 * Read last byte (not acknowledged will be returned)
+					 */
+					static void ReadLast(uint8_t &data)
+					{						
+						data = DataRegister::Get();
+						
+						NotAcknowledge();
+
+					} // ReadLast
 							
 	   		}; // template struct TWIBase
    			

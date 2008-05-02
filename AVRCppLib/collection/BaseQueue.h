@@ -112,6 +112,16 @@ template <typename DataType, typename SizeType, typename ListType> class BaseQue
 		{
 			return this->data[this->write_pointer];
 		}
+		
+		/**
+		 *  Push item to the queue
+		 */
+		bool Push(const DataType &value) { return false; }
+		
+		/**
+		 *  Pop item out of the queue
+		 */
+		bool Pop(DataType &value = 0) {	 return false; }
 
 }; // class BaseQueue
 

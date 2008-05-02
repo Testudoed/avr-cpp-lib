@@ -31,6 +31,7 @@
 
 #include "IO.h"
 #include "Interrupt.h"
+#include "Transceiver.h"
 
 #define AsyncNormBaudCalc(BaudRate)		F_CPU / 16 / BaudRate - 1
 #define AsyncDblBaudCalc(BaudRate)		F_CPU / 8 / BaudRate - 1
@@ -163,436 +164,386 @@ namespace AVRCpp
 					RegisterSelect registerSelect,
 					bool & (* Cancel)() >
 			
-			struct USARTBase
+			class USARTBase : public Transceiver< USARTBase<
+					BaudRateRegisterHigh,
+					BaudRateRegisterLow,
+					ControlRegisterA,
+					ControlRegisterB,
+					ControlRegisterC,
+					DataRegister,
+					TransferClockPin,
+					registerSelect,
+					Cancel > >
 			{
-			private:
+			
+				friend class Transceiver< USARTBase<
+						BaudRateRegisterHigh,
+						BaudRateRegisterLow,
+						ControlRegisterA,
+						ControlRegisterB,
+						ControlRegisterC,
+						DataRegister,
+						TransferClockPin,
+						registerSelect,
+						Cancel > >;
 				
-				typedef Bits<ControlRegisterB, NinthTransmitFlag>		NinthTransmitBit;
-				typedef Bits<ControlRegisterB, NinthReceiveFlag>		NinthReceiveBit;
-				typedef Bits<ControlRegisterA, ReceiveCompleteFlag>		ReceiveCompleteBit;
-				typedef Bits<ControlRegisterA, TransferCompleteFlag>	TransferCompleteBit;
-				typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>	DataRegisterEmptyBit;
-				typedef Bits<ControlRegisterA, FrameErrorFlag>			FrameErrorBit;
-				typedef Bits<ControlRegisterA, DataOverRunFlag>			DataOverRunBit;
-				typedef Bits<ControlRegisterA, ParityErrorFlag>			ParityErrorBit;
-				typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
-				typedef Bits<ControlRegisterB, TransmitterEnableFlag>	TransmitterEnableBit;
-				typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
-				typedef Bits<ControlRegisterA, MultiProcessorFlag>		MultiProcessorBit;
-				
-				typedef typename TransferClockPin::Input	SlavePin;
-				typedef typename TransferClockPin::Output	MasterPin;
-				
-			public:
-				
-				typedef DataRegister	Data;
-				
-				static inline void SetNinthBit() { NinthTransmitBit::Set(); }
-				static inline void ClearNinthBit() { NinthTransmitBit::Clear(); }
-				static inline bool IsNinthBitSet() { return NinthReceiveBit::IsSet(); }
-				
-				static inline void EnterMultiProcessorMode() { MultiProcessorBit::Set(); }
-				static inline void EnterSingleProcessorMode() { MultiProcessorBit::Clear(); }
-				static inline bool IsEnteredMultiProcessorMode() { return MultiProcessorBit::IsSet(); }
-				
-				static inline bool IsReceiveCompleted() { return ReceiveCompleteBit::IsSet(); }
-				static inline bool IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
-				static inline bool IsDataRegisterEmpty() { return DataRegisterEmptyBit::IsSet(); }
-				static inline bool IsAllDone() { return IsTransferCompleted() && IsReceiveCompleted(); }
-				static inline bool WasFrameError() { return FrameErrorBit::IsSet(); }
-				static inline bool WasDataOverRun() { return DataOverRunBit::IsSet(); }
-				static inline bool WasParityError() { return ParityErrorBit::IsSet(); }
-				static inline bool WasError() { return ErrorBits::IsAnySet(); }
-				
-				static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() ); }
-				static inline void WaitUntilReceiveCompleted() { while (!IsReceiveCompleted() ); }
-				static inline void WaitUntilDataRegisterEmpty() { while (!IsDataRegisterEmpty() ); }
-				static inline void WaitUntilAllDone() { while (!IsAllDone() ); }
-				
-				static inline void EnableTransmitter() { TransmitterEnableBit::Set(); }
-				static inline void DisableTransmitter() { TransmitterEnableBit::Clear(); }
-				static inline bool IsTransmitterEnabled() { return TransmitterEnableBit::IsSet(); }
-				
-				static inline void EnableReceiver() { ReceiverEnableBit::Set(); }
-				static inline void DisableReceiver() { ReceiverEnableBit::Clear(); }
-				static inline bool IsReceiverEnabled() { return ReceiverEnableBit::IsSet(); }
-				
-				static inline void ResetCancel() { Cancel() = false; }
-				static inline void CancelReading() { Cancel() = true; }
-				static inline bool IsCanceled() { return Cancel(); }
-				
-			private:
-				
-				static inline bool WaitWhileReceiveCompletedOrCanceled()
-				{
-					ResetCancel();
+				private:
 					
-					while (!IsReceiveCompleted() )
+					typedef Bits<ControlRegisterB, NinthTransmitFlag>		NinthTransmitBit;
+					typedef Bits<ControlRegisterB, NinthReceiveFlag>		NinthReceiveBit;
+					typedef Bits<ControlRegisterA, ReceiveCompleteFlag>		ReceiveCompleteBit;
+					typedef Bits<ControlRegisterA, TransferCompleteFlag>	TransferCompleteBit;
+					typedef Bits<ControlRegisterA, DataRegisterEmptyFlag>	DataRegisterEmptyBit;
+					typedef Bits<ControlRegisterA, FrameErrorFlag>			FrameErrorBit;
+					typedef Bits<ControlRegisterA, DataOverRunFlag>			DataOverRunBit;
+					typedef Bits<ControlRegisterA, ParityErrorFlag>			ParityErrorBit;
+					typedef Bits<ControlRegisterA, ErrorFlags>				ErrorBits;
+					typedef Bits<ControlRegisterB, TransmitterEnableFlag>	TransmitterEnableBit;
+					typedef Bits<ControlRegisterB, ReceiverEnableFlag>		ReceiverEnableBit;
+					typedef Bits<ControlRegisterA, MultiProcessorFlag>		MultiProcessorBit;
+					
+					typedef typename TransferClockPin::Input	SlavePin;
+					typedef typename TransferClockPin::Output	MasterPin;
+					
+				public:
+					
+					static inline void SetNinthBit() { NinthTransmitBit::Set(); }
+					static inline void ClearNinthBit() { NinthTransmitBit::Clear(); }
+					static inline bool IsNinthBitSet() { return NinthReceiveBit::IsSet(); }
+					
+					static inline void EnterMultiProcessorMode() { MultiProcessorBit::Set(); }
+					static inline void EnterSingleProcessorMode() { MultiProcessorBit::Clear(); }
+					static inline bool IsEnteredMultiProcessorMode() { return MultiProcessorBit::IsSet(); }
+					
+					static inline bool IsReceiveCompleted() { return ReceiveCompleteBit::IsSet(); }
+					static inline bool IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
+					static inline bool IsDataRegisterEmpty() { return DataRegisterEmptyBit::IsSet(); }
+					static inline bool IsAllDone() { return IsTransferCompleted() && IsReceiveCompleted(); }								
+					static inline bool WasFrameError() { return FrameErrorBit::IsSet(); }
+					static inline bool WasDataOverRun() { return DataOverRunBit::IsSet(); }
+					static inline bool WasParityError() { return ParityErrorBit::IsSet(); }
+					static inline bool WasError() { return ErrorBits::IsAnySet(); }
+					
+					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() ); }
+					static inline void WaitUntilReceiveCompleted() { while (!IsReceiveCompleted() ); }
+					static inline void WaitUntilDataRegisterEmpty() { while (!IsDataRegisterEmpty() ); }
+					static inline void WaitUntilAllDone() { while (!IsAllDone() ); }
+					
+					static inline void EnableTransmitter() { TransmitterEnableBit::Set(); }
+					static inline void DisableTransmitter() { TransmitterEnableBit::Clear(); }
+					static inline bool IsTransmitterEnabled() { return TransmitterEnableBit::IsSet(); }
+					
+					static inline void EnableReceiver() { ReceiverEnableBit::Set(); }
+					static inline void DisableReceiver() { ReceiverEnableBit::Clear(); }
+					static inline bool IsReceiverEnabled() { return ReceiverEnableBit::IsSet(); }
+					
+					static inline void ResetCancel() { Cancel() = false; }
+					static inline void CancelReading() { Cancel() = true; }
+					static inline bool IsCanceled() { return Cancel(); }					
+					
+				private:
+					
+					static inline bool WaitWhileReceiveCompletedOrCanceled()
 					{
-						if (IsCanceled() )
-							return true;
-					}
-					
-					return false;
-					
-				} // WaitWhileReceiveCompletedOrCanceled
-				
-				static inline ReadResult DetailedErrorCheck()
-				{
-					if (WasFrameError() )
-						return FrameError;
-					
-					if (WasParityError() )
-						return ParityError;
-					
-					if (WasDataOverRun() )
-						return DataOverRun;
-					
-					return Success;
-					
-				} // DetailedErrorCheck
-				
-			public:
-				
-				static inline void SetBaudRate(uint16_t baudRate)
-				{
-					BaudRateRegisterHigh::Set( (baudRate >> 8) & 0x0F);
-					BaudRateRegisterLow::Set( (uint8_t)baudRate);
-					
-				} // SetBaudRate
-				
-				static inline void SetupMasterSync (
-						uint16_t baudRate,
-						Receiver receiver,
-						Transmitter transmitter,
-						ParityCheck parityCheck,
-						StopBit stopBit,
-						CharacterSize characterSize,
-						SynchroEdge synchroEdge,
-						CommunicationMode communicationMode )
-				{	
-					uint8_t savedSREG = SREG;
-					
-					GlobalInterrupts::Disable();
-					
-					MasterPin::InitOutput();
-					SetBaudRate(baudRate);
+						ResetCancel();
 						
-					ControlRegisterA::Set(communicationMode);
-					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
-					ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
-					
-					SREG = savedSREG;
-					
-				} // SetupMasterSync
-				
-				static inline void SetupSlaveSync (
-						Receiver receiver,
-						Transmitter transmitter,
-						ParityCheck parityCheck,
-						StopBit stopBit,
-						CharacterSize characterSize,
-						SynchroEdge synchroEdge,
-						CommunicationMode communicationMode )
-				{	
-					uint8_t savedSREG = SREG;
-					
-					GlobalInterrupts::Disable();
-					
-					SlavePin::InitInput();
+						while (!IsReceiveCompleted() )
+						{
+							if (IsCanceled() )
+								return true;
+						}
 						
-					ControlRegisterA::Set(communicationMode);
-					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
-					ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
+						return false;
+						
+					} // WaitWhileReceiveCompletedOrCanceled
 					
-					SREG = savedSREG;
+					static inline ReadResult DetailedErrorCheck()
+					{
+						if (WasFrameError() )
+							return FrameError;
+						
+						if (WasParityError() )
+							return ParityError;
+						
+						if (WasDataOverRun() )
+							return DataOverRun;
+						
+						return Success;
+						
+					} // DetailedErrorCheck
 					
-				} // SetupSlaveSync
+				protected:
 				
+					/**
+					 * Neccessary functions for transceiver
+					 */
 				
-				static inline void SetupAsynchronous (
-						uint16_t baudRate,
-						Receiver receiver,
-						Transmitter transmitter,
-						ParityCheck parityCheck,
-						StopBit stopBit,
-						CharacterSize characterSize,
-						Speed speed,
-						CommunicationMode communicationMode )
-				{
-					uint8_t savedSREG = SREG;
+					static inline bool CanSend() { return IsDataRegisterEmpty(); }
+					static inline bool CanReceive() { return IsReceiveCompleted(); }
+					static inline bool WasSendingError() { return false; }
+					static inline bool WasReceivingError() { return WasError(); } // All USART errors are receiving errors
+						
+					static inline void PureByteSend(const uint8_t &data)
+					{					
+						DataRegister::Set(data);
+						
+					} // PureByteSend
 					
-					GlobalInterrupts::Disable();
+					static inline void PureByteReceive(uint8_t &data)
+					{
+						data = DataRegister::Get();
+												
+					} // PureByteReceive
 					
-					SetBaudRate(baudRate);
+				public:
 					
-					ControlRegisterA::Set(speed | communicationMode);
-					ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) );
-					ControlRegisterC::Set(registerSelect | Asynchronous | parityCheck | stopBit | (characterSize & CharacterSizeMaskC) ); 
+					static inline void SetBaudRate(uint16_t baudRate)
+					{
+						BaudRateRegisterHigh::Set( (baudRate >> 8) & 0x0F);
+						BaudRateRegisterLow::Set( (uint8_t)baudRate);
+						
+					} // SetBaudRate
 					
-					SREG = savedSREG;
+					static inline void SetupMasterSync (
+							uint16_t baudRate,
+							Receiver receiver,
+							Transmitter transmitter,
+							ParityCheck parityCheck,
+							StopBit stopBit,
+							CharacterSize characterSize,
+							SynchroEdge synchroEdge,
+							CommunicationMode communicationMode )
+					{	
+						uint8_t savedSREG = SREG;
+						
+						GlobalInterrupts::Disable();
+						
+						MasterPin::InitOutput();
+						SetBaudRate(baudRate);
+							
+						ControlRegisterA::Set(communicationMode);
+						ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
+						ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
+						
+						SREG = savedSREG;
+						
+					} // SetupMasterSync
 					
-				} // SetupAsynchronous
-				
-				static inline void WriteNinthSet(uint8_t data)
-				{
-					WaitUntilDataRegisterEmpty();
+					static inline void SetupSlaveSync (
+							Receiver receiver,
+							Transmitter transmitter,
+							ParityCheck parityCheck,
+							StopBit stopBit,
+							CharacterSize characterSize,
+							SynchroEdge synchroEdge,
+							CommunicationMode communicationMode )
+					{	
+						uint8_t savedSREG = SREG;
+						
+						GlobalInterrupts::Disable();
+						
+						SlavePin::InitInput();
+							
+						ControlRegisterA::Set(communicationMode);
+						ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) ); 
+						ControlRegisterC::Set(registerSelect | Synchronous | parityCheck | stopBit | synchroEdge | (characterSize & CharacterSizeMaskC) ); 
+						
+						SREG = savedSREG;
+						
+					} // SetupSlaveSync
 					
-					SetNinthBit();
 					
-					Data::Set(data);
+					static inline void SetupAsynchronous (
+							uint16_t baudRate,
+							Receiver receiver,
+							Transmitter transmitter,
+							ParityCheck parityCheck,
+							StopBit stopBit,
+							CharacterSize characterSize,
+							Speed speed,
+							CommunicationMode communicationMode )
+					{
+						uint8_t savedSREG = SREG;
+						
+						GlobalInterrupts::Disable();
+						
+						SetBaudRate(baudRate);
+						
+						ControlRegisterA::Set(speed | communicationMode);
+						ControlRegisterB::Set(receiver | transmitter | (characterSize & CharacterSizeCheckMaskB ? CharacterSize9FlagB : 0) );
+						ControlRegisterC::Set(registerSelect | Asynchronous | parityCheck | stopBit | (characterSize & CharacterSizeMaskC) ); 
+						
+						SREG = savedSREG;
+						
+					} // SetupAsynchronous
 					
-				} // WriteNinthSet
-				
-				static inline void WriteNinthCleared(uint8_t data)
-				{
-					WaitUntilDataRegisterEmpty();
-					
-					ClearNinthBit();
-					
-					Data::Set(data);
-					
-				} // WriteNinthCleared
-				
-				static inline void Write(uint8_t data)
-				{
-					WaitUntilDataRegisterEmpty();
-					
-					Data::Set(data);
-					
-				} // Write 1
-				
-				static inline void Write(uint8_t data, bool ninth)
-				{
-					WaitUntilDataRegisterEmpty();
-					
-					if (ninth)
+					static inline void WriteNinthSet(uint8_t data)
+					{
+						WaitUntilDataRegisterEmpty();
+						
 						SetNinthBit();
-					else
+						
+						DataRegister::Set(data);
+						
+					} // WriteNinthSet
+					
+					static inline void WriteNinthCleared(uint8_t data)
+					{
+						WaitUntilDataRegisterEmpty();
+						
 						ClearNinthBit();
+						
+						DataRegister::Set(data);
+						
+					} // WriteNinthCleared
 					
-					Data::Set(data);
-					
-				} // Write 2
-				
-				static inline bool Read(uint8_t &data)
-				{
-					if (WaitWhileReceiveCompletedOrCanceled() )
-						return false;
-					
+					static inline void Write(const uint8_t &data)
 					{
-						bool result = !WasError();
+						WaitUntilDataRegisterEmpty();
 						
-						data = Data::Get();
+						DataRegister::Set(data);
 						
-						return result;
-					}
+					} // Write 1
 					
-				} // Read 1
-				
-				static inline bool Read(uint8_t &data, bool &ninth)
-				{
-					if (WaitWhileReceiveCompletedOrCanceled() )
-						return false;
-					
+					static inline void Write(uint8_t data, bool ninth)
 					{
-						bool result = !WasError();
+						WaitUntilDataRegisterEmpty();
 						
-						ninth = IsNinthBitSet();
-						data = Data::Get();
-						
-						return result;
-					}
-					
-				} // Read 2
-				
-				static inline bool SimpleRead(uint8_t &data)
-				{
-					bool result;
-					
-					while (!IsReceiveCompleted() );
-					result = !WasError();
-					data = Data::Get();
-					return result;
-					
-				} // SimpleRead 1
-				
-				static inline bool SimpleRead(uint8_t &data, bool &ninth)
-				{
-					bool result;
-					
-					while (!IsReceiveCompleted() );
-					result = !WasError();
-					ninth = IsNinthBitSet();
-					data = Data::Get();
-					return result;
-					
-				} // SimpleRead 2
-				
-				static inline ReadResult DetailedRead(uint8_t &data)
-				{
-					if (WaitWhileReceiveCompletedOrCanceled() )
-						return Canceled;
-					
-					{
-						ReadResult result = DetailedErrorCheck();
-						
-						data = Data::Get();
-						
-						return result;
-					}
-					
-				} // DetailedRead 1
-				
-				static inline ReadResult DetailedRead(uint8_t &data, bool &ninth)
-				{
-					if (WaitWhileReceiveCompletedOrCanceled() )
-						return Canceled;
-					
-					{
-						ReadResult result = DetailedErrorCheck();
-						
-						ninth = IsNinthBitSet();
-						data = Data::Get();
-						
-						return result;
-					}
-					
-				} // DetailedRead 2
-				
-				static inline ReadResult DetailedSimpleRead(uint8_t &data)
-				{
-					while (!IsReceiveCompleted() );
-					
-					{
-						ReadResult result = DetailedErrorCheck();
-						
-						data = Data::Get();
-						
-						return result;
-					}
-					
-				} // DetailedSimpleRead 1
-				
-				static inline ReadResult DetailedSimpleRead(uint8_t &data, bool &ninth)
-				{
-					while (!IsReceiveCompleted() );
-					
-					{
-						ReadResult result = DetailedErrorCheck();
-						
-						ninth = IsNinthBitSet();
-						data = Data::Get();
-						
-						return result;
-					}
-					
-				} // DetailedSimpleRead 2
-
-				/// Empties the receive buffer, if it is not already empty.
-				static inline void Flush()
-				{
-					// If there is data to read
-					while(IsReceiveCompleted())
-					{
-						// Discard the contents of USART Data Register
-						uint8_t data;
-						data = Data::Get();
-					}
-					
-				} // Flush
-				
-			private:
-				
-				static inline void SendByteArray(uint8_t *byteData, uint16_t bytesCount)
-				{
-					register uint16_t i;
-					
-					for (i = 0; i < bytesCount; i++)
-						Write(byteData[i]);
-					
-				} // SendByteArray
-				
-				static inline bool ReceiveByteArray(uint8_t *byteData, uint16_t bytesCount)
-				{
-					register uint16_t i;
-					
-					for (i = 0; i < bytesCount; i++)
-						if (!Read(byteData[i]) )
-							return false;
-					
-					return true;
-					
-				} // ReceiveByteArray
-				
-				static inline ReadResult DetailedReceiveByteArray(uint8_t *byteData, uint16_t bytesCount)
-				{
-					register uint16_t i;
-					ReadResult result;
-					
-					for (i = 0; i < bytesCount; i++)
-						if ((result = DetailedRead(byteData[i]) ) != Success)
-							return result;
-					
-					return Success;
-					
-				} // DetailedReceiveByteArray
-				
-			public:
-				
-				static void SendText(char *text, uint16_t size)
-				{
-					register uint16_t i;
-					
-					for (i = 0; i < size; i++)
-						if (text[i])
-							Write(text[i]);
+						if (ninth)
+							SetNinthBit();
 						else
-							break;
+							ClearNinthBit();
+						
+						DataRegister::Set(data);
+						
+					} // Write 2
 					
-					while (i < size)
+					static inline bool Read(uint8_t &data)
 					{
-						Write(0x00);
-						i++;
-					}
+						if (WaitWhileReceiveCompletedOrCanceled() )
+							return false;
+						
+						{
+							bool result = !WasError();
+							
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // Read 1
 					
-				} // SendText
-				
-				template<typename Type> static void Send(Type &data)
-				{
-					SendByteArray((uint8_t *)(&data), sizeof(Type) );
+					static inline bool Read(uint8_t &data, bool &ninth)
+					{
+						if (WaitWhileReceiveCompletedOrCanceled() )
+							return false;
+						
+						{
+							bool result = !WasError();
+							
+							ninth = IsNinthBitSet();
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // Read 2
 					
-				} // Send
-				
-				template<typename Type> static void SendArray(Type *data, uint16_t size)
-				{
-					SendByteArray((uint8_t *)(data), size * sizeof(Type) );
+					static inline bool SimpleRead(uint8_t &data)
+					{
+						bool result;
+						
+						while (!IsReceiveCompleted() );
+						result = !WasError();
+						data = DataRegister::Get();
+						return result;
+						
+					} // SimpleRead 1
 					
-				} // SendArray
-				
-				template<typename Type> static bool Receive(Type &data)
-				{
-					return ReceiveByteArray((uint8_t *)(&data), sizeof(Type) );
+					static inline bool SimpleRead(uint8_t &data, bool &ninth)
+					{
+						bool result;
+						
+						while (!IsReceiveCompleted() );
+						result = !WasError();
+						ninth = IsNinthBitSet();
+						data = DataRegister::Get();
+						return result;
+						
+					} // SimpleRead 2
 					
-				} // Receive
-				
-				template<typename Type> static bool ReceiveArray(Type *data, uint16_t size)
-				{
-					return ReceiveByteArray((uint8_t *)(data), size * sizeof(Type) );
+					static inline ReadResult DetailedRead(uint8_t &data)
+					{
+						if (WaitWhileReceiveCompletedOrCanceled() )
+							return Canceled;
+						
+						{
+							ReadResult result = DetailedErrorCheck();
+							
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // DetailedRead 1
 					
-				} // ReceiveArray
-				
-				template<typename Type> static ReadResult DetailedReceive(Type &data)
-				{
-					return DetailedReceiveByteArray((uint8_t *)(&data), sizeof(Type) );
+					static inline ReadResult DetailedRead(uint8_t &data, bool &ninth)
+					{
+						if (WaitWhileReceiveCompletedOrCanceled() )
+							return Canceled;
+						
+						{
+							ReadResult result = DetailedErrorCheck();
+							
+							ninth = IsNinthBitSet();
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // DetailedRead 2
 					
-				} // DetailedReceive
-				
-				template<typename Type> static ReadResult DetailedReceiveArray(Type *data, uint16_t size)
-				{
-					return DetailedReceiveByteArray((uint8_t *)(data), size * sizeof(Type) );
+					static inline ReadResult DetailedSimpleRead(uint8_t &data)
+					{
+						while (!IsReceiveCompleted() );
+						
+						{
+							ReadResult result = DetailedErrorCheck();
+							
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // DetailedSimpleRead 1
 					
-				} // DetailedReceiveArray
+					static inline ReadResult DetailedSimpleRead(uint8_t &data, bool &ninth)
+					{
+						while (!IsReceiveCompleted() );
+						
+						{
+							ReadResult result = DetailedErrorCheck();
+							
+							ninth = IsNinthBitSet();
+							data = DataRegister::Get();
+							
+							return result;
+						}
+						
+					} // DetailedSimpleRead 2
+
+					/// Empties the receive buffer, if it is not already empty.
+					static inline void Flush()
+					{
+						// If there is data to read
+						while(IsReceiveCompleted())
+						{
+							// Discard the contents of USART Data Register
+							uint8_t data;
+							data = DataRegister::Get();
+						}
+						
+					} // Flush									
 				
 			}; // struct USARTBase
 			

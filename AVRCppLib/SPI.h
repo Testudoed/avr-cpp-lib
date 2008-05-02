@@ -31,6 +31,7 @@
 
 #include "IO.h"
 #include "Interrupt.h"
+#include "Transceiver.h"
 
 
 /**********************************************************************************************************************\
@@ -48,15 +49,15 @@ namespace AVRCpp
 	{
 		enum OperationMode
 		{
-			SlaveMode   = 0x00,
-			MasterMode  = _MSTR
+			SlaveMode  = 0x00,
+			MasterMode = _MSTR
 
 		}; // enum Operation mode
 		
 		enum DataOrder
 		{
-			MSBFirst	= 0x00,
-			LSBFirst	= _DORD
+			MSBFirst = 0x00,
+			LSBFirst = _DORD
 
 		}; // enum DataOrder
 		
@@ -69,20 +70,20 @@ namespace AVRCpp
 		
 		enum ClockPhase
 		{
-			SampleOnLeadingEdge	= 0x00,
+			SampleOnLeadingEdge = 0x00,
 			SampleOnFallingEdge = _CPHA
 
 		}; // enum ClockPhase
 		
 		enum ClockRate
 		{
-			RateDiv2	= 0x80,
-			RateDiv4	= 0x00,
-			RateDiv8	= 0x81,
-			RateDiv16	= 0x01,
-			RateDiv32	= 0x82,
-			RateDiv64	= 0x02,
-			RateDiv128	= 0x03,
+			RateDiv2    = 0x80,
+			RateDiv4    = 0x00,
+			RateDiv8    = 0x81,
+			RateDiv16   = 0x01,
+			RateDiv32   = 0x82,
+			RateDiv64   = 0x02,
+			RateDiv128  = 0x03,
 
 		}; // enum ClockRate
 		
@@ -90,15 +91,15 @@ namespace AVRCpp
 		{
 			enum BitFlags
 			{
-				TransferEnableFlag		= _SPE,
-				DataOrderFlag			= _DORD,
-				MasterSlaveSelectFlag	= _MSTR,
-				ClockPolarityFlag		= _CPOL,
-				ClockPhaseFlag			= _CPHA,
-				ClockRateFlag			= _SPR1 | _SPR0,
-				TransferCompleteFlag	= _SPIF,
-				CollisionFlag			= _WCOL,
-				DoubleSpeedFlag			= _SPI2X
+				TransferEnableFlag      = _SPE,
+				DataOrderFlag           = _DORD,
+				MasterSlaveSelectFlag   = _MSTR,
+				ClockPolarityFlag       = _CPOL,
+				ClockPhaseFlag          = _CPHA,
+				ClockRateFlag           = _SPR1 | _SPR0,
+				TransferCompleteFlag    = _SPIF,
+				CollisionFlag           = _WCOL,
+				DoubleSpeedFlag         = _SPI2X
 				
 			}; // enum BitFlags
 			
@@ -106,65 +107,97 @@ namespace AVRCpp
 			 *  SPI base structure
 			 */
 			template <
-						class ControlRegister,
-						class StatusRegister,
-						class DataRegister,
-						class SlaveSelectPin,
-						class ClockPin,
-						class MasterOutPin,
-						class MasterInPin >
+					class ControlRegister,
+					class StatusRegister,
+					class DataRegister,
+					class SlaveSelectPin,
+					class ClockPin,
+					class MasterOutPin,
+					class MasterInPin >
 						
-			struct SPIBase
+			struct SPIBase : public Transceiver< SPIBase< 
+					ControlRegister,
+					StatusRegister,
+					DataRegister,
+					SlaveSelectPin,
+					ClockPin,
+					MasterOutPin,
+					MasterInPin > >
 			{
+			
+				friend class Transceiver< SPIBase< 
+						ControlRegister,
+						StatusRegister,
+						DataRegister,
+						SlaveSelectPin,
+						ClockPin,
+						MasterOutPin,
+						MasterInPin > >;
+			
 				private:
 				
-					typedef Bits<ControlRegister, TransferEnableFlag>		TransferEnableBit;
-					typedef Bits<ControlRegister, DataOrderFlag>			DataOrderBit;
-					typedef Bits<ControlRegister, MasterSlaveSelectFlag>	MasterSlaveSelectBit;
-					typedef Bits<ControlRegister, ClockPolarityFlag>		ClockPolarityBit;
-					typedef Bits<ControlRegister, ClockPhaseFlag>			ClockPhaseBit;
-					typedef Bits<ControlRegister, ClockRateFlag>			ClockRateBits;					
-					typedef Bits<StatusRegister, TransferCompleteFlag>		TransferCompleteBit;
-					typedef Bits<StatusRegister, CollisionFlag>				CollisionBit;
-					typedef Bits<StatusRegister, DoubleSpeedFlag>			DoubleSpeedBit;
+					typedef Bits<ControlRegister, TransferEnableFlag>      TransferEnableBit;
+					typedef Bits<ControlRegister, DataOrderFlag>           DataOrderBit;
+					typedef Bits<ControlRegister, MasterSlaveSelectFlag>   MasterSlaveSelectBit;
+					typedef Bits<ControlRegister, ClockPolarityFlag>       ClockPolarityBit;
+					typedef Bits<ControlRegister, ClockPhaseFlag>          ClockPhaseBit;
+					typedef Bits<ControlRegister, ClockRateFlag>           ClockRateBits;					
+					typedef Bits<StatusRegister, TransferCompleteFlag>     TransferCompleteBit;
+					typedef Bits<StatusRegister, CollisionFlag>            CollisionBit;
+					typedef Bits<StatusRegister, DoubleSpeedFlag>          DoubleSpeedBit;
 					
 				protected:					
-					
+										
 					static inline bool volatile IsTransferCompleted() { return TransferCompleteBit::IsSet(); }
-					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }					
-					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }								
+					static inline bool WasWriteCollision() { return CollisionBit::IsSet(); }
+					static inline void WaitUntilTransferCompleted() { while (!IsTransferCompleted() && !WasWriteCollision()); }											
+					
+				protected:
+				
+					/**
+					 * Neccessary functions for transceiver
+					 */
+					 
+					static inline bool CanSend() { return IsTransferCompleted(); }
+					static inline bool CanReceive() { return IsTransferCompleted(); }
+					static inline bool WasSendingError() { return WasWriteCollision(); }
+					static inline bool WasReceivingError() { return WasWriteCollision(); }
+						
+					static inline void PureByteSend(const uint8_t &data)
+					{					
+						DataRegister::Set(data);
+						
+					} // PureByteSend
+					
+					static inline void PureByteReceive(uint8_t &data)
+					{
+						data = DataRegister::Get();
+						
+						// If master mode, then generate clock with random data to read data from slave
+						if (MasterSlaveSelectBit::IsSet())
+							DataRegister::Set(0);
+												
+					} // PureByteReceive					
 					
 				public:
 					
 					/**
-					 *  Setup SPI
+					 * Setup SPI in master mode
 					 */
-					static inline void Setup (
-						OperationMode mode,
-						ClockRate rate,
-						DataOrder order,
-						ClockPolarity polarity,
-						ClockPhase phase )
-					{
-					
+					static inline void SetupMaster (
+							ClockRate rate,
+							DataOrder order,
+							ClockPolarity polarity,
+							ClockPhase phase )
+					{					
 						// Set pins										
-						if (mode == MasterMode)				
-						{
-							SlaveSelectPin::Output::InitOutput();								
-							ClockPin::Output::InitOutput();
-							MasterOutPin::Output::InitOutput();
-							MasterInPin::Input::InitInput();						
-						}
-						else
-						{
-							SlaveSelectPin::Input::InitInput();
-							ClockPin::Input::InitInput();
-							MasterOutPin::Input::InitInput();
-							MasterInPin::Output::InitOutput();						
-						}
+						SlaveSelectPin::Output::InitOutput();								
+						ClockPin::Output::InitOutput();
+						MasterOutPin::Output::InitOutput();
+						MasterInPin::Input::InitInput();												
 														
 						// Setup SPI																		
-						ControlRegister::Set(_SPE | order | mode | polarity | phase | (rate & ClockRateFlag));
+						ControlRegister::Set(_SPE | order | _MSTR | polarity | phase | (rate & ClockRateFlag));
 
 						// Set double rate
 						if (rate & 0x80)
@@ -172,12 +205,30 @@ namespace AVRCpp
 						else
 							DoubleSpeedBit::Clear();							
 
-					} // Setup
-					
+					} // SetupMaster
 					
 					/**
-					 *  Starts transmiting by setting SPI to master mode and selecting slave device
-					 *	\attention Only possible in master-mode
+					 * Setup SPI in slave mode
+					 */
+					static inline void SetupSlave (						
+						DataOrder order,
+						ClockPolarity polarity,
+						ClockPhase phase )
+					{
+						// Set pins										
+						SlaveSelectPin::Input::InitInput();
+						ClockPin::Input::InitInput();
+						MasterOutPin::Input::InitInput();
+						MasterInPin::Output::InitOutput();
+														
+						// Setup SPI																		
+						ControlRegister::Set(_SPE | order | polarity | phase);					
+
+					} // SetupSlave
+										
+					/**
+					 * Starts transmiting by setting SPI to master mode and selecting slave device
+					 * \attention Only possible in master-mode
 					 */
 					static inline void StartTransmission()
 					{						
@@ -185,62 +236,16 @@ namespace AVRCpp
 
 					} // StartTransmission
 					
-					
 					/**
-					 *  Ends transmitting by de-selecting slave device
-					 *	\attention Only possible in master-mode
+					 * Ends transmitting by de-selecting slave device
+					 * \attention Only possible in master-mode
 					 */
 					static inline void EndTransmission()
 					{
 						SlaveSelectPin::Output::Set();
 
 					} // EndTransmission
-					
-					
-					/**
-					 *	Writes byte to SPI
-					 *	@param data data byte to transmit
-					 *	@return true on success, false on collision
-					 */
-					static inline bool Write(uint8_t data)
-					{					
-						DataRegister::Set(data);
-						
-						WaitUntilTransferCompleted();
-						
-						return !WasWriteCollision();
-
-					} // Write
-					
-					
-					/**
-					 *	Reads byte from SPI
-					 *	@return data byte read
-					 */
-					static inline uint8_t Read()
-					{
-						WaitUntilTransferCompleted();
-
-						return DataRegister::Get();
-
-					} // Read
-					
-					
-					/**
-					 *	Reads byte from SPI by generating clock signal with empty output
-					 *	@param[out] byte read byte is stored to this variable
-					 *	@return true on success, false on collision
-					 */
-					static inline bool ReadByClock(uint8_t &byte)
-					{
-						if (!Write(0) ) return false;
-
-						byte = Read();
-
-						return true;
-
-					} // ReadByClock
-
+															
 	   		}; // template struct SPIBase
    			
 		}; // namespace Internal

@@ -183,6 +183,14 @@ template <typename DataType, typename SizeType, typename ListType> class BaseArr
 
 			return true;
 		}
+		
+		/**
+		 *  Return reference of first item		 
+		 */
+		inline DataType &Front()
+		{
+			return this->data[0];
+		}
 
 		/**
 		 *  Return reference of item at specified position
