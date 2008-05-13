@@ -1,7 +1,7 @@
 /**********************************************************************************************************************\
 
 	C++ library for Atmel AVR microcontrollers
-	Copyright (C) 2008 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
+	Copyright (C) 2007 Lauri Kirikal, Mikk Leini, Rasmus Raag, MTÜ TTÜ Robotiklubi
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -348,41 +348,72 @@ class CombinedOutputPins : public MultiPortOutputPins <	typename OutputPins0::My
 
 template <class InputPinsClass> class StateWatchInputPins : public InputPinsClass
 {
-protected:
-
-	bool prevState;
-
-public:
-
-	inline void InitInput()
-	{
-		InputPinsClass::InitInput();
-		prevState = InputPinsClass::IsSet();
-
-	} // InitInput
-
-	inline void InitDefaultInput()
-	{
-		InputPinsClass::InitDefaultInput();
-		prevState = InputPinsClass::IsSet();
-
-	} // InitDefaultInput
-
-	inline void Reset() { prevState = InputPinsClass::IsSet(); }
-
-	inline bool HasChanged(bool doNotReset = false)
-	{
-		bool now = InputPinsClass::IsSet();
-
-		if (now != prevState)
+	protected:
+	
+		bool prevState;
+	
+	public:
+	
+		inline void InitInput()
 		{
-		    if (!doNotReset) prevState = now;
-			return true;
+			InputPinsClass::InitInput();
+			prevState = InputPinsClass::IsSet();
+	
+		} // InitInput
+	
+		inline void InitDefaultInput()
+		{
+			InputPinsClass::InitDefaultInput();
+			prevState = InputPinsClass::IsSet();
+	
+		} // InitDefaultInput
+	
+		inline void Reset()
+		{
+			prevState = InputPinsClass::IsSet();
 		}
-
-		return false;
-
-	} // HasChanged
+	
+		bool HasChanged(bool doNotReset = false)
+		{
+			bool now = InputPinsClass::IsSet();
+	
+			if (now != prevState)
+			{
+				if (!doNotReset) prevState = now;
+				return true;
+			}
+	
+			return false;
+	
+		} // HasChanged
+		
+		bool HasSet(bool doNotReset = false)
+		{
+			bool now = InputPinsClass::IsSet();
+	
+			if (now != prevState)
+			{
+				if (!doNotReset) prevState = now;
+				return now;
+			}
+	
+			return false;
+	
+		} // HasSet
+		
+		bool HasCleared(bool doNotReset = false)
+		{
+			bool now = InputPinsClass::IsSet();
+	
+			if (now != prevState)
+			{
+				if (!doNotReset) prevState = now;
+				return !now;
+			}
+	
+			return false;
+	
+		} // HasCleared
 
 }; // class StateWatchInputPins
 
@@ -405,7 +436,7 @@ __DECLARE_STATE_WATCH_PORT_INPUT_PIN__(7);
 
 /**********************************************************************************************************************\
 
-	Output pins with only ground pulled or loose (open-collector) output
+	Output pins with only ground pulled or loose output
 
 \**********************************************************************************************************************/
 

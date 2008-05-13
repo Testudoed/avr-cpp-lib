@@ -43,8 +43,8 @@
 #else
 
 // Compatibility test
-#if !(defined(__AVR__) && __GNUC__ == 4 && __GNUC_MINOR__ == 2 && __GNUC_PATCHLEVEL__ == 2)
-#warning "AVR C++ Lib is tested on avr-gcc (GCC) 4.2.2 (WinAVR 20071221). You are not using this compiler. AVR C++ Lib may not work properly."
+#if !(defined(__AVR__) && __GNUC__ == 4 && __GNUC_MINOR__ == 3 && __GNUC_PATCHLEVEL__ == 0)
+#warning "AVR C++ Lib is tested on avr-gcc (GCC) 4.3.0 (WinAVR 20080411). You are not using this compiler. AVR C++ Lib may not work properly."
 #endif
 
 namespace AVRCpp
@@ -194,6 +194,7 @@ namespace AVRCpp
 		
 		static inline void InitInput() { MyPort::SetAsInput(flags); }
 		static inline void InitDefaultInput() { MyPort::SetAsTriStateInput(flags); }
+		static inline void InitTriStateInput() { InitDefaultInput(); }
 		static inline bool IsAnySet() { return IsAnyBitSet<Pins>(flags); }
 		static inline bool IsSet() { return IsBitsSet<Pins>(flags); }
 		
