@@ -29,7 +29,7 @@
 #ifndef __AVR_CPP_TASK_H__
 #define __AVR_CPP_TASK_H__
 
-#include "collection/DynamicArray.h"
+#include "../collection/DynamicArray.h"
 #include "TaskHandler.h"
 
 
@@ -55,11 +55,13 @@ namespace AVRCpp
 
 using namespace Collection;
 
-typedef enum TaskPeriodType {
-
+enum TaskPeriodType
+{
 	TaskPeriodMilliseconds	= 1,
 	TaskPeriodLoopCounts	= 2
 };
+
+class Task;
 
 class Task
 {
@@ -73,17 +75,31 @@ class Task
 		uint32_t pausePeriodUnits;
 		uint32_t pausePeriodCounter;
 
+	public:
+		
+		/**
+		 * User defined task starter function
+		 */		 		
+		virtual void Start(void)
+		{
+			// nothing
+		}
+
 	protected:
 
-		virtual bool RunSelf(void)
+		/**
+		 * User class internal worker function
+		 * Return true or false depending on whether to continue running or not
+		 */
+		virtual bool Tick(void)
 		{
 			return true;
-		};
+		}	
 
 	public:
 
 		/**
-		 *	Constructor
+		 * Constructor
 		 */
 		Task(void)
 		{
@@ -93,16 +109,18 @@ class Task
 		}
 
 		/**
-		 *	Destructor
+		 * Destructor
 		 */
 		virtual ~Task(void)
 		{
 		}
 
+		/**********************************************************************/
+
 		/**
 		 *	Set task-handler
 		 *
-		 *	@param handler Pointer to task-handler object
+		 *	@param handler Address of task-handler object
 		 *	@return Sucess
 		 */
 		bool SetTaskHandler(TaskHandler &handler)
@@ -111,17 +129,46 @@ class Task
 
 			return true;
 		}
+		
+		/**
+		 *	Set task-handler
+		 *
+		 *	@param handler Pointer to task-handler object
+		 *	@return Sucess
+		 */
+		bool SetTaskHandler(TaskHandler *handler)
+		{		
+			taskHandler = handler;
 
+			return true;
+		}
+
+		/**
+		 *	Replace current task with new one
+		 * 	
+		 *	@param pTask Address of task object
+		 *	@return	Success
+		 */
+		bool SetOverrideTask(Task &task)
+		{
+			overrideTask = &task;
+			overrideTask->SetTaskHandler(taskHandler);
+			overrideTask->Start();
+
+			return true;
+		}
+		
 		/**
 		 *	Replace current task with new one
 		 * 	
 		 *	@param pTask Pointer to task object
 		 *	@return	Success
 		 */
-		bool SetOverrideTask(Task &task)
+		bool SetOverrideTask(Task *task)
 		{
-			overrideTask = &task;
-			overrideTask->SetTaskHandler(*taskHandler);
+			overrideTask = task;
+			overrideTask->SetTaskHandler(taskHandler);
+			overrideTask->Start();
 
 			return true;
 		}
@@ -141,14 +188,29 @@ class Task
 		/**
 		 *	Add sub-task
 		 *
-		 *	@param subTask Pointer to sub-task object
+		 *	@param subTask Address of sub-task object
 		 *	@return Success
 		 */
 		bool AddSubTask(Task &subTask)
 		{
 			subTask.SetTaskHandler(*taskHandler);
+			subTask.Start();
 			
 			return subTasks.Add(&subTask);
+		}
+		
+		/**
+		 *	Add sub-task
+		 *
+		 *	@param subTask Pointer to sub-task object
+		 *	@return Success
+		 */
+		bool AddSubTask(Task *subTask)
+		{
+			subTask->SetTaskHandler(taskHandler);
+			subTask->Start();
+			
+			return subTasks.Add(subTask);
 		}
 
 		/**
@@ -171,10 +233,18 @@ class Task
 		{
 			return subTasks.Remove(&subTask);
 		}
+		
+		/**
+		 *	Remove sub task by sub-task pointer
+		 *
+		 *	@param subTask Pointer to sub-task object
+		 */
+		bool RemoveSubTask(Task *subTask)
+		{
+			return subTasks.Remove(subTask);
+		}
 
-
-		/******************************************************************************/
-
+		/**********************************************************************/
 
 		/**
 		 *	Task running
@@ -189,6 +259,7 @@ class Task
 				if (!overrideTask->Run())
 				{
 					ClearOverrideTask();
+					Start();
 				}
 
 				return true;
@@ -212,7 +283,7 @@ class Task
 				pausePeriodUnits = 0;
 			}
 
-			// Run child taskes
+			// Run child tasks
 			for (register uint8_t index = 0; index < subTasks.GetSize(); index++)
 			{
 				if (!subTasks[index]->Run())
@@ -221,18 +292,16 @@ class Task
 				}
 			}
 
-			return RunSelf();
+			return Tick();
 		}
-
 
 		/******************************************************************************/
 
-
 		/**
-		 *	Pause task running for specified period
+		 * Stop task running for specified period
 		 *
-		 *	@param iValue Pause length in specified type units (default milliseconds)
-		 *	@param tType Pause period type
+		 * @param numUnits Pause length in specified type units (default milliseconds)
+		 * @param periodType Pause period type
 		 */
 		void Pause(uint32_t numUnits, TaskPeriodType periodType)
 		{
@@ -252,9 +321,9 @@ class Task
 		}
 		
 		/**
-		 *	Pause task for specified time-period
+		 * Pause task for specified time-period
 		 *
-		 *	@param time Time in milliseconds
+		 * @param time Time in milliseconds
 		 */
 		void Pause(uint32_t time)
 		{

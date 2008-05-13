@@ -59,7 +59,7 @@ class TaskHandler {
 	public:
 				
 		/**
-		 *	Contructor
+		 * Contructor
 		 */
 		TaskHandler(void)
 		{
@@ -67,17 +67,25 @@ class TaskHandler {
 		}
 
 		/**
-		 *	Millisecond tick call function
+		 * Millisecond tick call function
 		 */
-		void MillisecondTick(void)
+		inline void MillisecondTick(void)
 		{
 			elapsedMilliseconds++;
 		}
+		
+		/**
+		 * Elapsed milliseconds setting 
+		 */
+		inline void SetElapsedMilliseconds(uint32_t value)
+		{
+			elapsedMilliseconds = value;
+		}
 
 		/**
-		 *	Return elapse milliseconds
+		 * Return elapse milliseconds
 		 */
-		volatile uint32_t GetElapsedMilliseconds(void)
+		volatile inline uint32_t GetElapsedMilliseconds(void)
 		{
 			return elapsedMilliseconds;
 		}
