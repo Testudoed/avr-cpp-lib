@@ -350,7 +350,7 @@ template <class InputPinsClass> class StateWatchInputPins : public InputPinsClas
 {
 	protected:
 	
-		bool prevState;
+		volatile bool prevState;
 	
 	public:
 	
