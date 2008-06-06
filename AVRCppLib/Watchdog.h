@@ -62,6 +62,11 @@
 
 \**********************************************************************************************************************/
 
+#ifdef __WATCDOG_ENHANCED__
+#define WDT_ns		Watchdog
+#define WDT_struct	Watchdog::TimeoutInterrupt
+#endif
+
 namespace AVRCpp
 {
 	namespace Watchdog
@@ -69,52 +74,195 @@ namespace AVRCpp
 
 #ifndef __WATCDOG_ENHANCED__
 
+		enum Timeout
+		{
+			Cycles16K   = 0x00,
+			Cycles32K   = 0x01,
+			Cycles64K   = 0x02,
+			Cycles128K  = 0x03,
+			Cycles256K  = 0x04,
+			Cycles512K  = 0x05,
+			Cycles1024K = 0x06,
+			Cycles2048K = 0x07
+			
+		}; // enum Timeout
+
 		namespace Internal
 		{
+			enum BitFlags
+			{
+				WatchdogResetFlag	      = _WDRF,
+				WatchdogChangeEnableFlag  = _WDCE,
+				WatchdogEnableFlag        = _WDE,
+				WatchdogPrescalerFlag     = _WDP2 | _WDP1 | _WDP0
+					
+			}; // enum BitFlags
+		
 			typedef _MCUCSR MCUStatusRegister;
 			typedef _WDTCR WatchdogTimerControlRegister;
 			
-			typedef Bits<MCUStatusRegister, _WDRF> WatchdogResetFlag;			
-			typedef Bits<WatchdogTimerControlRegister, _WDCE> WatchdogChangeEnableBit;
-			typedef Bits<WatchdogTimerControlRegister, _WDE> WatchdogEnableBit;
-		}
+			typedef Bits<MCUStatusRegister, WatchdogResetFlag>                    WatchdogResetBit;			
+			typedef Bits<WatchdogTimerControlRegister, WatchdogChangeEnableFlag>  WatchdogChangeEnableBit;
+			typedef Bits<WatchdogTimerControlRegister, WatchdogEnableFlag>        WatchdogEnableBit;
+			typedef Bits<WatchdogTimerControlRegister, WatchdogPrescalerFlag >    WatchdogPrescalerBits;
+			
+		} // namespace Internal
+		
+		/**
+		 * Reset watchdog timer
+		 */		 		
+		static inline void ResetTimer()
+		{
+			Assembler::WDR()
+			
+		} // ResetTimer
 
-		/*
-		 * Watchdog disabling command
+		/**
+		 * Watchdog setup
 		 */
-		inline void Disable()
-		{										
-			Internal::WatchdogChangeEnableBit::Set();
-			Internal::WatchdogEnableBit::Clear();
-			Internal::WatchdogChangeEnableBit::Clear();		
-		}
+		static void Setup(Timeout timeout)
+		{
+			// Prepare watchdog configuration to apply it within 4 CPU cycles
+			uint8_t tmp = Internal::WatchdogChangeEnableFlag | Internal::WatchdogEnableFlag |
+			              (timeout & Internal::WatchdogPrescalerFlag);
+			
+			// Reset timer
+			ResetTimer();
+			
+			// Allow changes
+			SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+			                                                Internal::WatchdogEnableFlag);
+			                                                
+			// I don't know whether it's good idea to set prescaler bits with CE bit, so i do it here
+			Internal::WatchdogTimerControlRegister::Set(tmp);
+			
+			// Forbid changes			
+			Internal::WatchdogChangeEnableBit::Clear();
 
-#else
-				
+		} // Setup
+
+		/**
+		 * Watchdog disabling
+		 */
+		static void Disable()
+		{	
+			// Reset timer
+			ResetTimer();
+			
+			// Disable reset
+			Internal::WatchdogResetBit::Clear();
+			
+			// Allow changes
+			SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+			                                                Internal::WatchdogEnableFlag);
+			                                                																				
+			// Disable everything and forbid changes			                                            
+			Internal::WatchdogTimerControlRegister::Set(0);
+														
+		} // Disable
+			
+#else		
+
+		enum Timeout
+		{
+			Cycles2K    = 0x00,
+			Cycles4K    = 0x01,
+			Cycles8K    = 0x02,
+			Cycles16K   = 0x03,
+			Cycles32K   = 0x04,
+			Cycles64K   = 0x05,
+			Cycles128K  = 0x06,
+			Cycles256K  = 0x07,
+			Cycles512K  = 0x08,
+			Cycles1024K = 0x09
+						
+		}; // enum Timeout
+		
 		namespace Internal
 		{
+			enum BitFlags
+			{
+				WatchdogResetFlag	           = _WDRF,
+				WatchdogInterruptEnableFlag    = _WDIE,
+				WatchdogChangeEnableFlag       = _WDCE,
+				WatchdogSystemResetEnableFlag  = _WDE,
+				WatchdogPrescalerFlag          = _WDP3 | _WDP2 | _WDP1 | _WDP0
+					
+			}; // enum BitFlags
+			
 			typedef _MCUSR MCUStatusRegister;
 			typedef _WDTCSR WatchdogTimerControlRegister;
 			
-			typedef Bits<MCUStatusRegister, _WDRF> WatchdogResetFlag;		
-			typedef Bits<WatchdogTimerControlRegister, _WDCE> WatchdogChangeEnableBit;
-			typedef Bits<WatchdogTimerControlRegister, _WDE> WatchdogSystemResetEnableBit;
-		}
+			typedef Bits<MCUStatusRegister, WatchdogResetFlag>                        WatchdogResetBit;
+			typedef Bits<WatchdogTimerControlRegister, WatchdogInterruptEnableFlag>   WatchdogInterruptEnableBit;		
+			typedef Bits<WatchdogTimerControlRegister, WatchdogChangeEnableFlag>      WatchdogChangeEnableBit;
+			typedef Bits<WatchdogTimerControlRegister, WatchdogSystemResetEnableFlag> WatchdogSystemResetEnableBit;		
+			typedef Bits<WatchdogTimerControlRegister, WatchdogPrescalerFlag>         WatchdogPrescalerBits;
 				
-		/*
-		 * Watchdog disabling command
+		} // namespace Internal
+		
+		struct TimeoutInterrupt : BasicInterrupt<Internal::WatchdogInterruptEnableBit> { __INTERRUPT_HANDLER_SUPPORT__ };
+		
+		/**
+		 * Reset watchdog timer
+		 */		 		
+		static inline void ResetTimer()
+		{
+			Assembler::WDR();
+			
+		} // ResetTimer
+		
+		/**
+		 * Watchdog setup
+		 */		 
+		static void Setup(Timeout timeout, bool enableReset)
+		{
+			// Prepare watchdog configuration to apply it within 4 CPU cycles
+			uint8_t tmp = Internal::WatchdogChangeEnableFlag |
+			              (enableReset ? Internal::WatchdogSystemResetEnableFlag : 0) |
+			              (timeout & Internal::WatchdogPrescalerFlag);
+			              
+			INTERRUPT_SAFE
+			{
+				// Reset timer
+				ResetTimer();	
+				
+				// Allow changes				
+				SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+				                                                Internal::WatchdogSystemResetEnableFlag);
+				                                                
+				// Configure
+				Internal::WatchdogTimerControlRegister::Set(tmp);	
+				
+				// Forbid changes
+				Internal::WatchdogChangeEnableBit::Clear();
+			}	
+			
+		} // Setup		
+				
+		/**
+		 * Watchdog disabling
 		 */
-		inline void Disable()
+		static void Disable()
 		{
 			INTERRUPT_SAFE
 			{
-				Assembler::WDR();						
-				Internal::WatchdogResetFlag::Clear();				
-				SetBits<Internal::WatchdogTimerControlRegister>(_WDCE | _WDE);				
+				// Reset timer
+				ResetTimer();
+				
+				// Disable reset
+				Internal::WatchdogResetBit::Clear();	
+				
+				// Allow changes
+				SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+				                                                Internal::WatchdogSystemResetEnableFlag);
+				                                                
+				// Disable everything and forbid changes
 				Internal::WatchdogTimerControlRegister::Set(0);
 			}
-		}		
-	
+			
+		} // Disable		
+
 #endif
 
 	} // namespace Watchdog
