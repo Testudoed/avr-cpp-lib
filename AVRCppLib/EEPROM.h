@@ -169,7 +169,7 @@ namespace AVRCpp
 			/// In Write Only Mode, data is being written without erasing the memory first. Erase memory explicitly if necessary.
 			WriteOnly		= _EEPM1,
 			/// In Erase Write Mode, memory at the specified address is erased and filled with new data in one operation.
-			EraseAndWrite	= _EEPM0 |_EEPM1
+			EraseAndWrite	= 0
 
 		}; // enum Mode
 		

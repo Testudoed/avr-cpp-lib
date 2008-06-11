@@ -41,17 +41,12 @@ namespace AVRCpp
 		
 		static void WriteOperation()
 		{
-			// Save SREG_I bit.
-			uint8_t savedSREG = SREG;
-			
-			// __EEPE__ must be set immediately after setting __EEMPE__
-			GlobalInterrupts::Disable();
-			
-			SetBits<_EECR>(__EEMPE__);
-			SetBits<_EECR>(__EEPE__);
-			
-			// Restore the interrupt bit in Status Register
-			SREG = savedSREG;
+			INTERRUPT_SAFE
+			{
+				// __EEPE__ must be set immediately after setting __EEMPE__						
+				SetBits<_EECR>(__EEMPE__);
+				SetBits<_EECR>(__EEPE__);			
+			}
 
 		} // WriteOperation
 		
