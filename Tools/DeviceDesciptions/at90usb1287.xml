@@ -152,8 +152,13 @@
 			</bits>
 		</register>
 		<register name="UDFNUMH" bits="8">
+			<bits>
+				<bit name="FNUM10" address="0x4"/>
+				<bit name="FNUM9" address="0x2"/>
+				<bit name="FNUM8" address="0x1"/>
+			</bits>
 		</register>
-		<register name="UDFNUML" bits="8">
+		<register name="UDFNUML" bits="8">		
 		</register>
 		<register name="UDADDR" bits="8">
 			<bits>
@@ -229,7 +234,7 @@
 		<register name="UDPADDH" bits="8">
 		</register>
 		<register name="UDPADDL" bits="8">
-		</register>
+		</register>				
 		<register name="USBINT" bits="8">
 			<bits>
 				<bit name="IDTI" address="0x2"/>
@@ -512,7 +517,7 @@
 		<register name="UHFNUMH" bits="8">
 		</register>
 		<register name="UHFNUML" bits="8">
-		</register>
+		</register>				
 		<register name="UHADDR" bits="8">
 			<bits>
 				<bit name="HADD6" address="0x40"/>
@@ -1321,6 +1326,9 @@
 		<register name="TCNT1" bits="16"/>
 		<register name="ADC" bits="16"/>
 		<register name="SP" bits="16"/>
+		<register name="UDFNUM" bits="16"/>
+		<register name="UDPADD" bits="16"/>
+		<register name="UHFNUM" bits="16"/>
 	</registers>
 	<ports>
 		<port char="F"/>

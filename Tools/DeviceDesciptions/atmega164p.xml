@@ -426,12 +426,7 @@
 				<bit name="SP1" address="0x2"/>
 				<bit name="SP0" address="0x1"/>
 			</bits>
-		</register>
-		<register name="RAMPZ" bits="8">
-			<bits>
-				<bit name="RAMPZ0" address="0x1"/>
-			</bits>
-		</register>
+		</register>		
 		<register name="SPMCSR" bits="8">
 			<bits>
 				<bit name="SPMIE" address="0x80"/>
