@@ -50,8 +50,9 @@
 
 \**********************************************************************************************************************/
 
-#define ANALOG_COMPARATOR0_CMP_ns		AnalogComparator
-#define ANALOG_COMPARATOR0_CMP_struct	AnalogComparator::AnalogComparator0::ComparatorInterrupt
+
+#define ANALOG_COMP_ns		AnalogComparator
+#define ANALOG_COMP_struct	AnalogComparator::AnalogComparator0::CompareInterrupt
 
 
 namespace AVRCpp

@@ -251,7 +251,7 @@ namespace AVRCpp
 				ResetTimer();
 				
 				// Disable reset
-				Internal::WatchdogResetBit::Clear();	
+				Internal::WatchdogResetBit::Clear();
 				
 				// Allow changes
 				SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |

@@ -18,10 +18,18 @@
 
 <xsl:variable name="feature" select="features/feature[@name='AnalogComparator']"/>
 <xsl:if test="$feature">
-<xsl:for-each select="$feature/analog_comparator">#define ANALOG_COMPARATOR<xsl:value-of select="@nr"/>_CMP_ns		AnalogComparator
+<xsl:choose>
+<xsl:when test="count($feature/analog_comparator) > 1">
+<xsl:for-each select="$feature/analog_comparator">#define ANALOG_COMP<xsl:value-of select="@nr"/>_ns		AnalogComparator
 </xsl:for-each>
-<xsl:for-each select="$feature/analog_comparator">#define ANALOG_COMPARATOR<xsl:value-of select="@nr"/>_CMP_struct	AnalogComparator::AnalogComparator<xsl:value-of select="@nr"/>::ComparatorInterrupt
+<xsl:for-each select="$feature/analog_comparator">#define ANALOG_COMP<xsl:value-of select="@nr"/>_struct	AnalogComparator::AnalogComparator<xsl:value-of select="@nr"/>::CompareInterrupt
 </xsl:for-each>
+</xsl:when>
+<xsl:otherwise>
+#define ANALOG_COMP_ns		AnalogComparator
+#define ANALOG_COMP_struct	AnalogComparator::AnalogComparator0::CompareInterrupt
+</xsl:otherwise>
+</xsl:choose>
 
 namespace AVRCpp
 {		

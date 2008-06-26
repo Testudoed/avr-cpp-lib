@@ -90,7 +90,7 @@ namespace AVRCpp
 			public:
 				
 				/// Sets up analog comparator
-				static inline void SetUp (							
+				static inline void Setup (							
 						PositiveInputSource positiveSource,					
 						InterruptEvent event,
 						TimerInputCapture timerCapturing )
