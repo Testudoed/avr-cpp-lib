@@ -124,7 +124,7 @@ namespace AVRCpp
 			enum BitFlags
 			{
 				JobCompleteFlag	        = _TWINT,
-				AcknowledgeFlag         = _TWEA,
+				AcknowledgedFlag        = _TWEA,
 				StartConditionFlag      = _TWSTA,
 				StopConditionFlag       = _TWSTO,
 				WriteCollisionFlag      = _TWWC,
@@ -283,7 +283,7 @@ namespace AVRCpp
 					
 					static inline void PureByteReceive(uint8_t &data)
 					{
-						Acknowledge(); // Acknowledge incoming data
+						Acknowledged(); // Acknowledged incoming data
 						// todo - sometimes NACK should be returned
 						
 						if (!Parent::WaitUntilReceiveCompleted())
@@ -302,29 +302,39 @@ namespace AVRCpp
 					static inline void WaitUntilJobComplete() { while (!IsJobCompleted()); }
 					
 					/**
-					 *  Setup in master mode
+					 * Sets up TWI in master mode
+					 * @param bitRate	Bitrate that can be calculated with TWIClockCalculation macro.
+					 *					CPU clock frequency in all connected slaves must be at least 16 times higher than the SCL frequency
+					 * @param prescale	Prescalor selection from AVRCpp::TWI::ClockPrescaler enumeration
+					 * @see TWIClockCalculation
+					 * @see AVRCpp::TWI::ClockPrescaler
+					 * @see AVRCpp::TWI::TWIBase::SetUpSlave
 					 */
-					static void SetupMaster(uint8_t bitRate, ClockPrescaler prescale)
+					static void SetUpMaster(uint8_t bitRate, ClockPrescaler prescale)
 					{					
 						BitRateRegister::Set(bitRate);
 						StatusRegister::Set(prescale & ClockPrescaleFlag); 		
 						ControlRegister::Set(TWIEnableFlag);
 					
-					} // SetupMaster
+					} // SetUpMaster
 					
 					/**
-					 * Setup in slave mode
+					 * Sets up TWI in slave mode
+					 * @param address
+					 * @param addressMask
+					 * @param listenForGeneralCalls 'true' means that data with no address is received. In case 'false' non-addressed data is abandoned.
+					 * @see AVRCpp::TWI::TWIBase::SetUpMaster
 					 */					 
-					static void SetupSlave(uint8_t address, uint8_t addressMask, bool listenForGeneralCalls)
+					static void SetUpSlave(uint8_t address, uint8_t addressMask, bool listenForGeneralCalls = true)
 					{
 						SlaveAddressRegister::Set((address << 1) | (listenForGeneralCalls ? GeneralCallEnableFlag : 0));
 						SlaveAddressMaskRegister::Set(addressMask << 1);
 						ControlRegister::Set(TWIEnableFlag);
 						
-					} // SetupSlave
+					} // SetUpSlave
 					
 					/**					
-					 * Release bus
+					 * Releases bus
 					 */
 					static void Release()
 					{						
@@ -333,18 +343,19 @@ namespace AVRCpp
 					} // Release
 					
 					/**
-					 * Release bus and go to non-addressed slave mode
+					 * Releases bus and enters into non-addressed slave mode
 					 */					 
-					static void ReleaseBus()
+					static void ReleaseAll()
 					{						
 						SlaveAddressRegister::Set(0);
 						SlaveAddressMaskRegister::Set(0);
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
 						
-					} // ReleaseBus
+					} // ReleaseAll
 					
 					/**
-					 * Status code getting 
+					 * The same as AVRCpp::TWI::TWIBase::GetStatus except return type is uint_8 (not enumeration type)
+					 * @see AVRCpp::TWI::TWIBase::GetStatus
 					 */					 
 					static inline uint8_t GetStatusCode()
 					{	
@@ -353,7 +364,8 @@ namespace AVRCpp
 					} // GetStatusCode
 					
 					/**
-					 * Status enum getting 
+					 * Reads interface's present state
+					 * @see AVRCpp::TWI::Status
 					 */					 
 					static inline Status GetStatus()
 					{	
@@ -362,7 +374,8 @@ namespace AVRCpp
 					} // GetStatus
 					
 					/**
-					 * Start 
+					 * Starts data transmission
+					 * @note Applicable only in master mode
 					 */
 					static void Start()
 					{
@@ -375,7 +388,8 @@ namespace AVRCpp
 					} // Start
 					
 					/**
-					 * Stop 
+					 * Stops data transmission
+					 * @note Applicable only in master mode
 					 */
 					static void Stop()
 					{
@@ -388,7 +402,8 @@ namespace AVRCpp
 					} // Stop
 					
 					/**
-					 * Restart (instant stop and start)
+					 * Restarts (instantly stops and starts) data transmission
+					 * @note Applicable only in master mode
 					 */
 					static void Restart()
 					{
@@ -401,31 +416,36 @@ namespace AVRCpp
 					} // Restart
 					
 					/**
-					 * Acknowledge
+					 * Signs the received data to be acknowledged
+					 * @note It is always done on receiver side
 					 */
-					static void Acknowledge()
+					static void Acknowledged()
 					{						
-						ControlRegister::Set(JobCompleteFlag | AcknowledgeFlag | TWIEnableFlag);
+						ControlRegister::Set(JobCompleteFlag | AcknowledgedFlag | TWIEnableFlag);
 						
 						if (waitForTaskCompletion)
 							WaitUntilJobComplete();	
 						
-					} // Acknowledge
+					} // Acknowledged
 					
 					/**
-					 * Not acknowledge
+					 * Signs the received data to be NOT acknowledged
+					 * @note It is always done on receiver side
 					 */
-					static void NotAcknowledge()
+					static void NotAcknowledged()
 					{
 						ControlRegister::Set(JobCompleteFlag | TWIEnableFlag);
 						
 						if (waitForTaskCompletion)
 							WaitUntilJobComplete();	
 						
-					} // NotAcknowledge
+					} // NotAcknowledged
 					
 					/**
-					 * Select write-to-slave mode for desired slave
+					 * Selects write-to-slave mode for desired slave
+					 * @param address	Selected slave 7-bit address. Zero stands for general transmission to all slaves.
+					 *					Addresses covered by mask 1111--- should not be used. It is preserved for future enhancements.
+					 * @note Applicable only in master mode
 					 */					 
 					static void SlaveToWriteMode(uint8_t address)
 					{												
@@ -438,7 +458,10 @@ namespace AVRCpp
 					} // SlaveToWriteMode
 					
 					/**
-					 * Select read-from-slave mode for desired slave
+					 * Selects read-from-slave mode for desired slave
+					 * @param address	Selected slave 7-bit address. Zero stands for general transmission to all slaves.
+					 *					Addresses covered by mask 1111--- should not be used. It is preserved for future enhancements.
+					 * @note Applicable only in master mode
 					 */					 					
 					static void SlaveToReadMode(uint8_t address)
 					{							
@@ -451,7 +474,8 @@ namespace AVRCpp
 					}  // SlaveToReadMode					
 					
 					/**
-					 * Send byte
+					 * Sends a byte
+					 * @param data The byte to be sent
 					 */
 					static inline void Write(uint8_t data)
 					{					
@@ -461,24 +485,28 @@ namespace AVRCpp
 					} // Write										
 					
 					/**
-					 * Read byte (acknowledged will be returned)					 
+					 * Reads a byte and acknowledges it
+					 * @param data Read byte is returned by this referenced parameter
 					 */
 					static void Read(uint8_t &data)
 					{						
 						data = DataRegister::Get();
 						
-						Acknowledge();
+						Acknowledged();
 
 					} // Read
 					
 					/**
-					 * Read last byte (not acknowledged will be returned)
+					 * Reads a byte and does not acknowledge it
+					 * This function is used when the receiver has received the last byte,
+					 * or for some reason cannot receive any more bytes.
+					 * @param data Read byte is returned by this referenced parameter
 					 */
 					static void ReadLast(uint8_t &data)
 					{						
 						data = DataRegister::Get();
 						
-						NotAcknowledge();
+						NotAcknowledged();
 
 					} // ReadLast
 							
