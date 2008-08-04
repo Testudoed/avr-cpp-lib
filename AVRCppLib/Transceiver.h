@@ -44,18 +44,19 @@ namespace AVRCpp
 	General interface for data transmission modules
 	
 	Possible configuration macros:	
-		ALLOW_USER_TRANSCEIVER_ABORT - Not defined by default. Enables user-aborts. Uses 2 bytes of SRAM
 		FORMATTED_TEXT_SENDING - Not defined by default. Allows printf style formatted text sending. Uses lot of memory.
 		
 	Inheriting class should have following functions:
 		static inline bool CanTransmit()
 		static inline bool CanReceive()
-		static inline bool IsTransmitCompleted()
-		static inline bool IsReceiveCompleted()
-		static inline bool WasTransmitError()
-		static inline bool WasReceiveError()
-		static inline void PureByteTransmit(const uint8_t &data)
-		static inline void PureByteReceive(uint8_t &data)
+		static inline bool IsTransmitterAvailable()
+		static inline bool IsTransmitterAvailable()
+		static inline bool IsTransmitingComplete()
+		static inline bool IsReceivingComplete()
+		static inline bool WasTransmitingError()
+		static inline bool WasReceivingError()
+		static inline bool PureWrite(const uint8_t data)
+		static inline bool PureRead(uint8_t &data)
 		
 	For developers:
 		Transceiver = Transmitter + Receiver		
@@ -64,344 +65,270 @@ namespace AVRCpp
 \**********************************************************************************************************************/
 
 
+struct EmptyUserAbort
+{
+	inline static void OperationStart() {}
+	inline static bool IsAborted() { return false; }
+	
+}; // struct EmptyUserAbort
+
+
 template <class Interface> class Transceiver
 {
-	protected:
+protected:
 	
-		#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-		static volatile bool userTransmittingAbort = false;
-		static volatile bool userReceivingAbort    = false;
-		#endif
-	
-		/**
-		 * Wait until possible to transmit or until error occurs
-		 */
-		static inline bool WaitUntilPossibleToTransmit()
-		{
-			while (!Interface::CanTransmit())
-			{				
-				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserTransmittingAbort()) return false;
-				#endif
-			}
-			
-			return true;
-		}
+	/**
+	 * Waits until it is possible to transmit or until error occurs
+	 */
+	template <class UserAbort> static inline bool WaitUntilPossibleToTransmit()
+	{
+		if (!Interface::IsTransmitterAvailable() ) return false;
 		
-		/**
-		 * Wait until possible to receive or until error occurs
-		 */
-		static inline bool WaitUntilPossibleToReceive()
-		{
-			while (!Interface::CanReceive())
-			{
-				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserReceivingAbort()) return false;
-				#endif
-			}
-			
-			return true;
-		}
+		UserAbort::OperationStart();
 		
-		/**
-		 * Wait until transmit completed or until error occurs
-		 */
-		static inline bool WaitUntilTransmitCompleted()
+		while (!Interface::CanTransmit() )
 		{
-			while (!Interface::IsTransmitCompleted())
-			{
-				if (Interface::WasTransmitError()) return false;
-				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserTransmittingAbort()) return false;
-				#endif
-			}
-			
-			return true;
-		}
-		
-		/**
-		 * Wait until receive completed or until error occurs
-		 */
-		static inline bool WaitUntilReceiveCompleted()
-		{
-			while (!Interface::IsReceiveCompleted())
-			{
-				if (Interface::WasReceiveError()) return false;
-				#ifdef ALLOW_USER_TRANSCEIVER_ABORT
-				if (WasUserReceivingAbort()) return false;
-				#endif
-			}
-			
-			return true;
-		}
-		
-	protected:
-
-		/**
-		 * Wait until possible to transmit and then do it
-		 */
-		static inline bool SafeByteTransmit(const uint8_t &data)
-		{
-			if (!WaitUntilPossibleToTransmit())
+			if (UserAbort::IsAborted() )
 				return false;
-			
-			Interface::PureByteTransmit(data);
-			
-			return WaitUntilTransmitCompleted();
 		}
 		
-		/**
-		 * Wait until possible to receive and then do it
-		 */
-		static inline bool SafeByteReceive(uint8_t &data)
-		{
-			if (!WaitUntilPossibleToReceive())
-				return false;
-			
-			Interface::PureByteReceive(data);
-			
-			return WaitUntilReceiveCompleted();
-		}
+		return true;
 		
-		/**
-		 * Safe byte-array transmiting
-		 */
-		template <typename SizeType> static inline bool SafeByteArrayTransmit(uint8_t *byteData, SizeType bytesCount)
-		{
-			register SizeType i;
-			
-			for (i = 0; i < bytesCount; i++)
-				if (!SafeByteTransmit(byteData[i]))
-					return false;
-
-			return true;
-			
-		} // SendByteArray
-		
-		/**
-		 * Safe byte-array receiving
-		 */
-		template <typename SizeType> static inline bool SafeByteArrayReceive(uint8_t *byteData, SizeType bytesCount)
-		{
-			register SizeType i;
-			
-			for (i = 0; i < bytesCount; i++)
-				if (!SafeByteReceive(byteData[i]))
-					return false;
-					
-			return true;
-			
-		} // ReceiveByteArray
-
-	public:
-		
-		
-/**********************************************************************************************************************\
-
-	User aborting functions
+	} // WaitUntilPossibleToTransmit
 	
-\**********************************************************************************************************************/
+	/**
+	 * Waits until it is possible to receive or until error occurs
+	 */
+	template <class UserAbort> static inline bool WaitUntilPossibleToReceive()
+	{
+		if (!Interface::IsReceiverAvailable() ) return false;
 		
-		#ifdef ALLOW_USER_TRANSCEIVER_ABORT
+		UserAbort::OperationStart();
 		
-		/**
-		 * Abort all
-		 */
-		static inline void Abort()
+		while (!Interface::CanReceive() )
 		{
-			userTransmittingAbort = true;
-			userReceivingAbort    = true;
+			if (UserAbort::IsAborted() )
+				return false;
 		}
 		
-		/**
-		 * Abort transmitting 
-		 */
-		static inline void AbortTransmitting()
+		return true;
+		
+	} // WaitUntilPossibleToReceive
+	
+	/**
+	 * Waits until transmiting is completed or until error occurs
+	 */
+	template <class UserAbort> static inline bool WaitUntilTransmitingComplete()
+	{
+		UserAbort::OperationStart();
+		
+		while (!Interface::IsTransmitingComplete() )
 		{
-			userTransmittingAbort = true;
+			if (UserAbort::IsAborted() )
+				return false;
 		}
 		
-		/**
-		 * Abort receiving 
-		 */
-		static inline void AbortReceiving()
+		return !Interface::WasTransmitingError();
+		
+	} // WaitUntilTransmitingComplete
+	
+	/**
+	 * Wait until receiving is completed or until error occurs
+	 */
+	template <class UserAbort> static inline bool WaitUntilReceivingComplete()
+	{
+		while (!Interface::IsReceivingComplete() )
 		{
-			userReceivingAbort = true;
+			if (UserAbort::IsAborted() )
+				return false;
 		}
 		
-		/**
-		 * Abort resetting
-		 */
-		static inline void ResetAbort()
-		{
-			userTransmittingAbort   = false;
-			userReceivingAbort = false;
-		}
+		return !Interface::WasReceivingError();
 		
-		/**
-		 * Transmitting abort resetting
-		 */
-		static inline void ResetTransmittingAbort()
-		{
-			userTransmittingAbort = false;			
-		}
+	} // WaitUntilReceivingComplete
+	
+	/**
+	 * Waits until it is possible to transmit, then transmits one byte and waits until transmitting is completed
+	 */
+	template <class UserAbort> static inline bool SafeByteTransmit(const uint8_t &data)
+	{
+		if (!WaitUntilPossibleToTransmit<UserAbort>() )
+			return false;
 		
-		/**
-		 * Receiving abort resetting
-		 */
-		static inline void ResetReceivingAbort()
-		{
-			userReceivingAbort = false;			
-		}
+		Interface::PureWrite(data);
 		
-		/**
-		 * User sending or receiving abort presence returning
-		 */
-		static volatile inline bool WasUserAbort()
-		{
-			return userTransmittingAbort || userReceivingAbort;
-		}
+		return WaitUntilTransmitingComplete<UserAbort>();
 		
-		/**
-		 * User sending abort presence returning
-		 */
-		static volatile inline bool WasUserTransmittingAbort()
-		{
-			return userTransmittingAbort;
-		}
+	} // SafeByteTransmit
+	
+	/**
+	 * Wait until possible to receive and then do it
+	 */
+	template <class UserAbort> static inline bool SafeByteReceive(uint8_t &data)
+	{
+		if (!WaitUntilPossibleToReceive<UserAbort>() )
+			return false;
 		
-		/**
-		 * User receiving abort presence returning
-		 */
-		static volatile inline bool WasUserReceivingAbort()
-		{
-			return userReceivingAbort;
-		}
+		Interface::PureRead(data);
 		
-		#endif // #ifdef ALLOW_USER_TRANSCEIVER_ABORT
+		return WaitUntilReceivingComplete<UserAbort>();
 		
+	} // SafeByteReceive
+	
+	/**
+	 * Safe byte-array transmiting
+	 */
+	template <class UserAbort, typename SizeType> static inline bool SafeByteArrayTransmit(uint8_t *byteData, SizeType bytesCount)
+	{
+		register SizeType i;
 		
+		for (i = 0; i < bytesCount; i++)
+			if (!SafeByteTransmit<UserAbort>(byteData[i]) )
+				return false;
+		
+		return true;
+		
+	} // SendByteArray
+	
+	/**
+	 * Safe byte-array receiving
+	 */
+	template <class UserAbort, typename SizeType> static inline bool SafeByteArrayReceive(uint8_t *byteData, SizeType bytesCount)
+	{
+		register SizeType i;
+		
+		for (i = 0; i < bytesCount; i++)
+			if (!SafeByteReceive<UserAbort>(byteData[i]) )
+				return false;
+		
+		return true;
+		
+	} // ReceiveByteArray
+	
+	
 /**********************************************************************************************************************\
 
 	Various data sending functions
 	
 \**********************************************************************************************************************/
-		
-		/**
-		 * Single byte sending
-		 */
-		static bool Send(const uint8_t &data)
-		{
-			return SafeByteTransmit(data);
-			
-		} // Send
-		
-		/**
-		 * Single data unit sending
-		 */
-		template <typename DataType> static bool Send(const DataType &data)
-		{
-			return SafeByteArrayTransmit((uint8_t *)(&data), (uint8_t)sizeof(DataType));
-			
-		} // Send
-		
-		/**
-		 * Array sending
-		 */
-		template <typename DataType, typename SizeType> static bool SendArray(DataType *data, SizeType size)
-		{
-			return SafeByteArrayTransmit((uint8_t *)(data), size * sizeof(DataType));
-			
-		} // SendArray
 
-		/**
-		 * Library own array sending
-		 */
-		template <typename DataType, typename SizeType, typename ListType> static bool SendArray(BaseArray<DataType, SizeType, ListType> &array)
-		{
-			return SafeByteArrayTransmit((uint8_t *)array.Front(), array.Size() * sizeof(DataType));
-			
-		} // SendArray
-		
-		/**
-		 * Queue sending
-		 */
-		template <typename DataType, typename SizeType, typename ListType> static bool SendQueue(BaseQueue<DataType, SizeType, ListType> &queue)
-		{	
-			register DataType item;
-			
-			while (queue.Pop(item))
-			{
-				if (!SafeByteArrayTransmit((uint8_t *)item, (uint8_t)sizeof(DataType)))
-					return false;
-			}
-			
-			return true;
-			
-		} // SendQueue
-
-		/**
-		 * Length-specified text sending
-		 */
-		template <typename SizeType> static bool SendText(const char *text, SizeType size)
-		{
-			register SizeType i;
-			
-			for (i = 0; (i < size) && (text[i] > 0); i++)			
-				if (!SafeByteTransmit(text[i]))
-					return false;
-			
-			while (i++ < size)
-				if (!SafeByteTransmit(0))
-					return false;
-			
-			return true;
-			
-		} // SendText
-		
-		/**
-		 * Null-delimited text sending
-		 */
-		static bool SendText(const char *text)
-		{
-			register uint16_t i;
-			
-			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
-			for (i = 0; text[i] > 0; i++)			
-				if (!SafeByteTransmit(text[i]))
-					return false;			
-			
-			return true;
-			
-		} // SendText
-		
-		#ifdef FORMATTED_TEXT_SENDING
+public:
 	
-		/**
-		 * Formatted text sending
-		 * Maximum possible text length is 254 characters!
-		 */
-		static bool SendFormattedText(const char *format, ...)
-		{
-			va_list args;					
-			char text[255];
-			unsigned char len;
+	/**
+	 * Simple single byte sending
+	 */
+	static bool Send(const uint8_t &data)
+	{
+		return SafeByteTransmit<EmptyUserAbort>(data);
+		
+	} // Send
+	
+	/**
+	 * Single data unit sending
+	 */
+	template <typename DataType, class UserAbort> static bool Send(const DataType &data)
+	{
+		return SafeByteArrayTransmit<UserAbort>((uint8_t *)(&data), (uint8_t)sizeof(DataType) );
+		
+	} // Send
+	
+	/**
+	 * Array sending
+	 */
+	template <typename DataType, class UserAbort, typename SizeType> static bool SendArray(DataType *data, SizeType size)
+	{
+		return SafeByteArrayTransmit<UserAbort>((uint8_t *)(data), size * sizeof(DataType) );
+		
+	} // SendArray
 
-			va_start(format, args);
-			len = vsprintf(text, format, args);
-			va_end(args);			
-			
-			for (i = 0; i < len; i++)
-				if (!SafeByteTransmit(text[i]))
-					return false;
-					
-			return true;
-			
-		} // SendFormattedText
+	/**
+	 * Library own array sending
+	 */
+	template <typename DataType, class UserAbort, typename SizeType, typename ListType> static bool SendArray(BaseArray<DataType, SizeType, ListType> &array)
+	{
+		return SafeByteArrayTransmit<UserAbort>((uint8_t *)array.Front(), array.Size() * sizeof(DataType) );
 		
-		#endif // #ifdef FORMATTED_TEXT_SENDING
+	} // SendArray
+	
+	/**
+	 * Queue sending
+	 */
+	template <typename DataType, class UserAbort, typename SizeType, typename ListType> static bool SendQueue(BaseQueue<DataType, SizeType, ListType> &queue)
+	{	
+		register DataType item;
 		
+		while (queue.Pop(item))
+		{
+			if (!SafeByteArrayTransmit<UserAbort>( (uint8_t *)item, (uint8_t)sizeof(DataType) ) )
+				return false;
+		}
 		
+		return true;
+		
+	} // SendQueue
+
+	/**
+	 * Length-specified text sending
+	 */
+	template <class UserAbort, typename SizeType> static bool SendText(const char *text, SizeType size)
+	{
+		register SizeType i;
+		
+		for (i = 0; (i < size) && (text[i] > 0); i++)			
+			if (!SafeByteTransmit<UserAbort>(text[i]) )
+				return false;
+		
+		while (i++ < size)
+			if (!SafeByteTransmit<UserAbort>(0) )
+				return false;
+		
+		return true;
+		
+	} // SendText
+	
+	/**
+	 * Null-delimited text sending
+	 */
+	template <class UserAbort> static bool SendText(const char *text)
+	{
+		register uint16_t i;
+		
+		// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
+		for (i = 0; text[i] > 0; i++)			
+			if (!SafeByteTransmit<UserAbort>(text[i]) )
+				return false;			
+		
+		return true;
+		
+	} // SendText
+	
+	#ifdef FORMATTED_TEXT_SENDING
+
+	/**
+	 * Formatted text sending
+	 * Maximum possible text length is 254 characters!
+	 */
+	template <class UserAbort = EmptyUserAbort> static bool SendFormattedText(const char *format, ...)
+	{
+		va_list args;					
+		char text[255];
+		unsigned char len;
+		
+		va_start(format, args);
+		len = vsprintf(text, format, args);
+		va_end(args);			
+		
+		for (i = 0; i < len; i++)
+			if (!SafeByteTransmit<UserAbort>(text[i]) )
+				return false;
+				
+		return true;
+		
+	} // SendFormattedText
+	
+	#endif // #ifdef FORMATTED_TEXT_SENDING
+	
+	
 /**********************************************************************************************************************\
 
 	Various data receiving functions
@@ -421,18 +348,18 @@ template <class Interface> class Transceiver
 		/**
 		 * Single data unit receiving
 		 */
-		template<typename DataType> static bool Receive(DataType &data)
+		template<typename DataType, class UserAbort> static bool Receive(DataType &data)
 		{
-			return SafeByteArrayReceive((uint8_t *)(&data), sizeof(DataType));
+			return SafeByteArrayReceive<UserAbort>((uint8_t *)(&data), sizeof(DataType));
 			
 		} // Receive
 		
 		/**
 		 * Array receiving
 		 */
-		template<typename DataType, typename SizeType> static bool ReceiveArray(DataType *data, SizeType size)
+		template<typename DataType, class UserAbort, typename SizeType> static bool ReceiveArray(DataType *data, SizeType size)
 		{
-			return SafeByteArrayReceive((uint8_t *)(data), size * sizeof(DataType));
+			return SafeByteArrayReceive<UserAbort>((uint8_t *)(data), size * sizeof(DataType));
 			
 		} // ReceiveArray			
 		
@@ -440,12 +367,12 @@ template <class Interface> class Transceiver
 		 * Length-specified text receiving
 		 * Text memory has to be size + 1 because of the null-termination
 		 */
-		template <typename SizeType> static bool ReceiveText(char *text, SizeType size)
+		template <typename SizeType, class UserAbort> static bool ReceiveText(char *text, SizeType size)
 		{
 			register SizeType i;
 			
 			for (i = 0; i < size; i++)
-				if (!SafeByteReceive(text[i]))
+				if (!SafeByteReceive<UserAbort>(text[i]))
 					return false;
 					
 			// Null-terminate the string		
