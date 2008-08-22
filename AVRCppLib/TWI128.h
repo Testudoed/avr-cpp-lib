@@ -190,7 +190,6 @@ namespace AVRCpp
 					class StatusRegister,
 					class DataRegister,
 					class SlaveAddressRegister,
-					class SlaveAddressMaskRegister,
 					class DefaultUserAbort >
 					
 			struct TWIBase : public Transceiver< TWIBase<
@@ -199,7 +198,6 @@ namespace AVRCpp
 					StatusRegister,
 					DataRegister,
 					SlaveAddressRegister,
-					SlaveAddressMaskRegister,
 					DefaultUserAbort> >
 			{
 			private:
@@ -210,7 +208,6 @@ namespace AVRCpp
 						StatusRegister,
 						DataRegister,
 						SlaveAddressRegister,
-						SlaveAddressMaskRegister,
 						DefaultUserAbort> >;
 						
 				typedef Transceiver< TWIBase<
@@ -219,7 +216,6 @@ namespace AVRCpp
 						StatusRegister,
 						DataRegister,
 						SlaveAddressRegister,
-						SlaveAddressMaskRegister,
 						DefaultUserAbort> > Parent;
 				
 				
@@ -407,7 +403,6 @@ namespace AVRCpp
 				 */					 
 				static void SetUpSlave (
 						uint8_t address,
-						uint8_t addressMask = 0,
 						GeneralCalls generalCalls = GeneralCallsEnabled,
 						AcknowledgeScheme acknowledgeScheme = AcknowledgeAll,
 						TWIEnabled _TWIEnabled = Enabled )
@@ -415,7 +410,6 @@ namespace AVRCpp
 					BitRateRegister::Set(0x00);
 					StatusRegister::Set(0x00);
 					SlaveAddressRegister::Set((address << 1) | generalCalls);
-					SlaveAddressMaskRegister::Set(addressMask << 1);
 					ControlRegister::Set(_TWIEnabled | acknowledgeScheme);
 					
 				} // SetUpSlave
@@ -429,7 +423,6 @@ namespace AVRCpp
 					StatusRegister::Set(0x00);
 					ControlRegister::Set(0x00);
 					SlaveAddressRegister::Set(0x00);
-					SlaveAddressMaskRegister::Set(0x00);
 					
 				} // Release
 				
@@ -441,7 +434,6 @@ namespace AVRCpp
 				{
 					uint8_t control	= ControlRegister::Get() & (Enabled | AcknowledgeAll);
 					uint8_t address	= SlaveAddressRegister::Get();
-					uint8_t mask	= SlaveAddressMaskRegister::Get();
 					uint8_t bitRate	= BitRateRegister::Get();
 					uint8_t status	= StatusRegister::Get();
 					
@@ -450,7 +442,6 @@ namespace AVRCpp
 					BitRateRegister::Set(bitRate);
 					StatusRegister::Set(status);
 					SlaveAddressRegister::Set(address);
-					SlaveAddressMaskRegister::Set(mask);
 					ControlRegister::Set(control);
 					
 				} // ReleaseAndInitialize
@@ -725,6 +716,7 @@ namespace AVRCpp
 					
 				} // Write										
 				
+				
 				static inline bool Write(uint8_t data) { return Write<DefaultUserAbort>(data); }
 				
 				/**
@@ -832,7 +824,6 @@ namespace AVRCpp
 				_TWSR,					/* StatusRegister */
 				_TWDR,					/* DataRegister */								
 				_TWAR,					/* SlaveAddressRegister */
-				_TWAMR,					/* SlaveAddressMaskRegister */							
 				EmptyUserAbort >		/* DefaultUserAbort */
 		{
 			struct JobCompleteInterrupt : Interrupt<Bits<_TWCR, _TWIE>, Bits<_TWCR, TWINT> > { __INTERRUPT_HANDLER_SUPPORT__ };
@@ -846,7 +837,6 @@ namespace AVRCpp
 				_TWSR,					/* StatusRegister */
 				_TWDR,					/* DataRegister */								
 				_TWAR,					/* SlaveAddressRegister */
-				_TWAMR,					/* SlaveAddressMaskRegister */							
 				UserAbort >				/* DefaultUserAbort */
 		{
 			typedef DelegateTWI0::JobCompleteInterrupt JobCompleteInterrupt;
