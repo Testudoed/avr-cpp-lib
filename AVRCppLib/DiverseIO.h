@@ -295,6 +295,19 @@ public:
 		SetBitsTo<Pins7>(flags7, (nr == 7 ? false : true));
 						
 	} // ClearOne
+	
+	static inline void SetSpecifiedTo(uint8_t nr, bool value)
+	{
+		if (nr == 0) SetBitsTo<Pins0>(flags0, value);
+		if (nr == 1) SetBitsTo<Pins1>(flags1, value);
+		if (nr == 2) SetBitsTo<Pins2>(flags2, value);
+		if (nr == 3) SetBitsTo<Pins3>(flags3, value);
+		if (nr == 4) SetBitsTo<Pins4>(flags4, value);
+		if (nr == 5) SetBitsTo<Pins5>(flags5, value);
+		if (nr == 6) SetBitsTo<Pins6>(flags6, value);
+		if (nr == 7) SetBitsTo<Pins7>(flags7, value);		
+						
+	} // SetSpecifiedTo
 
 }; // class MultiPortOutputPins
 
@@ -348,72 +361,41 @@ class CombinedOutputPins : public MultiPortOutputPins <	typename OutputPins0::My
 
 template <class InputPinsClass> class StateWatchInputPins : public InputPinsClass
 {
-	protected:
-	
-		volatile bool prevState;
-	
-	public:
-	
-		inline void InitInput()
+protected:
+
+	bool prevState;
+
+public:
+
+	inline void InitInput()
+	{
+		InputPinsClass::InitInput();
+		prevState = InputPinsClass::IsSet();
+
+	} // InitInput
+
+	inline void InitDefaultInput()
+	{
+		InputPinsClass::InitDefaultInput();
+		prevState = InputPinsClass::IsSet();
+
+	} // InitDefaultInput
+
+	inline void Reset() { prevState = InputPinsClass::IsSet(); }
+
+	inline bool HasChanged(bool doNotReset = false)
+	{
+		bool now = InputPinsClass::IsSet();
+
+		if (now != prevState)
 		{
-			InputPinsClass::InitInput();
-			prevState = InputPinsClass::IsSet();
-	
-		} // InitInput
-	
-		inline void InitDefaultInput()
-		{
-			InputPinsClass::InitDefaultInput();
-			prevState = InputPinsClass::IsSet();
-	
-		} // InitDefaultInput
-	
-		inline void Reset()
-		{
-			prevState = InputPinsClass::IsSet();
+		    if (!doNotReset) prevState = now;
+			return true;
 		}
-	
-		bool HasChanged(bool doNotReset = false)
-		{
-			bool now = InputPinsClass::IsSet();
-	
-			if (now != prevState)
-			{
-				if (!doNotReset) prevState = now;
-				return true;
-			}
-	
-			return false;
-	
-		} // HasChanged
-		
-		bool HasSet(bool doNotReset = false)
-		{
-			bool now = InputPinsClass::IsSet();
-	
-			if (now != prevState)
-			{
-				if (!doNotReset) prevState = now;
-				return now;
-			}
-	
-			return false;
-	
-		} // HasSet
-		
-		bool HasCleared(bool doNotReset = false)
-		{
-			bool now = InputPinsClass::IsSet();
-	
-			if (now != prevState)
-			{
-				if (!doNotReset) prevState = now;
-				return !now;
-			}
-	
-			return false;
-	
-		} // HasCleared
+
+		return false;
+
+	} // HasChanged
 
 }; // class StateWatchInputPins
 

@@ -113,7 +113,7 @@ namespace AVRCpp
 		 */		 		
 		static inline void ResetTimer()
 		{
-			Assembler::WDR()
+			Assembler::WDR();
 			
 		} // ResetTimer
 
