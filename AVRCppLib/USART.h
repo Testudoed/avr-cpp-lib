@@ -240,6 +240,9 @@ namespace AVRCpp
 					static inline void ResetCancel() { Cancel() = false; }
 					static inline void CancelReading() { Cancel() = true; }
 					static inline bool IsCanceled() { return Cancel(); }					
+								
+				
+/**********************************************************************************************************************/						
 					
 				private:
 					
@@ -272,34 +275,40 @@ namespace AVRCpp
 						
 					} // DetailedErrorCheck
 
+/**********************************************************************************************************************\
 
-/**********************************************************************************************************************/
-					
-				/**
-				 * Neccessary functions for transceiver
-				 */
+	Status functions for Transceiver base class
+
+\**********************************************************************************************************************/
+
 				public:
 				
-					static inline bool CanTransmit()         { return IsDataRegisterEmpty(); }
-					static inline bool CanReceive()          { return IsReceiveCompleted();  }
-					static inline bool IsTransmitCompleted() { return IsTransferCompleted(); }
-					// IsReceiveCompleted() already exists
-					static inline bool WasTransmitError()    { return false;                 }
-					static inline bool WasReceiveError()     { return WasError();            } // All USART errors are receiving errors
+					static inline bool CanTransmit()            { return DataRegisterEmptyBit::IsSet(); }
+					static inline bool CanReceive()             { return ReceiveCompleteBit::IsSet();   }
+					static inline bool IsTransmitterAvailable() { return TransmitterEnableBit::IsSet(); }
+					static inline bool IsReceiverAvailable()    { return ReceiverEnableBit::IsSet();    }
+					static inline bool IsTransmittingComplete() { return TransferCompleteBit::IsSet();  }
+					static inline bool IsReceivingComplete()    { return ReceiveCompleteBit::IsSet();   }
+					static inline bool WasTransmittingError()   { return false;                         } // No feedback
+					static inline bool WasReceivingError()      { return ErrorBits::IsAnySet();         } // All USART errors are receiving errors
 					
 				protected:
 	
-					static inline void PureByteTransmit(const uint8_t &data)
+					static inline bool PureWrite(const uint8_t &data)
 					{					
 						DataRegister::Set(data);
 						
-					} // PureByteTransmit
+						return true;
+						
+					} // PureWrite
 					
-					static inline void PureByteReceive(uint8_t &data)
+					static inline void PureRead(uint8_t &data)
 					{
 						data = DataRegister::Get();
+						
+						return true;
 												
-					} // PureByteReceive
+					} // PureRead
 					
 					
 /**********************************************************************************************************************/

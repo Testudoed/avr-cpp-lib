@@ -269,7 +269,7 @@ namespace AVRCpp
 				
 				
 				static inline bool CanTransmit() { return true; }
-				static inline bool CanReceive() { return true; }
+				static inline bool CanReceive()  { return true; }
 				
 				static bool IsTransmitterAvailable()
 				{						
@@ -287,26 +287,7 @@ namespace AVRCpp
 						return false;
 					}
 					
-				} // CanTransmit
-				
-				static bool WasTransmitingError()
-				{
-					if (!IsJobCompleted() )
-						return true;
-					
-					switch (GetStatus() )
-					{
-					case MasterDataTransmitted:
-					case SlaveDataTransmitted:
-					// In case of last byte
-					case MasterDataNotTransmitted:
-					case SlaveDataNotTransmitted:
-						return false;
-					default:
-						return true;
-					}
-					
-				} // WasTransmitingError
+				} // IsTransmitterAvailable
 				
 				static bool IsReceiverAvailable()
 				{
@@ -328,6 +309,28 @@ namespace AVRCpp
 					
 				} // IsReceiverAvailable
 				
+				static inline bool IsTransmitingComplete() { return IsJobCompleted(); }
+				static inline bool IsReceivingComplete()   { return IsJobCompleted(); }
+								
+				static bool WasTransmittingError()
+				{
+					if (!IsJobCompleted() )
+						return true;
+					
+					switch (GetStatus() )
+					{
+					case MasterDataTransmitted:
+					case SlaveDataTransmitted:
+					// In case of last byte
+					case MasterDataNotTransmitted:
+					case SlaveDataNotTransmitted:
+						return false;
+					default:
+						return true;
+					}
+					
+				} // WasTransmittingError								
+				
 				static bool WasReceivingError()
 				{
 					if (!IsJobCompleted() )
@@ -343,12 +346,7 @@ namespace AVRCpp
 						return true;
 					}
 					
-				} // WasReceivingError
-				
-				static inline bool IsTransmitingComplete() { return IsJobCompleted(); }
-				static inline bool IsReceivingComplete()  { return IsJobCompleted(); }
-				
-				
+				} // WasReceivingError						
 				
 				
 /**********************************************************************************************************************/					

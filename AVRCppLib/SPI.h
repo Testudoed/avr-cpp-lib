@@ -162,46 +162,55 @@ namespace AVRCpp
 					static inline void WaitUntilTransferCompleted()   { while (IsTransferCompleted() || WasWriteCollision()); }
 					
 					
-/**********************************************************************************************************************/										
-				
-				/**
-				 * Neccessary functions for transceiver
-				 */
+/**********************************************************************************************************************\
+
+	Functions for Transceiver base class
+
+\**********************************************************************************************************************/
+					
 					
 				public:
 					 
-					static inline bool CanTransmit()         { return IsTransferCompleted(); }
-					static inline bool CanReceive()          { return IsTransferCompleted(); }
-					static inline bool IsTransmitCompleted() { return IsTransferCompleted(); }
-					static inline bool IsReceiveCompleted()  { return IsTransferCompleted(); }
-					static inline bool WasTransmitError()    { return WasWriteCollision();   }
-					static inline bool WasReceiveError()     { return (MasterSlaveSelectBit::IsSet() ? WasWriteCollision() : false); }				
+					static inline bool CanTransmit()            { return IsTransferCompleted();      }
+					static inline bool CanReceive()             { return IsTransferCompleted();      }
+					static inline bool IsTransmitterAvailable() { return TransferEnableBit::IsSet(); }
+					static inline bool IsReceiverAvailable()    { return TransferEnableBit::IsSet(); }
+					static inline bool IsTransmittingComplete() { return IsTransferCompleted();      }
+					static inline bool IsReceivingComplete()    { return IsTransferCompleted();      }
+					static inline bool WasTransmittingError()   { return WasWriteCollision();        }
+					static inline bool WasReceivingError()      { return (MasterSlaveSelectBit::IsSet() ? WasWriteCollision() : false); }
 					
 				protected:
 					
-					static inline void PureByteTransmit(const uint8_t &data)
+					static inline bool PureWrite(const uint8_t &data)
 					{					
 						DataRegister::Set(data);
 						
-					} // PureByteTransmit
+						return true;
+						
+					} // PureWrite
 					
-					static inline void PureByteReceive(uint8_t &data)
+					static inline bool PureRead(uint8_t &data)
 					{
-						// In master mode, it is neccessary to generate clock with random data to read data from slave
+						// In master mode, it is neccessary to generate clock with some data to read data from slave
+						// 0 data is used here. To write and read at the same time direct register manipulation has to be used.
 						if (MasterSlaveSelectBit::IsSet())
 						{	
-							PureByteTransmit(0);							
+							DataRegister::Set(0);							
 							
 							if (!Parent::WaitUntilTransmitCompleted())
-								return;							
+								return false;
 						}
 	
 						data = DataRegister::Get();
+						
+						return true;
 												
-					} // PureByteReceive
+					} // PureRead
 					
 
 /**********************************************************************************************************************/					
+					
 					
 				public:
 					
