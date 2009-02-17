@@ -383,7 +383,7 @@ public:
 
 	inline void Reset() { prevState = InputPinsClass::IsSet(); }
 
-	inline bool HasChanged(bool doNotReset = false)
+	bool HasChanged(bool doNotReset = false)
 	{
 		bool now = InputPinsClass::IsSet();
 
@@ -396,6 +396,34 @@ public:
 		return false;
 
 	} // HasChanged
+	
+	bool HasSet(bool doNotReset = false)
+	{
+		bool now = InputPinsClass::IsSet();
+
+		if (now != prevState)
+		{
+		    if (!doNotReset) prevState = now;
+			return now;
+		}
+
+		return false;
+		
+	} // HasSet
+	
+	bool HasCleared(bool doNotReset = false)
+	{
+		bool now = InputPinsClass::IsSet();
+
+		if (now != prevState)
+		{
+		    if (!doNotReset) prevState = now;
+			return !now;
+		}
+
+		return false;
+		
+	} // HasCleared
 
 }; // class StateWatchInputPins
 
