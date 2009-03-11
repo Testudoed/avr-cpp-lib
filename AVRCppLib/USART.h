@@ -417,6 +417,7 @@ namespace AVRCpp
 						
 					}  // Release
 					
+					/*
 					static inline void WriteNinthSet(uint8_t data)
 					{
 						WaitUntilDataRegisterEmpty();
@@ -571,6 +572,7 @@ namespace AVRCpp
 						}
 						
 					} // DetailedSimpleRead 2
+					*/
 
 					/// Empties the receive buffer, if it is not already empty.
 					static inline void Flush()

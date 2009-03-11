@@ -82,13 +82,13 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static inline bool WaitUntilPossibleToTransmit()
 		{
-			if (!Interface::IsTransmitterAvailable() ) return false;
+			if (!Interface::IsTransmitterAvailable()) return false;
 			
 			UserAbort::OperationStart();
 			
-			while (!Interface::CanTransmit() )
+			while (!Interface::CanTransmit())
 			{
-				if (UserAbort::IsAborted() )
+				if (UserAbort::IsAborted())
 					return false;
 			}
 			
@@ -101,13 +101,13 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static inline bool WaitUntilPossibleToReceive()
 		{
-			if (!Interface::IsReceiverAvailable() ) return false;
+			if (!Interface::IsReceiverAvailable()) return false;
 			
 			UserAbort::OperationStart();
 			
-			while (!Interface::CanReceive() )
+			while (!Interface::CanReceive())
 			{
-				if (UserAbort::IsAborted() )
+				if (UserAbort::IsAborted())
 					return false;
 			}
 			
@@ -122,9 +122,9 @@ template <class Interface> class Transceiver
 		{
 			UserAbort::OperationStart();
 			
-			while (!Interface::IsTransmittingComplete() )
+			while (!Interface::IsTransmittingComplete())
 			{
-				if (UserAbort::IsAborted() )
+				if (UserAbort::IsAborted())
 					return false;
 			}
 			
@@ -137,9 +137,9 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static inline bool WaitUntilReceivingComplete()
 		{
-			while (!Interface::IsReceivingComplete() )
+			while (!Interface::IsReceivingComplete())
 			{
-				if (UserAbort::IsAborted() )
+				if (UserAbort::IsAborted())
 					return false;
 			}
 			
@@ -152,7 +152,7 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static inline bool SafeByteTransmit(const uint8_t &data)
 		{
-			if (!WaitUntilPossibleToTransmit<UserAbort>() )
+			if (!WaitUntilPossibleToTransmit<UserAbort>())
 				return false;
 			
 			Interface::PureWrite(data);
@@ -166,7 +166,7 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static inline bool SafeByteReceive(uint8_t &data)
 		{
-			if (!WaitUntilPossibleToReceive<UserAbort>() )
+			if (!WaitUntilPossibleToReceive<UserAbort>())
 				return false;
 			
 			Interface::PureRead(data);
@@ -183,7 +183,7 @@ template <class Interface> class Transceiver
 			register SizeType i;
 			
 			for (i = 0; i < bytesCount; i++)
-				if (!SafeByteTransmit<UserAbort>(byteData[i]) )
+				if (!SafeByteTransmit<UserAbort>(byteData[i]))
 					return false;
 			
 			return true;
@@ -198,7 +198,7 @@ template <class Interface> class Transceiver
 			register SizeType i;
 			
 			for (i = 0; i < bytesCount; i++)
-				if (!SafeByteReceive<UserAbort>(byteData[i]) )
+				if (!SafeByteReceive<UserAbort>(byteData[i]))
 					return false;
 			
 			return true;
@@ -215,7 +215,7 @@ template <class Interface> class Transceiver
 	public:
 		
 		/**
-		 * Simple single byte sending
+		 * Simple single byte sending with no abort class
 		 */
 		static bool Send(const uint8_t &data)
 		{
@@ -224,42 +224,51 @@ template <class Interface> class Transceiver
 		} // Send
 		
 		/**
+		 * Simple single byte sending
+		 */
+		template <class UserAbort> static bool Send(const uint8_t &data)
+		{
+			return SafeByteTransmit<UserAbort>(data);
+			
+		} // Send
+		
+		/**
 		 * Single data unit sending
 		 */
-		template <typename DataType, class UserAbort> static bool Send(const DataType &data)
+		template <class UserAbort, typename DataType> static bool Send(const DataType &data)
 		{
-			return SafeByteArrayTransmit<UserAbort>((uint8_t *)(&data), (uint8_t)sizeof(DataType) );
+			return SafeByteArrayTransmit<UserAbort>((uint8_t *)(&data), (uint8_t)sizeof(DataType));
 			
 		} // Send
 		
 		/**
 		 * Array sending
 		 */
-		template <typename DataType, class UserAbort, typename SizeType> static bool SendArray(DataType *data, SizeType size)
+		template <class UserAbort, typename DataType, typename SizeType> static bool SendArray(DataType *data, SizeType size)
 		{
-			return SafeByteArrayTransmit<UserAbort>((uint8_t *)(data), size * sizeof(DataType) );
+			return SafeByteArrayTransmit<UserAbort>((uint8_t *)(data), size * sizeof(DataType));
 			
 		} // SendArray
 
 		/**
 		 * Library own array sending
 		 */
-		template <typename DataType, class UserAbort, typename SizeType, typename ListType> static bool SendArray(BaseArray<DataType, SizeType, ListType> &array)
+		template <class UserAbort, typename DataType, typename SizeType, typename ListType> static bool SendArray(BaseArray<DataType, SizeType, ListType> &array)
 		{
-			return SafeByteArrayTransmit<UserAbort>((uint8_t *)array.Front(), array.Size() * sizeof(DataType) );
+			return SafeByteArrayTransmit<UserAbort>((uint8_t *)array.Front(), array.Size() * sizeof(DataType));
 			
 		} // SendArray
 		
 		/**
 		 * Queue sending
 		 */
-		template <typename DataType, class UserAbort, typename SizeType, typename ListType> static bool SendQueue(BaseQueue<DataType, SizeType, ListType> &queue)
+		template <class UserAbort, typename DataType, typename SizeType, typename ListType> static bool SendQueue(BaseQueue<DataType, SizeType, ListType> &queue)
 		{	
 			register DataType item;
 			
 			while (queue.Pop(item))
 			{
-				if (!SafeByteArrayTransmit<UserAbort>( (uint8_t *)item, (uint8_t)sizeof(DataType) ) )
+				if (!SafeByteArrayTransmit<UserAbort>( (uint8_t *)item, (uint8_t)sizeof(DataType)))
 					return false;
 			}
 			
@@ -275,11 +284,11 @@ template <class Interface> class Transceiver
 			register SizeType i;
 			
 			for (i = 0; (i < size) && (text[i] > 0); i++)			
-				if (!SafeByteTransmit<UserAbort>(text[i]) )
+				if (!SafeByteTransmit<UserAbort>(text[i]))
 					return false;
 			
 			while (i++ < size)
-				if (!SafeByteTransmit<UserAbort>(0) )
+				if (!SafeByteTransmit<UserAbort>(0))
 					return false;
 			
 			return true;
@@ -295,7 +304,7 @@ template <class Interface> class Transceiver
 			
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			for (i = 0; text[i] > 0; i++)			
-				if (!SafeByteTransmit<UserAbort>(text[i]) )
+				if (!SafeByteTransmit<UserAbort>(text[i]))
 					return false;			
 			
 			return true;
@@ -308,7 +317,7 @@ template <class Interface> class Transceiver
 		 * Formatted text sending
 		 * Maximum possible text length is 254 characters!
 		 */
-		template <class UserAbort = EmptyUserAbort> static bool SendFormattedText(const char *format, ...)
+		template <class UserAbort> static bool SendFormattedText(const char *format, ...)
 		{
 			va_list args;					
 			char text[255];
@@ -319,7 +328,7 @@ template <class Interface> class Transceiver
 			va_end(args);			
 			
 			for (i = 0; i < len; i++)
-				if (!SafeByteTransmit<UserAbort>(text[i]) )
+				if (!SafeByteTransmit<UserAbort>(text[i]))
 					return false;
 					
 			return true;
@@ -337,7 +346,7 @@ template <class Interface> class Transceiver
 		
 		
 		/**
-		 * Single byte receiving
+		 * Single byte receiving with no abort class
 		 */
 		static bool Receive(uint8_t &data)
 		{
@@ -346,9 +355,18 @@ template <class Interface> class Transceiver
 		} // Send
 		
 		/**
+		 * Single byte receiving
+		 */
+		template <class UserAbort> static bool Receive(uint8_t &data)
+		{
+			return SafeByteReceive(data);
+			
+		} // Send
+		
+		/**
 		 * Single data unit receiving
 		 */
-		template<typename DataType, class UserAbort> static bool Receive(DataType &data)
+		template <class UserAbort, typename DataType> static bool Receive(DataType &data)
 		{
 			return SafeByteArrayReceive<UserAbort>((uint8_t *)(&data), sizeof(DataType));
 			
@@ -357,7 +375,7 @@ template <class Interface> class Transceiver
 		/**
 		 * Array receiving
 		 */
-		template<typename DataType, class UserAbort, typename SizeType> static bool ReceiveArray(DataType *data, SizeType size)
+		template <class UserAbort, typename DataType, typename SizeType> static bool ReceiveArray(DataType *data, SizeType size)
 		{
 			return SafeByteArrayReceive<UserAbort>((uint8_t *)(data), size * sizeof(DataType));
 			
@@ -367,7 +385,7 @@ template <class Interface> class Transceiver
 		 * Length-specified text receiving
 		 * Text memory has to be size + 1 because of the null-termination
 		 */
-		template <typename SizeType, class UserAbort> static bool ReceiveText(char *text, SizeType size)
+		template <class UserAbort, typename SizeType> static bool ReceiveText(char *text, SizeType size)
 		{
 			register SizeType i;
 			
@@ -386,14 +404,14 @@ template <class Interface> class Transceiver
 		/**
 		 * Null-delimited text receiving
 		 */
-		static bool ReceiveText(char *text)
+		template <class UserAbort> static bool ReceiveText(char *text)
 		{
 			register uint16_t i = 0;
 			
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			do
 			{
-				if (!SafeByteReceive(text[i]))
+				if (!SafeByteReceive<UserAbort>(text[i]))
 					return false;
 					
 			} while (text[i++]);
