@@ -302,7 +302,7 @@ namespace AVRCpp
 						
 					} // PureWrite
 					
-					static inline void PureRead(uint8_t &data)
+					static inline bool PureRead(uint8_t &data)
 					{
 						data = DataRegister::Get();
 						
