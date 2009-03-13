@@ -350,7 +350,7 @@ template <class Interface> class Transceiver
 		 */
 		static bool Receive(uint8_t &data)
 		{
-			return SafeByteReceive(data);
+			return SafeByteReceive<EmptyUserAbort>(data);
 			
 		} // Send
 		
@@ -359,7 +359,7 @@ template <class Interface> class Transceiver
 		 */
 		template <class UserAbort> static bool Receive(uint8_t &data)
 		{
-			return SafeByteReceive(data);
+			return SafeByteReceive<UserAbort>(data);
 			
 		} // Send
 		
