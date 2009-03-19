@@ -288,7 +288,7 @@ namespace AVRCpp
 					static inline bool IsTransmitterAvailable() { return TransmitterEnableBit::IsSet(); }
 					static inline bool IsReceiverAvailable()    { return ReceiverEnableBit::IsSet();    }
 					static inline bool IsTransmittingComplete() { return TransferCompleteBit::IsSet();  }
-					static inline bool IsReceivingComplete()    { return ReceiveCompleteBit::IsSet();   }
+					static inline bool IsReceivingComplete()    { return true;                          } // No post-process
 					static inline bool WasTransmittingError()   { return false;                         } // No feedback
 					static inline bool WasReceivingError()      { return ErrorBits::IsAnySet();         } // All USART errors are receiving errors
 					

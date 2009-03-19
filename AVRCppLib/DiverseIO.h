@@ -476,6 +476,17 @@ public:
         	OutputPinsClass::Close();
         }
 	}
+	
+	static inline void Toggle()
+    {
+       	if (OutputPinsClass::IsOutput())
+		{
+        	Release();
+        } else {
+        	Pull();
+        }
+	}
+	
 }; // class GroundPullOutputPins
 
 #define __DECLARE_ROUND_PULL_PORT_PIN__(pinNr) \

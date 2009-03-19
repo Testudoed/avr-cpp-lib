@@ -120,44 +120,50 @@ namespace AVRCpp
 		/**
 		 * Watchdog setup
 		 */
-		static void Setup(Timeout timeout)
+		static inline void Setup(Timeout timeout)
 		{
 			// Prepare watchdog configuration to apply it within 4 CPU cycles
 			uint8_t tmp = Internal::WatchdogChangeEnableFlag | Internal::WatchdogEnableFlag |
 			              (timeout & Internal::WatchdogPrescalerFlag);
-			
-			// Reset timer
-			ResetTimer();
-			
-			// Allow changes
-			SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
-			                                                Internal::WatchdogEnableFlag);
-			                                                
-			// I don't know whether it's good idea to set prescaler bits with CE bit, so i do it here
-			Internal::WatchdogTimerControlRegister::Set(tmp);
-			
-			// Forbid changes			
-			Internal::WatchdogChangeEnableBit::Clear();
+						              
+			INTERRUPT_SAFE
+			{
+				// Reset timer
+				ResetTimer();
+				
+				// Allow changes
+				SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+																Internal::WatchdogEnableFlag);
+																
+				// I don't know whether it's good idea to set prescaler bits with CE bit, so i do it here
+				Internal::WatchdogTimerControlRegister::Set(tmp);
+				
+				// Forbid changes			
+				Internal::WatchdogChangeEnableBit::Clear();
+			}
 
 		} // Setup
 
 		/**
 		 * Watchdog disabling
 		 */
-		static void Disable()
+		static inline void Disable()
 		{	
-			// Reset timer
-			ResetTimer();
-			
-			// Disable reset
-			Internal::WatchdogResetBit::Clear();
-			
-			// Allow changes
-			SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
-			                                                Internal::WatchdogEnableFlag);
-			                                                																				
-			// Disable everything and forbid changes			                                            
-			Internal::WatchdogTimerControlRegister::Set(0);
+			INTERRUPT_SAFE
+			{
+				// Reset timer
+				ResetTimer();
+				
+				// Disable reset
+				Internal::WatchdogResetBit::Clear();
+				
+				// Allow changes
+				SetBits<Internal::WatchdogTimerControlRegister>(Internal::WatchdogChangeEnableFlag |
+																Internal::WatchdogEnableFlag);
+																																				
+				// Disable everything and forbid changes			                                            
+				Internal::WatchdogTimerControlRegister::Set(0);
+			}
 														
 		} // Disable
 			
@@ -215,7 +221,7 @@ namespace AVRCpp
 		/**
 		 * Watchdog setup
 		 */		 
-		static void Setup(Timeout timeout, bool enableReset)
+		static inline void Setup(Timeout timeout, bool enableReset)
 		{
 			// Prepare watchdog configuration to apply it within 4 CPU cycles
 			uint8_t tmp = Internal::WatchdogChangeEnableFlag |
@@ -243,7 +249,7 @@ namespace AVRCpp
 		/**
 		 * Watchdog disabling
 		 */
-		static void Disable()
+		static inline void Disable()
 		{
 			INTERRUPT_SAFE
 			{
