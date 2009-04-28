@@ -32,8 +32,8 @@
 #include <stdarg.h>
 #endif
 
-#include "Collection/BaseArray.h"
-#include "Collection/BaseQueue.h"
+#include "collection/BaseArray.h"
+#include "collection/BaseQueue.h"
 
 namespace AVRCpp
 {

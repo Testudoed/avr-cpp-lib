@@ -28,7 +28,7 @@
 #ifndef __AVR_CPP_CRC_H__
 #define __AVR_CPP_CRC_H__
 
-#include "../Collection/BaseArray.h"
+#include "../collection/BaseArray.h"
 #include <util/crc16.h>
 
 
