@@ -543,14 +543,15 @@ template <class Interface> class Transceiver
 		/**
 		 * Null-delimited text receiving with default abort class
 		 */
-		static bool ReceiveText(char *text)
+		static bool ReceiveText(char *text_)
 		{
 			register uint16_t i = 0;
-			
+			uint8_t* text = reinterpret_cast<uint8_t*>(text_);
+
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			do
 			{
-				if (!SafeByteReceive<EmptyUserAbort>(text[i]))
+				if (!Transceiver::SafeByteReceive<EmptyUserAbort>(text[i]))
 					return false;
 					
 			} while (text[i++]);
@@ -562,10 +563,11 @@ template <class Interface> class Transceiver
 		/**
 		 * Null-delimited text receiving
 		 */
-		template <class UserAbort> static bool ReceiveText(char *text)
+		template <class UserAbort> static bool ReceiveText(char *text_)
 		{
 			register uint16_t i = 0;
-			
+			uint8_t* text = reinterpret_cast<uint8_t*>(text_);
+
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			do
 			{
