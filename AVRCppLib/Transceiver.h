@@ -361,9 +361,10 @@ template <class Interface> class Transceiver
 		/**
 		 * Null-delimited text sending with default abort class
 		 */
-		static bool SendText(const char *text)
+		static bool SendText(const char *text_)
 		{
 			register uint16_t i;
+			uint8_t const* text = reinterpret_cast<uint8_t const*>(text_);
 			
 			// Don't check for size-limits because 99.9% of systems doesn't have more than 64KB of memory
 			for (i = 0; text[i] > 0; i++)			
