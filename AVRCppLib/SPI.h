@@ -317,6 +317,8 @@ namespace AVRCpp
 #include "atmega168/SPI.h"
 #elif defined(__AVR_ATmega324P__)
 #include "atmega324p/SPI.h"
+#elif defined(__AVR_ATmega328P__)
+#include "atmega328p/SPI.h"
 #elif defined(__AVR_ATmega48__)
 #include "atmega48/SPI.h"
 #elif defined(__AVR_ATmega64__)
@@ -331,6 +333,8 @@ namespace AVRCpp
 #include "atmega8515/SPI.h"
 #elif defined(__AVR_ATmega88__)
 #include "atmega88/SPI.h"
+#elif defined(__AVR_ATmega2560__)
+#include "atmega2560/SPI.h"
 #else
 #error "Selected device does not have SPI support."
 #endif

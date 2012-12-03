@@ -618,10 +618,14 @@ namespace AVRCpp
 #include "atmega164p/USART.h"
 #elif defined(__AVR_ATmega324P__)
 #include "atmega324p/USART.h"
+#elif defined(__AVR_ATmega328P__)
+#include "atmega328p/USART.h"
 #elif defined(__AVR_ATmega644P__)
 #include "atmega644p/USART.h"
 #elif defined(__AVR_ATmega644__)
 #include "atmega644/USART.h"
+#elif defined(__AVR_ATmega2560__)
+#include "atmega2560/USART.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif

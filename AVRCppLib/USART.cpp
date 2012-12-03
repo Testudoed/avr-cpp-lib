@@ -28,46 +28,41 @@
 
 #include "USART.h"
 
+#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__) || defined(__AVR_ATmega644__) \
+		|| defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__) \
+		|| defined(__AVR_ATmega128__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega64__) \
+		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+#define HAVE_USART0 1
+#endif
+
+#if defined(__AVR_ATmega128__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega64__) \
+		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__) \
+		|| defined(__AVR_AT90USB1287__)
+#define HAVE_USART1 1
+#endif
+
 namespace AVRCpp
 {
 	namespace USART
 	{
-#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega8515__) || defined(__AVR_ATmega644__) \
-		|| defined(__AVR_ATmega48__) || defined(__AVR_ATmega88__) || defined(__AVR_ATmega168__)
-		
+
+#	if HAVE_USART0		
 		static bool cancel0 = false;
-		
 		namespace Internal
 		{
 			bool &Cancel0() { return cancel0; }
 			
 		} // namespace Internal
-		
-#elif defined(__AVR_ATmega128__) || defined(__AVR_ATmega64__) \
-		|| defined(__AVR_ATmega164P__) || defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
-		
-		static bool cancel0 = false;
+#	endif
+
+#	if HAVE_USART1
 		static bool cancel1 = false;
-		
-		namespace Internal
-		{
-			bool &Cancel0() { return cancel0; }
-			bool &Cancel1() { return cancel1; }
-			
-		} // namespace Internal
-		
-#elif defined(__AVR_AT90USB1287__)
-		
-		static bool cancel1 = false;
-		
 		namespace Internal
 		{
 			bool &Cancel1() { return cancel1; }
 			
 		} // namespace Internal
-		
-#endif // if defined(__AVR_AT90USB1287__)
-		
+#	endif
 	} // namespace USART
 	
 } // namespace AVRCpp

@@ -317,10 +317,14 @@ namespace AVRCpp
 #include "atmega164p/IO.h"
 #elif defined(__AVR_ATmega324P__)
 #include "atmega324p/IO.h"
+#elif defined(__AVR_ATmega328P__)
+#include "atmega328p/IO.h"
 #elif defined(__AVR_ATmega644P__)
 #include "atmega644p/IO.h"
 #elif defined(__AVR_ATmega644__)
 #include "atmega644/IO.h"
+#elif defined(__AVR_ATmega2560__)
+#include "atmega2560/IO.h"
 #else
 #error "Device is not selected or selected device is not supported."
 #endif
