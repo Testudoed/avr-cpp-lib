@@ -19,7 +19,9 @@
 #ifndef AVRCPPLIBHGEN_READER
 #define AVRCPPLIBHGEN_READER
 
-bool readRegistersFromFile(string sSourceFileName, int iNumBits, TRegisterList &aRegisterList);
+#include "types.h"
+
+bool readRegistersFromFile(std::string sSourceFileName, int iNumBits, TRegisterList &aRegisterList);
 bool findCombinedRegister(TRegisterList &aRegisterList, TCombinedRegisterList &aCombinedRegisterList);
 
 #endif

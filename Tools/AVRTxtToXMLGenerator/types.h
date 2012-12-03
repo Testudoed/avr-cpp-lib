@@ -19,30 +19,33 @@
 #ifndef AVRCPPLIBHGEN_TYPES
 #define AVRCPPLIBHGEN_TYPES
 
-typedef struct TRegisterBit {
-	string sName;
+#include <string>
+#include <vector>
+
+struct TRegisterBit {
+	std::string sName;
 	int iIndex;
 };
 
-typedef struct vector <TRegisterBit> TRegisterBitList;
+typedef std::vector<TRegisterBit> TRegisterBitList;
 
-typedef struct TRegister {
-	string sName;	
+struct TRegister {
+	std::string sName;	
 	int iBitWidth;
 	int iAddress, iAltAddress;
 	TRegisterBitList aBits;
 	bool bCanCombine;
 };
 
-typedef struct vector <TRegister> TRegisterList;
+typedef std::vector<TRegister> TRegisterList;
 
-typedef struct TCombinedRegister {
-	string sName;
+struct TCombinedRegister {
+	std::string sName;
 	int iBitWidth;
 	TRegister *oLowerRegister;
 	TRegister *oHigherRegister;
 }; 
 
-typedef struct vector <TCombinedRegister> TCombinedRegisterList;
+typedef std::vector<TCombinedRegister> TCombinedRegisterList;
 
 #endif

@@ -19,11 +19,14 @@
 #ifndef AVRCPPLIBHGEN_FUNCS
 #define AVRCPPLIBHGEN_FUNCS
 
-bool readNextLineItem(string sLine, int &iPos, string &sItem);
-bool hexStringToInt(string sHex, int &iValue);
-bool isRegisterName(string sName);
-int strSplit(string sInput, string sDelim, vector<string> &aResults);
-string strRepeat(string sItem, int iCount);
-bool extractBitNames(string sText, vector<string> &aNames);
+#include <string>
+#include <vector>
+
+bool readNextLineItem(std::string sLine, int &iPos, std::string &sItem);
+bool hexStringToInt(std::string sHex, int &iValue);
+bool isRegisterName(std::string sName);
+int strSplit(std::string sInput, std::string sDelim, std::vector<std::string> &aResults);
+std::string strRepeat(std::string sItem, int iCount);
+bool extractBitNames(std::string sText, std::vector<std::string> &aNames);
 
 #endif
